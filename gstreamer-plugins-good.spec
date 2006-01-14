@@ -120,6 +120,7 @@ Summary:	Good GStreamer audio effects plugins
 Summary(pl):	Dobre wtyczki efektów d¼wiêkowych do GStreamera
 Group:		Libraries
 Requires:	gstreamer-plugins-base >= %{gst_req_ver}
+Obsoletes:	gstreamer-audio-effects
 
 %description -n gstreamer-audio-effects-good
 Good GStreamer audio effects plugins.
