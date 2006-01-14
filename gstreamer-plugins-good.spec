@@ -354,9 +354,6 @@ rm -f $RPM_BUILD_ROOT%{gstlibdir}/*.la
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post	-p /sbin/ldconfig
-%postun	-p /sbin/ldconfig
-
 %post	-n gstreamer-GConf
 %gconf_schema_install gstreamer-0.10.schemas
 
