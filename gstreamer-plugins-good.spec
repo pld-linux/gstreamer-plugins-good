@@ -63,7 +63,6 @@ Obsoletes:	gstreamer-udp
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		gstlibdir 	%{_libdir}/gstreamer-%{gst_major_ver}
-%define		gstincludedir	%{_includedir}/gstreamer-%{gst_major_ver}
 
 %description
 GStreamer is a streaming-media framework, based on graphs of filters
