@@ -22,6 +22,7 @@ Source0:	http://gstreamer.freedesktop.org/src/gst-plugins-good/%{gstname}-%{vers
 # Source0-md5:	be5ba72454a1df6e4e6d5deeeec88e59
 Patch0:		%{name}-bashish.patch
 Patch1:		%{name}-libcaca.patch
+URL:		http://gstreamer.freedesktop.org/
 %{?with_gconf:BuildRequires:	GConf2-devel >= 2.0}
 BuildRequires:	autoconf >= 2.52
 BuildRequires:	automake >= 1.5
