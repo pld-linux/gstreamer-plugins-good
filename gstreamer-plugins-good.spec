@@ -3,23 +3,24 @@
 %bcond_without	aalib		# don't build aa videosink plugin
 %bcond_without	caca		# don't build caca videosink plugin
 %bcond_without	cairo		# don't build cairo plugin
+%bcond_without	cdio		# don't build cdio plugin
 %bcond_without	gconf		# don't build GConf plugin
 %bcond_without	ladspa		# don't build ladspa plugin
 %bcond_without	speex		# don't build speex plugin
 #
 %define		gstname		gst-plugins-good
 %define		gst_major_ver	0.10
-%define		gst_req_ver	0.10.1
+%define		gst_req_ver	0.10.2.2
 #
 Summary:	Good GStreamer Streaming-media framework plugins
 Summary(pl):	Dobre wtyczki do ¶rodowiska obróbki strumieni GStreamer
 Name:		gstreamer-plugins-good
-Version:	0.10.1
+Version:	0.10.2
 Release:	0.1
 License:	LGPL
 Group:		Libraries
 Source0:	http://gstreamer.freedesktop.org/src/gst-plugins-good/%{gstname}-%{version}.tar.bz2
-# Source0-md5:	be5ba72454a1df6e4e6d5deeeec88e59
+# Source0-md5:	03d3d0b5f19014fe0065234a3ea65ee6
 Patch0:		%{name}-bashish.patch
 Patch1:		%{name}-libcaca.patch
 URL:		http://gstreamer.freedesktop.org/
@@ -44,6 +45,7 @@ BuildRequires:	flac-devel >= 1.1.2
 %{?with_ladspa:BuildRequires:	ladspa-devel >= 1.12}
 BuildRequires:	libavc1394-devel
 %{?with_caca:BuildRequires:	libcaca-devel}
+%{?with_cdio:BuildRequires:	libcdio-devel >= 0.71}
 BuildRequires:	libdv-devel >= 0.104
 BuildRequires:	libjpeg-devel
 BuildRequires:	libpng-devel >= 1.2.0
@@ -153,6 +155,20 @@ GStreamer cairo plugin.
 
 %description -n gstreamer-cairo -l pl
 Wtyczka cairo do GStreamera.
+
+%package -n gstreamer-cdio
+Summary:	GStreamer plugin for CD audio input using libcdio
+Summary(pl):	Wtyczka do GStreamera odtwarzaj±ca p³yty CD-Audio przy u¿yciu libcdio
+Group:		Libraries
+Requires:	gstreamer-plugins-base >= %{gst_req_ver}
+Requires:	libcdio >= 0.71
+
+%description -n gstreamer-cdio
+Plugin for playing audio tracks using libcdio under GStreamer.
+
+%description -n gstreamer-cdio -l pl
+Wtyczka do odtwarzania ¶cie¿ek d¼wiêkowych pod GStreamerem za pomoc±
+libcdio.
 
 %package -n gstreamer-dv
 Summary:	GStreamer dv plugin
@@ -332,6 +348,7 @@ smoothwave, spectrum, goom, chart, monoscope i synaesthesia.
 	%{!?with_aalib:--disable-aalib} \
 	%{!?with_caca:--disable-libcaca} \
 	%{!?with_cairo:--disable-cairo} \
+	%{!?with_cdio:--disable-cdio} \
 	%{!?with_ladspa:--disable-ladspa} \
 	%{!?with_speex:--disable-speex} \
 	--disable-static \
@@ -365,6 +382,7 @@ rm -rf $RPM_BUILD_ROOT
 %doc AUTHORS ChangeLog NEWS README RELEASE 
 %attr(755,root,root) %{gstlibdir}/libgstalphacolor.so
 %attr(755,root,root) %{gstlibdir}/libgstalpha.so
+%attr(755,root,root) %{gstlibdir}/libgstapetag.so
 %attr(755,root,root) %{gstlibdir}/libgstautodetect.so
 %attr(755,root,root) %{gstlibdir}/libgstavi.so
 %attr(755,root,root) %{gstlibdir}/libgstdebug.so
@@ -415,6 +433,12 @@ rm -rf $RPM_BUILD_ROOT
 %files -n gstreamer-cairo
 %defattr(644,root,root,755)
 %attr(755,root,root) %{gstlibdir}/libgstcairo.so
+%endif
+
+%if %{with cdio}
+%files -n gstreamer-cdio
+%defattr(644,root,root,755)
+%attr(755,root,root) %{gstlibdir}/libgstcdio.so
 %endif
 
 %files -n gstreamer-dv
