@@ -403,7 +403,7 @@ rm -rf $RPM_BUILD_ROOT
 %files -n gstreamer-GConf
 %defattr(644,root,root,755)
 %attr(755,root,root) %{gstlibdir}/libgstgconfelements.so
-%{_sysconfdir}/gconf/schemas/*
+%{_sysconfdir}/gconf/schemas/gstreamer-0.10.schemas
 %endif
 
 ##
