@@ -10,26 +10,26 @@
 #
 %define		gstname		gst-plugins-good
 %define		gst_major_ver	0.10
-%define		gst_req_ver	0.10.2.2
+%define		gst_req_ver	0.10.4.1
+%define		gstpb_req_ver	0.10.5.1
 #
 Summary:	Good GStreamer Streaming-media framework plugins
 Summary(pl):	Dobre wtyczki do ¶rodowiska obróbki strumieni GStreamer
 Name:		gstreamer-plugins-good
-Version:	0.10.2
-Release:	3
+Version:	0.10.3
+Release:	1
 License:	LGPL
 Group:		Libraries
 Source0:	http://gstreamer.freedesktop.org/src/gst-plugins-good/%{gstname}-%{version}.tar.bz2
-# Source0-md5:	03d3d0b5f19014fe0065234a3ea65ee6
+# Source0-md5:	a58bb825bd4b22412764f2a8d2f98b1c
 Patch0:		%{name}-bashish.patch
 Patch1:		%{name}-libcaca.patch
 URL:		http://gstreamer.freedesktop.org/
-%{?with_gconf:BuildRequires:	GConf2-devel >= 2.0}
-BuildRequires:	autoconf >= 2.52
+BuildRequires:	autoconf >= 2.59-9
 BuildRequires:	automake >= 1.5
 BuildRequires:	glib2-devel >= 1:2.6.0
 BuildRequires:	gstreamer-devel >= %{gst_req_ver}
-BuildRequires:	gstreamer-plugins-base-devel >= %{gst_req_ver}
+BuildRequires:	gstreamer-plugins-base-devel >= %{gstpb_req_ver}
 BuildRequires:	gtk-doc >= 1.3
 BuildRequires:	gtk+2-devel >= 2:2.2.0
 BuildRequires:	liboil-devel >= 0.3.2
@@ -38,10 +38,13 @@ BuildRequires:	pkgconfig >= 1:0.9.0
 ##
 ## plugins
 ##
+%{?with_gconf:BuildRequires:	GConf2-devel >= 2.0}
 %{?with_aalib:BuildRequires:	aalib-devel >= 0.11.0}
 %{?with_cairo:BuildRequires:	cairo-devel >= 1.0.0}
+BuildRequires:	dbus-devel >= 0.32
 BuildRequires:	esound-devel >= 0.2.12
 BuildRequires:	flac-devel >= 1.1.2
+BuildRequires:	hal-devel >= 0.5.6
 %{?with_ladspa:BuildRequires:	ladspa-devel >= 1.12}
 BuildRequires:	libavc1394-devel
 %{?with_caca:BuildRequires:	libcaca-devel}
@@ -51,11 +54,19 @@ BuildRequires:	libjpeg-devel
 BuildRequires:	libpng-devel >= 1.2.0
 BuildRequires:	libraw1394-devel
 BuildRequires:	libshout-devel >= 2.0
+# for taglib
+BuildRequires:	libstdc++-devel
+BuildRequires:	libxml2-devel >= 2.4.9
 BuildRequires:	rpmbuild(macros) >= 1.198
 %{?with_speex:BuildRequires:	speex-devel >= 1:1.1.6}
+BuildRequires:	taglib-devel >= 1.4
+BuildRequires:	xorg-lib-libX11-devel
+BuildRequires:	xorg-lib-libXdamage-devel
+BuildRequires:	xorg-lib-libXext-devel
+BuildRequires:	xorg-lib-libXfixes-devel
 BuildRequires:	zlib-devel
 Requires:	gstreamer >= %{gst_req_ver}
-Requires:	gstreamer-plugins-base >= %{gst_req_ver}
+Requires:	gstreamer-plugins-base >= %{gstpb_req_ver}
 Obsoletes:	gstreamer-avi
 Obsoletes:	gstreamer-flx
 Obsoletes:	gstreamer-matroska
@@ -121,7 +132,7 @@ Wtyczka wyj¶cia obrazu Ascii-art u¿ywaj±ca biblioteki aalib.
 Summary:	Good GStreamer audio effects plugins
 Summary(pl):	Dobre wtyczki efektów d¼wiêkowych do GStreamera
 Group:		Libraries
-Requires:	gstreamer-plugins-base >= %{gst_req_ver}
+Requires:	gstreamer-plugins-base >= %{gstpb_req_ver}
 Obsoletes:	gstreamer-audio-effects
 
 %description -n gstreamer-audio-effects-good
@@ -134,7 +145,7 @@ Dobre wtyczki efektów d¼wiêkowych do GStreamera.
 Summary:	GStreamer audio format plugins
 Summary(pl):	Wtyczki formatów d¼wiêku
 Group:		Libraries
-#Requires:	gstreamer-plugins-base >= %{gst_req_ver}
+#Requires:	gstreamer-plugins-base >= %{gstpb_req_ver}
 # for locales in wavparse module
 Requires:	%{name} = %{version}-%{release}
 
@@ -160,7 +171,7 @@ Wtyczka cairo do GStreamera.
 Summary:	GStreamer plugin for CD audio input using libcdio
 Summary(pl):	Wtyczka do GStreamera odtwarzaj±ca p³yty CD-Audio przy u¿yciu libcdio
 Group:		Libraries
-Requires:	gstreamer-plugins-base >= %{gst_req_ver}
+Requires:	gstreamer-plugins-base >= %{gstpb_req_ver}
 Requires:	libcdio >= 0.71
 
 %description -n gstreamer-cdio
@@ -174,7 +185,7 @@ libcdio.
 Summary:	GStreamer dv plugin
 Summary(pl):	Wtyczka dv do GStreamera
 Group:		Libraries
-Requires:	gstreamer-plugins-base >= %{gst_req_ver}
+Requires:	gstreamer-plugins-base >= %{gstpb_req_ver}
 
 %description -n gstreamer-dv
 Plugin for digital video support.
@@ -186,7 +197,7 @@ Wtyczka do GStreamera obs³uguj±ca cyfrowy obraz.
 Summary:	GStreamer plugin for ESD sound output
 Summary(pl):	Wtyczka wyj¶cia d¼wiêku ESD do GStreamera
 Group:		Libraries
-Requires:	gstreamer-plugins-base >= %{gst_req_ver}
+Requires:	gstreamer-plugins-base >= %{gstpb_req_ver}
 Provides:	gstreamer-audiosink = %{version}
 Obsoletes:	gstreamer-esound
 
@@ -200,7 +211,7 @@ Wtyczka wyj¶cia d¼wiêku ESD (esound) dla GStreamera.
 Summary:	GStreamer plugin for FLAC lossless audio format
 Summary(pl):	Wtyczka do GStreamera obs³uguj±ca bezstratny format d¼wiêku FLAC
 Group:		Libraries
-Requires:	gstreamer-plugins-base >= %{gst_req_ver}
+Requires:	gstreamer-plugins-base >= %{gstpb_req_ver}
 
 %description -n gstreamer-flac
 Plugin for the free FLAC lossless audio format.
@@ -208,11 +219,37 @@ Plugin for the free FLAC lossless audio format.
 %description -n gstreamer-flac -l pl
 Wtyczka obs³uguj±ca wolnodostêpny, bezstratny format d¼wiêku FLAC.
 
+%package -n gstreamer-gdkpixbuf
+Summary:	GStreamer images input plugin
+Summary(pl):	Wtyczka do GStreamera wczytuj±ca obrazki
+Group:		Libraries
+Requires:	gstreamer >= %{gst_req_ver}
+
+%description -n gstreamer-gdkpixbuf
+This GStreamer plugin load images via gdkpixbuf library.
+
+%description -n gstreamer-gdkpixbuf -l pl
+Ta wtyczka GStreamera wczytuje obrazki za po¶rednictwem biblioteki
+gdkpixbuf.
+
+%package -n gstreamer-hal
+Summary:	GStreamer plugin to wrap the GStreamer/HAL audio input/output devices
+Summary(pl):	Wtyczka GStreamera spinaj±ca urz±dzenia wej¶cia/wyj¶cia d¼wiêku z HAL-em
+Group:		Libraries
+Requires:	gstreamer >= %{gst_req_ver}
+
+%description -n gstreamer-hal
+GStreamer plugin to wrap the GStreamer/HAL audio input/output devices.
+
+%description -n gstreamer-hal -l pl
+Wtyczka GStreamera spinaj±ca urz±dzenia wej¶cia/wyj¶cia d¼wiêku miêdzy
+GStreamerem a HAL-em.
+
 %package -n gstreamer-ladspa
 Summary:	GStreamer wrapper for LADSPA plugins
 Summary(pl):	Wrapper do wtyczek LADSPA dla GStreamera
 Group:		Libraries
-Requires:	gstreamer-plugins-base >= %{gst_req_ver}
+Requires:	gstreamer-plugins-base >= %{gstpb_req_ver}
 
 %description -n gstreamer-ladspa
 Plugin which wraps LADSPA plugins for use by GStreamer applications.
@@ -225,7 +262,7 @@ GStreamera.
 Summary:	GStreamer plugin for libcaca Ascii-art output
 Summary(pl):	Wtyczka libcaca do GStreamera
 Group:		Libraries
-Requires:	gstreamer-plugins-base >= %{gst_req_ver}
+Requires:	gstreamer-plugins-base >= %{gstpb_req_ver}
 Provides:	gstreamer-videosink = %{version}
 
 %description -n gstreamer-videosink-libcaca
@@ -253,7 +290,7 @@ Wtyczka koduj±ca pliki png.
 Summary:	GStreamer plugins for input and output using OSS
 Summary(pl):	Wtyczki wej¶cia i wyj¶cia d¼wiêku OSS do GStreamera
 Group:		Libraries
-#Requires:	gstreamer-plugins-base >= %{gst_req_ver}
+#Requires:	gstreamer-plugins-base >= %{gstpb_req_ver}
 # for locales
 Requires:	%{name} = %{version}-%{release}
 Provides:	gstreamer-audiosink = %{version}
@@ -296,7 +333,7 @@ Wtyczka do GStreamera umo¿liwiaj±ca komunikacjê z serwerami Shoutcast.
 Summary:	GStreamer speex codec decoder/encoder plugin
 Summary(pl):	Wtyczka do GStreamera obs³uguj±ca kodek Speex
 Group:		Libraries
-#Requires:	gstreamer-plugins-base >= %{gst_req_ver}
+#Requires:	gstreamer-plugins-base >= %{gstpb_req_ver}
 Requires:	speex >= 1:1.1.6
 
 %description -n gstreamer-speex
@@ -304,6 +341,18 @@ GStreamer speex codec decoder/encoder plugin.
 
 %description -n gstreamer-speex -l pl
 Wtyczka do GStreamera obs³uguj±ca kodek Speex.
+
+%package -n gstreamer-taglib
+Summary:	GStreamer tag writing plugin based on taglib
+Summary(pl):	Wtyczka GStreamera zapisuj±ca znaczniki oparta na bibliotece taglib
+Group:		Libraries
+Requires:	gstreamer >= %{gst_req_ver}
+
+%description -n gstreamer-taglib
+GStreamer tag writing plugin based on taglib.
+
+%description -n gstreamer-taglib -l pl
+Wtyczka GStreamera zapisuj±ca znaczniki oparta na bibliotece taglib.
 
 %package -n gstreamer-video-effects
 Summary:	GStreamer video effects plugins
@@ -331,6 +380,19 @@ smoothwave, spectrum, goom, chart, monoscope and synaesthesia.
 %description -n gstreamer-visualisation -l pl
 Ró¿ne wtyczki efektów wizualnych do u¿ywania z d¼wiêkiem. Za³±czone:
 smoothwave, spectrum, goom, chart, monoscope i synaesthesia.
+
+%package -n gstreamer-ximagesrc
+Summary:	GStreamer X11 video input plugin using standard Xlib calls
+Summary(pl):	Wtyczka wej¶cia obrazu X11 GStreamera u¿ywaj±ca standardowych wywo³añ Xlib
+Group:		Libraries
+Requires:	%{name} = %{version}-%{release}
+
+%description -n gstreamer-ximagesrc
+GStreamer X11 video input plugin using standard Xlib calls.
+
+%description -n gstreamer-ximagesrc -l pl
+Wtyczka wej¶cia obrazu X11 GStreamera u¿ywaj±ca standardowych wywo³añ
+Xlib.
 
 %prep
 %setup -q -n %{gstname}-%{version}
@@ -382,12 +444,14 @@ rm -rf $RPM_BUILD_ROOT
 %doc AUTHORS ChangeLog NEWS README RELEASE 
 %attr(755,root,root) %{gstlibdir}/libgstalphacolor.so
 %attr(755,root,root) %{gstlibdir}/libgstalpha.so
+%attr(755,root,root) %{gstlibdir}/libgstannodex.so
 %attr(755,root,root) %{gstlibdir}/libgstapetag.so
 %attr(755,root,root) %{gstlibdir}/libgstautodetect.so
 %attr(755,root,root) %{gstlibdir}/libgstavi.so
 %attr(755,root,root) %{gstlibdir}/libgstdebug.so
 %attr(755,root,root) %{gstlibdir}/libgstefence.so
 %attr(755,root,root) %{gstlibdir}/libgstflxdec.so
+%attr(755,root,root) %{gstlibdir}/libgsticydemux.so
 %attr(755,root,root) %{gstlibdir}/libgstid3demux.so
 %attr(755,root,root) %{gstlibdir}/libgstmatroska.so
 %attr(755,root,root) %{gstlibdir}/libgstmultipart.so
@@ -395,6 +459,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{gstlibdir}/libgstrtp.so
 %attr(755,root,root) %{gstlibdir}/libgstrtsp.so
 %attr(755,root,root) %{gstlibdir}/libgstudp.so
+%attr(755,root,root) %{gstlibdir}/libgstvideobalance.so
 %attr(755,root,root) %{gstlibdir}/libgstvideobox.so
 %attr(755,root,root) %{gstlibdir}/libgstvideomixer.so
 %{_gtkdocdir}/gst-plugins-good-plugins-*
@@ -453,6 +518,14 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %{gstlibdir}/libgstflac.so
 
+%files -n gstreamer-gdkpixbuf
+%defattr(644,root,root,755)
+%attr(755,root,root) %{gstlibdir}/libgstgdkpixbuf.so
+
+%files -n gstreamer-hal
+%defattr(644,root,root,755)
+%attr(755,root,root) %{gstlibdir}/libgsthalelements.so
+
 #%if %{with ladspa}
 #%files -n gstreamer-ladspa
 #%defattr(644,root,root,755)
@@ -487,6 +560,10 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{gstlibdir}/libgstspeex.so
 %endif
 
+%files -n gstreamer-taglib
+%defattr(644,root,root,755)
+%attr(755,root,root) %{gstlibdir}/libgsttaglib.so
+
 %files -n gstreamer-video-effects
 %defattr(644,root,root,755)
 %attr(755,root,root) %{gstlibdir}/libgsteffectv.so
@@ -497,3 +574,7 @@ rm -rf $RPM_BUILD_ROOT
 %files -n gstreamer-visualisation
 %defattr(644,root,root,755)
 %attr(755,root,root) %{gstlibdir}/libgstgoom.so
+
+%files -n gstreamer-ximagesrc
+%defattr(644,root,root,755)
+%attr(755,root,root) %{gstlibdir}/libgstximagesrc.so
