@@ -50,9 +50,10 @@ BuildRequires:	libavc1394-devel
 %{?with_caca:BuildRequires:	libcaca-devel}
 %{?with_cdio:BuildRequires:	libcdio-devel >= 0.71}
 BuildRequires:	libdv-devel >= 0.104
+BuildRequires:	libiec61883-devel >= 1.0.0
 BuildRequires:	libjpeg-devel
 BuildRequires:	libpng-devel >= 1.2.0
-BuildRequires:	libraw1394-devel
+BuildRequires:	libraw1394-devel >= 1.2.1
 BuildRequires:	libshout-devel >= 2.0
 # for taglib
 BuildRequires:	libstdc++-devel
