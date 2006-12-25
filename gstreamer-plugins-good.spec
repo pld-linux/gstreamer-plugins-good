@@ -78,6 +78,8 @@ Obsoletes:	gstreamer-mixer
 Obsoletes:	gstreamer-navigation
 Obsoletes:	gstreamer-rtp
 Obsoletes:	gstreamer-udp
+Obsoletes:	gstreamer-v4l2
+Conflicts:	gstreamer-plugins-bad < 0.10.4
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		gstlibdir 	%{_libdir}/gstreamer-%{gst_major_ver}
@@ -416,6 +418,7 @@ Xlib.
 	%{!?with_caca:--disable-libcaca} \
 	%{!?with_cairo:--disable-cairo} \
 	%{!?with_cdio:--disable-cdio} \
+	--enable-experimental \
 	%{?with_ladspa:--enable-ladspa} \
 	%{!?with_speex:--disable-speex} \
 	--disable-static \
@@ -465,6 +468,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{gstlibdir}/libgstrtp.so
 %attr(755,root,root) %{gstlibdir}/libgstrtsp.so
 %attr(755,root,root) %{gstlibdir}/libgstudp.so
+%attr(755,root,root) %{gstlibdir}/libgstvideo4linux2.so
 %attr(755,root,root) %{gstlibdir}/libgstvideobalance.so
 %attr(755,root,root) %{gstlibdir}/libgstvideobox.so
 %attr(755,root,root) %{gstlibdir}/libgstvideomixer.so
