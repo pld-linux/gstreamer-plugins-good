@@ -5,7 +5,7 @@
 %bcond_without	cairo		# don't build cairo plugin
 %bcond_without	cdio		# don't build cdio plugin
 %bcond_without	gconf		# don't build GConf plugin
-%bcond_without	ladspa		# don't build ladspa plugin
+%bcond_with	ladspa		# build ladspa plugin [currently built in plugins-bad]
 %bcond_without	speex		# don't build speex plugin
 #
 %define		gstname		gst-plugins-good
@@ -536,7 +536,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %{gstlibdir}/libgsthalelements.so
 
-# disabled in ext/Makefile.am
+# disabled in ext/Makefile.am, currently built in plugins-bad
 #%if %{with ladspa}
 #%files -n gstreamer-ladspa
 #%defattr(644,root,root,755)
