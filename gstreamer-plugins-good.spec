@@ -10,20 +10,21 @@
 #
 %define		gstname		gst-plugins-good
 %define		gst_major_ver	0.10
-%define		gst_req_ver	0.10.9
-%define		gstpb_req_ver	0.10.9
+%define		gst_req_ver	0.10.10.1
+%define		gstpb_req_ver	0.10.10.1
 #
 Summary:	Good GStreamer Streaming-media framework plugins
 Summary(pl):	Dobre wtyczki do ¶rodowiska obróbki strumieni GStreamer
 Name:		gstreamer-plugins-good
-Version:	0.10.4
+Version:	0.10.5
 Release:	1
 License:	LGPL
 Group:		Libraries
 Source0:	http://gstreamer.freedesktop.org/src/gst-plugins-good/%{gstname}-%{version}.tar.bz2
-# Source0-md5:	e189496e7987898823d28d26b79f63dc
+# Source0-md5:	c45fc9ace9feb4d3df32da0a6d262d84
 Patch0:		%{name}-bashish.patch
 Patch1:		%{name}-libcaca.patch
+Patch2:		%{name}-flac.patch
 URL:		http://gstreamer.freedesktop.org/
 BuildRequires:	autoconf >= 2.59-9
 BuildRequires:	automake >= 1.5
@@ -35,6 +36,9 @@ BuildRequires:	gtk+2-devel >= 2:2.10.1
 BuildRequires:	liboil-devel >= 0.3.6
 BuildRequires:	libtool >= 1.4
 BuildRequires:	pkgconfig >= 1:0.9.0
+BuildRequires:	python >= 2.1
+BuildRequires:	python-PyXML
+BuildRequires:	rpmbuild(macros) >= 1.198
 ##
 ## plugins
 ##
@@ -43,7 +47,7 @@ BuildRequires:	pkgconfig >= 1:0.9.0
 %{?with_cairo:BuildRequires:	cairo-devel >= 1.2.0}
 BuildRequires:	dbus-devel >= 0.91
 BuildRequires:	esound-devel >= 0.2.12
-BuildRequires:	flac-devel >= 1.1.2
+BuildRequires:	flac-devel >= 1.1.3
 BuildRequires:	hal-devel >= 0.5.7.1
 %{?with_ladspa:BuildRequires:	ladspa-devel >= 1.12}
 BuildRequires:	libavc1394-devel
@@ -58,8 +62,6 @@ BuildRequires:	libshout-devel >= 2.0
 # for taglib
 BuildRequires:	libstdc++-devel
 BuildRequires:	libxml2-devel >= 1:2.6.26
-BuildRequires:	python-PyXML
-BuildRequires:	rpmbuild(macros) >= 1.198
 %{?with_speex:BuildRequires:	speex-devel >= 1:1.1.6}
 BuildRequires:	taglib-devel >= 1.4
 BuildRequires:	xorg-lib-libX11-devel
@@ -400,6 +402,7 @@ Xlib.
 %setup -q -n %{gstname}-%{version}
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 
 %build
 %{__libtoolize}
@@ -413,7 +416,7 @@ Xlib.
 	%{!?with_caca:--disable-libcaca} \
 	%{!?with_cairo:--disable-cairo} \
 	%{!?with_cdio:--disable-cdio} \
-	%{!?with_ladspa:--disable-ladspa} \
+	%{?with_ladspa:--enable-ladspa} \
 	%{!?with_speex:--disable-speex} \
 	--disable-static \
 	--enable-gtk-doc \
@@ -448,6 +451,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{gstlibdir}/libgstalpha.so
 %attr(755,root,root) %{gstlibdir}/libgstannodex.so
 %attr(755,root,root) %{gstlibdir}/libgstapetag.so
+%attr(755,root,root) %{gstlibdir}/libgstaudiofx.so
 %attr(755,root,root) %{gstlibdir}/libgstautodetect.so
 %attr(755,root,root) %{gstlibdir}/libgstavi.so
 %attr(755,root,root) %{gstlibdir}/libgstdebug.so
@@ -528,6 +532,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %{gstlibdir}/libgsthalelements.so
 
+# disabled in ext/Makefile.am
 #%if %{with ladspa}
 #%files -n gstreamer-ladspa
 #%defattr(644,root,root,755)
