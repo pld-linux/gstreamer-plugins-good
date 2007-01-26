@@ -17,7 +17,7 @@ Summary:	Good GStreamer Streaming-media framework plugins
 Summary(pl):	Dobre wtyczki do ¶rodowiska obróbki strumieni GStreamer
 Name:		gstreamer-plugins-good
 Version:	0.10.3
-Release:	1
+Release:	2
 License:	LGPL
 Group:		Libraries
 Source0:	http://gstreamer.freedesktop.org/src/gst-plugins-good/%{gstname}-%{version}.tar.bz2
