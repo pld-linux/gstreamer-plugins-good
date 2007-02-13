@@ -14,7 +14,7 @@
 %define		gstpb_req_ver	0.10.10.1
 #
 Summary:	Good GStreamer Streaming-media framework plugins
-Summary(pl.UTF-8):   Dobre wtyczki do środowiska obróbki strumieni GStreamer
+Summary(pl.UTF-8):	Dobre wtyczki do środowiska obróbki strumieni GStreamer
 Name:		gstreamer-plugins-good
 Version:	0.10.5
 Release:	1
@@ -102,7 +102,7 @@ nowych typów danych lub możliwości obróbki.
 
 %package -n gstreamer-GConf
 Summary:	GStreamer GConf schemas
-Summary(pl.UTF-8):   Schematy GConf GStreamera
+Summary(pl.UTF-8):	Schematy GConf GStreamera
 Group:		Libraries
 Requires(post,preun):	GConf2
 Requires:	gstreamer >= %{gst_req_ver}
@@ -122,7 +122,7 @@ dla wszystkich aplikacji GNOME korzystających z GStreamera
 
 %package -n gstreamer-videosink-aa
 Summary:	GStreamer plugin for Ascii-art output
-Summary(pl.UTF-8):   Wtyczka wyjścia obrazu Ascii-art do GStreamera
+Summary(pl.UTF-8):	Wtyczka wyjścia obrazu Ascii-art do GStreamera
 Group:		Libraries
 Requires:	gstreamer >= %{gst_req_ver}
 Provides:	gstreamer-videosink = %{version}
@@ -136,7 +136,7 @@ Wtyczka wyjścia obrazu Ascii-art używająca biblioteki aalib.
 
 %package -n gstreamer-audio-effects-good
 Summary:	Good GStreamer audio effects plugins
-Summary(pl.UTF-8):   Dobre wtyczki efektów dźwiękowych do GStreamera
+Summary(pl.UTF-8):	Dobre wtyczki efektów dźwiękowych do GStreamera
 Group:		Libraries
 Requires:	gstreamer-plugins-base >= %{gstpb_req_ver}
 Obsoletes:	gstreamer-audio-effects
@@ -149,7 +149,7 @@ Dobre wtyczki efektów dźwiękowych do GStreamera.
 
 %package -n gstreamer-audio-formats
 Summary:	GStreamer audio format plugins
-Summary(pl.UTF-8):   Wtyczki formatów dźwięku
+Summary(pl.UTF-8):	Wtyczki formatów dźwięku
 Group:		Libraries
 #Requires:	gstreamer-plugins-base >= %{gstpb_req_ver}
 # for locales in wavparse module
@@ -163,7 +163,7 @@ Wtyczka do odwarzania dźwięku w formacie au, WAV, mod oraz MP3.
 
 %package -n gstreamer-cairo
 Summary:	GStreamer cairo plugin
-Summary(pl.UTF-8):   Wtyczka cairo do GStreamera
+Summary(pl.UTF-8):	Wtyczka cairo do GStreamera
 Group:		Libraries
 Requires:	gstreamer >= %{gst_req_ver}
 
@@ -175,7 +175,7 @@ Wtyczka cairo do GStreamera.
 
 %package -n gstreamer-cdio
 Summary:	GStreamer plugin for CD audio input using libcdio
-Summary(pl.UTF-8):   Wtyczka do GStreamera odtwarzająca płyty CD-Audio przy użyciu libcdio
+Summary(pl.UTF-8):	Wtyczka do GStreamera odtwarzająca płyty CD-Audio przy użyciu libcdio
 Group:		Libraries
 Requires:	gstreamer-plugins-base >= %{gstpb_req_ver}
 Requires:	libcdio >= 0.71
@@ -189,7 +189,7 @@ libcdio.
 
 %package -n gstreamer-dv
 Summary:	GStreamer dv plugin
-Summary(pl.UTF-8):   Wtyczka dv do GStreamera
+Summary(pl.UTF-8):	Wtyczka dv do GStreamera
 Group:		Libraries
 Requires:	gstreamer-plugins-base >= %{gstpb_req_ver}
 
@@ -201,7 +201,7 @@ Wtyczka do GStreamera obsługująca cyfrowy obraz.
 
 %package -n gstreamer-audiosink-esd
 Summary:	GStreamer plugin for ESD sound output
-Summary(pl.UTF-8):   Wtyczka wyjścia dźwięku ESD do GStreamera
+Summary(pl.UTF-8):	Wtyczka wyjścia dźwięku ESD do GStreamera
 Group:		Libraries
 Requires:	gstreamer-plugins-base >= %{gstpb_req_ver}
 Provides:	gstreamer-audiosink = %{version}
@@ -215,7 +215,7 @@ Wtyczka wyjścia dźwięku ESD (esound) dla GStreamera.
 
 %package -n gstreamer-flac
 Summary:	GStreamer plugin for FLAC lossless audio format
-Summary(pl.UTF-8):   Wtyczka do GStreamera obsługująca bezstratny format dźwięku FLAC
+Summary(pl.UTF-8):	Wtyczka do GStreamera obsługująca bezstratny format dźwięku FLAC
 Group:		Libraries
 Requires:	gstreamer-plugins-base >= %{gstpb_req_ver}
 
@@ -227,7 +227,7 @@ Wtyczka obsługująca wolnodostępny, bezstratny format dźwięku FLAC.
 
 %package -n gstreamer-gdkpixbuf
 Summary:	GStreamer images input plugin
-Summary(pl.UTF-8):   Wtyczka do GStreamera wczytująca obrazki
+Summary(pl.UTF-8):	Wtyczka do GStreamera wczytująca obrazki
 Group:		Libraries
 Requires:	gstreamer >= %{gst_req_ver}
 
@@ -240,7 +240,7 @@ gdkpixbuf.
 
 %package -n gstreamer-hal
 Summary:	GStreamer plugin to wrap the GStreamer/HAL audio input/output devices
-Summary(pl.UTF-8):   Wtyczka GStreamera spinająca urządzenia wejścia/wyjścia dźwięku z HAL-em
+Summary(pl.UTF-8):	Wtyczka GStreamera spinająca urządzenia wejścia/wyjścia dźwięku z HAL-em
 Group:		Libraries
 Requires:	gstreamer >= %{gst_req_ver}
 
@@ -253,7 +253,7 @@ GStreamerem a HAL-em.
 
 %package -n gstreamer-ladspa
 Summary:	GStreamer wrapper for LADSPA plugins
-Summary(pl.UTF-8):   Wrapper do wtyczek LADSPA dla GStreamera
+Summary(pl.UTF-8):	Wrapper do wtyczek LADSPA dla GStreamera
 Group:		Libraries
 Requires:	gstreamer-plugins-base >= %{gstpb_req_ver}
 
@@ -266,7 +266,7 @@ GStreamera.
 
 %package -n gstreamer-videosink-libcaca
 Summary:	GStreamer plugin for libcaca Ascii-art output
-Summary(pl.UTF-8):   Wtyczka libcaca do GStreamera
+Summary(pl.UTF-8):	Wtyczka libcaca do GStreamera
 Group:		Libraries
 Requires:	gstreamer-plugins-base >= %{gstpb_req_ver}
 Provides:	gstreamer-videosink = %{version}
@@ -279,7 +279,7 @@ Wtyczka libcaca do GStreamera.
 
 %package -n gstreamer-libpng
 Summary:	GStreamer plugin to encode png images
-Summary(pl.UTF-8):   Wtyczka GStreamera kodująca pliki png
+Summary(pl.UTF-8):	Wtyczka GStreamera kodująca pliki png
 Group:		Libraries
 #Requires:	gstreamer >= %{gst_req_ver}
 # for locales
@@ -294,7 +294,7 @@ Wtyczka kodująca pliki png.
 
 %package -n gstreamer-audiosink-oss
 Summary:	GStreamer plugins for input and output using OSS
-Summary(pl.UTF-8):   Wtyczki wejścia i wyjścia dźwięku OSS do GStreamera
+Summary(pl.UTF-8):	Wtyczki wejścia i wyjścia dźwięku OSS do GStreamera
 Group:		Libraries
 #Requires:	gstreamer-plugins-base >= %{gstpb_req_ver}
 # for locales
@@ -313,7 +313,7 @@ od OpenSound.
 
 %package -n gstreamer-raw1394
 Summary:	GStreamer raw1394 Firewire plugin
-Summary(pl.UTF-8):   Wtyczka FireWire dla GStreamera
+Summary(pl.UTF-8):	Wtyczka FireWire dla GStreamera
 Group:		Libraries
 Requires:	gstreamer >= %{gst_req_ver}
 
@@ -325,7 +325,7 @@ Wtyczka dająca dostęp do cyfrowego obrazu przy użyciu raw1394.
 
 %package -n gstreamer-shout2
 Summary:	GStreamer plugin for communicating with Shoutcast servers
-Summary(pl.UTF-8):   Wtyczka do GStreamera umożliwiająca komunikację z serwerami Shoutcast
+Summary(pl.UTF-8):	Wtyczka do GStreamera umożliwiająca komunikację z serwerami Shoutcast
 Group:		Libraries
 Requires:	gstreamer >= %{gst_req_ver}
 
@@ -337,7 +337,7 @@ Wtyczka do GStreamera umożliwiająca komunikację z serwerami Shoutcast.
 
 %package -n gstreamer-speex
 Summary:	GStreamer speex codec decoder/encoder plugin
-Summary(pl.UTF-8):   Wtyczka do GStreamera obsługująca kodek Speex
+Summary(pl.UTF-8):	Wtyczka do GStreamera obsługująca kodek Speex
 Group:		Libraries
 #Requires:	gstreamer-plugins-base >= %{gstpb_req_ver}
 Requires:	speex >= 1:1.1.6
@@ -350,7 +350,7 @@ Wtyczka do GStreamera obsługująca kodek Speex.
 
 %package -n gstreamer-taglib
 Summary:	GStreamer tag writing plugin based on taglib
-Summary(pl.UTF-8):   Wtyczka GStreamera zapisująca znaczniki oparta na bibliotece taglib
+Summary(pl.UTF-8):	Wtyczka GStreamera zapisująca znaczniki oparta na bibliotece taglib
 Group:		Libraries
 Requires:	gstreamer >= %{gst_req_ver}
 
@@ -362,7 +362,7 @@ Wtyczka GStreamera zapisująca znaczniki oparta na bibliotece taglib.
 
 %package -n gstreamer-video-effects
 Summary:	GStreamer video effects plugins
-Summary(pl.UTF-8):   Wtyczki efektów wideo do GStreamera
+Summary(pl.UTF-8):	Wtyczki efektów wideo do GStreamera
 Group:		Libraries
 # for locales in jpeg module
 Requires:	%{name} = %{version}-%{release}
@@ -375,7 +375,7 @@ Wtyczki efektów wideo do GStreamera.
 
 %package -n gstreamer-visualisation
 Summary:	GStreamer visualisations plugins
-Summary(pl.UTF-8):   Wtyczki wizualizacji do GStreamera
+Summary(pl.UTF-8):	Wtyczki wizualizacji do GStreamera
 Group:		Libraries
 Requires:	gstreamer >= %{gst_req_ver}
 
@@ -389,7 +389,7 @@ smoothwave, spectrum, goom, chart, monoscope i synaesthesia.
 
 %package -n gstreamer-ximagesrc
 Summary:	GStreamer X11 video input plugin using standard Xlib calls
-Summary(pl.UTF-8):   Wtyczka wejścia obrazu X11 GStreamera używająca standardowych wywołań Xlib
+Summary(pl.UTF-8):	Wtyczka wejścia obrazu X11 GStreamera używająca standardowych wywołań Xlib
 Group:		Libraries
 Requires:	%{name} = %{version}-%{release}
 
