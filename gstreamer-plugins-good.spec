@@ -5,59 +5,63 @@
 %bcond_without	cairo		# don't build cairo plugin
 %bcond_without	cdio		# don't build cdio plugin
 %bcond_without	gconf		# don't build GConf plugin
-%bcond_without	ladspa		# don't build ladspa plugin
+%bcond_with	ladspa		# build ladspa plugin [currently built in plugins-bad]
 %bcond_without	speex		# don't build speex plugin
 #
 %define		gstname		gst-plugins-good
 %define		gst_major_ver	0.10
-%define		gst_req_ver	0.10.4.1
-%define		gstpb_req_ver	0.10.5.1
+%define		gst_req_ver	0.10.11
+%define		gstpb_req_ver	0.10.11
 #
 Summary:	Good GStreamer Streaming-media framework plugins
 Summary(pl):	Dobre wtyczki do ¶rodowiska obróbki strumieni GStreamer
 Name:		gstreamer-plugins-good
-Version:	0.10.3
-Release:	2
+Version:	0.10.5
+Release:	1
 License:	LGPL
 Group:		Libraries
 Source0:	http://gstreamer.freedesktop.org/src/gst-plugins-good/%{gstname}-%{version}.tar.bz2
-# Source0-md5:	a58bb825bd4b22412764f2a8d2f98b1c
+# Source0-md5:	c45fc9ace9feb4d3df32da0a6d262d84
 Patch0:		%{name}-bashish.patch
 Patch1:		%{name}-libcaca.patch
+Patch2:		%{name}-flac.patch
 URL:		http://gstreamer.freedesktop.org/
 BuildRequires:	autoconf >= 2.59-9
 BuildRequires:	automake >= 1.5
-BuildRequires:	glib2-devel >= 1:2.6.0
+BuildRequires:	glib2-devel >= 1:2.10.3
 BuildRequires:	gstreamer-devel >= %{gst_req_ver}
 BuildRequires:	gstreamer-plugins-base-devel >= %{gstpb_req_ver}
-BuildRequires:	gtk-doc >= 1.3
+BuildRequires:	gtk-doc >= 1.7
 BuildRequires:	gtk+2-devel >= 2:2.2.0
-BuildRequires:	liboil-devel >= 1:0.3.6
+BuildRequires:	liboil-devel >= 1:0.3.8
 BuildRequires:	libtool >= 1.4
 BuildRequires:	pkgconfig >= 1:0.9.0
+BuildRequires:	python >= 2.1
+BuildRequires:	python-PyXML
+BuildRequires:	rpmbuild(macros) >= 1.198
 ##
 ## plugins
 ##
-%{?with_gconf:BuildRequires:	GConf2-devel >= 2.0}
+%{?with_gconf:BuildRequires:	GConf2-devel >= 2.14.0}
 %{?with_aalib:BuildRequires:	aalib-devel >= 0.11.0}
 %{?with_cairo:BuildRequires:	cairo-devel >= 1.0.0}
-BuildRequires:	dbus-devel >= 0.32
+BuildRequires:	dbus-devel >= 0.62
 BuildRequires:	esound-devel >= 0.2.12
-BuildRequires:	flac-devel >= 1.1.2
-BuildRequires:	hal-devel >= 0.5.6
+BuildRequires:	flac-devel >= 1.1.3
+BuildRequires:	hal-devel >= 0.5.7.1
 %{?with_ladspa:BuildRequires:	ladspa-devel >= 1.12}
 BuildRequires:	libavc1394-devel
 %{?with_caca:BuildRequires:	libcaca-devel}
 %{?with_cdio:BuildRequires:	libcdio-devel >= 0.71}
 BuildRequires:	libdv-devel >= 0.104
+BuildRequires:	libiec61883-devel >= 1.0.0
 BuildRequires:	libjpeg-devel
 BuildRequires:	libpng-devel >= 1.2.0
-BuildRequires:	libraw1394-devel
+BuildRequires:	libraw1394-devel >= 1.2.1
 BuildRequires:	libshout-devel >= 2.0
 # for taglib
 BuildRequires:	libstdc++-devel
-BuildRequires:	libxml2-devel >= 2.4.9
-BuildRequires:	rpmbuild(macros) >= 1.198
+BuildRequires:	libxml2-devel >= 1:2.6.26
 %{?with_speex:BuildRequires:	speex-devel >= 1:1.1.6}
 BuildRequires:	taglib-devel >= 1.4
 BuildRequires:	zlib-devel
@@ -70,6 +74,8 @@ Obsoletes:	gstreamer-mixer
 Obsoletes:	gstreamer-navigation
 Obsoletes:	gstreamer-rtp
 Obsoletes:	gstreamer-udp
+Obsoletes:	gstreamer-v4l2
+Conflicts:	gstreamer-plugins-bad < 0.10.4
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		gstlibdir 	%{_libdir}/gstreamer-%{gst_major_ver}
@@ -394,6 +400,7 @@ Xlib.
 %setup -q -n %{gstname}-%{version}
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 
 %build
 %{__libtoolize}
@@ -407,7 +414,8 @@ Xlib.
 	%{!?with_caca:--disable-libcaca} \
 	%{!?with_cairo:--disable-cairo} \
 	%{!?with_cdio:--disable-cdio} \
-	%{!?with_ladspa:--disable-ladspa} \
+	--enable-experimental \
+	%{?with_ladspa:--enable-ladspa} \
 	%{!?with_speex:--disable-speex} \
 	--disable-static \
 	--enable-gtk-doc \
@@ -442,6 +450,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{gstlibdir}/libgstalpha.so
 %attr(755,root,root) %{gstlibdir}/libgstannodex.so
 %attr(755,root,root) %{gstlibdir}/libgstapetag.so
+%attr(755,root,root) %{gstlibdir}/libgstaudiofx.so
 %attr(755,root,root) %{gstlibdir}/libgstautodetect.so
 %attr(755,root,root) %{gstlibdir}/libgstavi.so
 %attr(755,root,root) %{gstlibdir}/libgstdebug.so
@@ -455,6 +464,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{gstlibdir}/libgstrtp.so
 %attr(755,root,root) %{gstlibdir}/libgstrtsp.so
 %attr(755,root,root) %{gstlibdir}/libgstudp.so
+%attr(755,root,root) %{gstlibdir}/libgstvideo4linux2.so
 %attr(755,root,root) %{gstlibdir}/libgstvideobalance.so
 %attr(755,root,root) %{gstlibdir}/libgstvideobox.so
 %attr(755,root,root) %{gstlibdir}/libgstvideomixer.so
@@ -522,6 +532,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %{gstlibdir}/libgsthalelements.so
 
+# disabled in ext/Makefile.am, currently built in plugins-bad
 #%if %{with ladspa}
 #%files -n gstreamer-ladspa
 #%defattr(644,root,root,755)
