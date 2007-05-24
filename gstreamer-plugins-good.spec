@@ -1,6 +1,7 @@
 #
 # Conditional build:
 %bcond_without	aalib		# don't build aa videosink plugin
+%bcond_without	apidocs		# disable gtk-doc
 %bcond_without	caca		# don't build caca videosink plugin
 %bcond_without	cairo		# don't build cairo plugin
 %bcond_without	cdio		# don't build cdio plugin
@@ -17,7 +18,7 @@ Summary:	Good GStreamer Streaming-media framework plugins
 Summary(pl.UTF-8):	Dobre wtyczki do środowiska obróbki strumieni GStreamer
 Name:		gstreamer-plugins-good
 Version:	0.10.5
-Release:	1
+Release:	2
 License:	LGPL
 Group:		Libraries
 Source0:	http://gstreamer.freedesktop.org/src/gst-plugins-good/%{gstname}-%{version}.tar.bz2
@@ -31,7 +32,7 @@ BuildRequires:	automake >= 1.5
 BuildRequires:	glib2-devel >= 1:2.12.1
 BuildRequires:	gstreamer-devel >= %{gst_req_ver}
 BuildRequires:	gstreamer-plugins-base-devel >= %{gstpb_req_ver}
-BuildRequires:	gtk-doc >= 1.7
+%{?with_apidocs:BuildRequires:	gtk-doc >= 1.7}
 BuildRequires:	gtk+2-devel >= 2:2.10.1
 BuildRequires:	liboil-devel >= 0.3.6
 BuildRequires:	libtool >= 1.4
@@ -99,6 +100,19 @@ tej biblioteki mogą robić wszystko od przetwarzania dźwięku w czasie
 rzeczywistym, do odtwarzania filmów i czegokolwiek innego związego z
 mediami. Architektura bazująca na wtyczkach pozwala na łatwe dodawanie
 nowych typów danych lub możliwości obróbki.
+
+%package apidocs
+Summary:	Good GStreamer streaming-media framework plugins API documentation
+Summary(pl.UTF-8):	Dokumentacja API dobrych wtyczek środowiska obróbki strumieni GStreamer
+Group:		Documentation
+Requires:	gtk-doc-common
+
+%description apidocs
+Good GStreamer streaming-media framework plugins API documentation.
+
+%description apidocs -l pl.UTF-8
+Dokumentacja API dobrych wtyczek środowiska obróbki strumieni
+GStreamer.
 
 %package -n gstreamer-GConf
 Summary:	GStreamer GConf schemas
@@ -422,7 +436,7 @@ Xlib.
 	%{?with_ladspa:--enable-ladspa} \
 	%{!?with_speex:--disable-speex} \
 	--disable-static \
-	--enable-gtk-doc \
+	--%{?with_apidocs:en}%{!?with_apidocs:dis}able-gtk-doc \
 	--with-html-dir=%{_gtkdocdir}
 
 %{__make}
@@ -472,7 +486,12 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{gstlibdir}/libgstvideobalance.so
 %attr(755,root,root) %{gstlibdir}/libgstvideobox.so
 %attr(755,root,root) %{gstlibdir}/libgstvideomixer.so
+
+%if %{with apidocs}
+%files apidocs
+%defattr(644,root,root,755)
 %{_gtkdocdir}/gst-plugins-good-plugins-*
+%endif
 
 %if %{with gconf}
 %files -n gstreamer-GConf
