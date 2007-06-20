@@ -8,6 +8,7 @@
 %bcond_without	gconf		# don't build GConf plugin
 %bcond_with	ladspa		# build ladspa plugin [currently built in plugins-bad]
 %bcond_without	speex		# don't build speex plugin
+%bcond_without	wavpack		# don't build wavpack plugin
 #
 %define		gstname		gst-plugins-good
 %define		gst_major_ver	0.10
@@ -17,23 +18,22 @@
 Summary:	Good GStreamer Streaming-media framework plugins
 Summary(pl.UTF-8):	Dobre wtyczki do środowiska obróbki strumieni GStreamer
 Name:		gstreamer-plugins-good
-Version:	0.10.5
-Release:	2
+Version:	0.10.6
+Release:	1
 License:	LGPL
 Group:		Libraries
 Source0:	http://gstreamer.freedesktop.org/src/gst-plugins-good/%{gstname}-%{version}.tar.bz2
-# Source0-md5:	c45fc9ace9feb4d3df32da0a6d262d84
+# Source0-md5:	25f111360c2930705b91b4fcf93ae5c5
 Patch0:		%{name}-bashish.patch
 Patch1:		%{name}-libcaca.patch
-Patch2:		%{name}-flac.patch
 URL:		http://gstreamer.freedesktop.org/
 BuildRequires:	autoconf >= 2.59-9
 BuildRequires:	automake >= 1.5
 BuildRequires:	glib2-devel >= 1:2.12.1
 BuildRequires:	gstreamer-devel >= %{gst_req_ver}
 BuildRequires:	gstreamer-plugins-base-devel >= %{gstpb_req_ver}
-%{?with_apidocs:BuildRequires:	gtk-doc >= 1.7}
 BuildRequires:	gtk+2-devel >= 2:2.10.1
+%{?with_apidocs:BuildRequires:	gtk-doc >= 1.7}
 BuildRequires:	liboil-devel >= 0.3.6
 BuildRequires:	libtool >= 1.4
 BuildRequires:	pkgconfig >= 1:0.9.0
@@ -65,6 +65,7 @@ BuildRequires:	libstdc++-devel
 BuildRequires:	libxml2-devel >= 1:2.6.26
 %{?with_speex:BuildRequires:	speex-devel >= 1:1.1.6}
 BuildRequires:	taglib-devel >= 1.4
+%{?with_wavpack:BuildRequires:	wavpack-devel >= 4.40.0}
 BuildRequires:	xorg-lib-libX11-devel
 BuildRequires:	xorg-lib-libXdamage-devel
 BuildRequires:	xorg-lib-libXext-devel
@@ -130,9 +131,7 @@ used by all GStreamer-enabled GNOME applications.
 Schematy GConf dla GStreamera. Zestaw ten ustawia wartości domyślne
 dla wszystkich aplikacji GNOME korzystających z GStreamera
 
-##
-## Plugins
-##
+## ## Plugins ##
 
 %package -n gstreamer-videosink-aa
 Summary:	GStreamer plugin for Ascii-art output
@@ -170,7 +169,8 @@ Group:		Libraries
 Requires:	%{name} = %{version}-%{release}
 
 %description -n gstreamer-audio-formats
-Plugin for playback of WAV, au and mod audio files as well as MP3 type.
+Plugin for playback of WAV, au and mod audio files as well as MP3
+type.
 
 %description -n gstreamer-audio-formats -l pl.UTF-8
 Wtyczka do odwarzania dźwięku w formacie au, WAV, mod oraz MP3.
@@ -414,11 +414,22 @@ GStreamer X11 video input plugin using standard Xlib calls.
 Wtyczka wejścia obrazu X11 GStreamera używająca standardowych wywołań
 Xlib.
 
+%package -n gstreamer-wavpack
+Summary:	GStreamer plugin for Wavpack lossless audio format
+Summary(pl.UTF-8):	Wtyczka do GStreamera obsługująca bezstratny format dźwięku Wavpack
+Group:		Libraries
+Requires:	gstreamer >= %{gst_req_ver}
+
+%description -n gstreamer-wavpack
+Plugin for lossless Wavpack audio format.
+
+%description -n gstreamer-wavpack -l pl.UTF-8
+Wtyczka obsługująca bezstratny format dźwięku Wavpack.
+
 %prep
 %setup -q -n %{gstname}-%{version}
 %patch0 -p1
 %patch1 -p1
-%patch2 -p1
 
 %build
 %{__libtoolize}
@@ -435,6 +446,7 @@ Xlib.
 	--enable-experimental \
 	%{?with_ladspa:--enable-ladspa} \
 	%{!?with_speex:--disable-speex} \
+	%{!?with_wavpack:--disable-wavpack} \
 	--disable-static \
 	--%{?with_apidocs:en}%{!?with_apidocs:dis}able-gtk-doc \
 	--with-html-dir=%{_gtkdocdir}
@@ -463,7 +475,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -f %{gstname}-%{gst_major_ver}.lang
 %defattr(644,root,root,755)
-%doc AUTHORS ChangeLog NEWS README RELEASE 
+%doc AUTHORS ChangeLog NEWS README RELEASE
 %attr(755,root,root) %{gstlibdir}/libgstalphacolor.so
 %attr(755,root,root) %{gstlibdir}/libgstalpha.so
 %attr(755,root,root) %{gstlibdir}/libgstannodex.so
@@ -474,17 +486,21 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{gstlibdir}/libgstdebug.so
 %attr(755,root,root) %{gstlibdir}/libgstefence.so
 %attr(755,root,root) %{gstlibdir}/libgstflxdec.so
+%attr(755,root,root) %{gstlibdir}/libgstgamma.so
 %attr(755,root,root) %{gstlibdir}/libgsticydemux.so
 %attr(755,root,root) %{gstlibdir}/libgstid3demux.so
 %attr(755,root,root) %{gstlibdir}/libgstmatroska.so
+%attr(755,root,root) %{gstlibdir}/libgstmonoscope.so
 %attr(755,root,root) %{gstlibdir}/libgstmultipart.so
 %attr(755,root,root) %{gstlibdir}/libgstnavigationtest.so
+%attr(755,root,root) %{gstlibdir}/libgstqtdemux.so
 %attr(755,root,root) %{gstlibdir}/libgstrtp.so
 %attr(755,root,root) %{gstlibdir}/libgstrtsp.so
 %attr(755,root,root) %{gstlibdir}/libgstudp.so
 %attr(755,root,root) %{gstlibdir}/libgstvideo4linux2.so
 %attr(755,root,root) %{gstlibdir}/libgstvideobalance.so
 %attr(755,root,root) %{gstlibdir}/libgstvideobox.so
+%attr(755,root,root) %{gstlibdir}/libgstvideocrop.so
 %attr(755,root,root) %{gstlibdir}/libgstvideomixer.so
 
 %if %{with apidocs}
@@ -604,6 +620,12 @@ rm -rf $RPM_BUILD_ROOT
 %files -n gstreamer-visualisation
 %defattr(644,root,root,755)
 %attr(755,root,root) %{gstlibdir}/libgstgoom.so
+
+%if %{with wavpack}
+%files -n gstreamer-wavpack
+%defattr(644,root,root,755)
+%attr(755,root,root) %{gstlibdir}/libgstwavpack.so
+%endif
 
 %files -n gstreamer-ximagesrc
 %defattr(644,root,root,755)
