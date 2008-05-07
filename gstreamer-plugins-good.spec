@@ -7,6 +7,7 @@
 %bcond_without	cdio		# don't build cdio plugin
 %bcond_without	gconf		# don't build GConf plugin
 %bcond_with	ladspa		# build ladspa plugin [currently built in plugins-bad]
+%bcond_without	soup		# don't build libsoup 2.4 http source plugin
 %bcond_without	speex		# don't build speex plugin
 %bcond_without	wavpack		# don't build wavpack plugin
 #
@@ -18,12 +19,12 @@
 Summary:	Good GStreamer Streaming-media framework plugins
 Summary(pl.UTF-8):	Dobre wtyczki do środowiska obróbki strumieni GStreamer
 Name:		gstreamer-plugins-good
-Version:	0.10.7
+Version:	0.10.8
 Release:	1
 License:	LGPL
 Group:		Libraries
 Source0:	http://gstreamer.freedesktop.org/src/gst-plugins-good/%{gstname}-%{version}.tar.bz2
-# Source0-md5:	e02d729b22451f75414a27456ae5c16a
+# Source0-md5:	32414def093652d8281f3708ccaf086b
 Patch0:		%{name}-bashish.patch
 Patch1:		%{name}-libcaca.patch
 URL:		http://gstreamer.freedesktop.org/
@@ -60,6 +61,7 @@ BuildRequires:	libjpeg-devel
 BuildRequires:	libpng-devel >= 1.2.0
 BuildRequires:	libraw1394-devel >= 1.2.1
 BuildRequires:	libshout-devel >= 2.0
+%{?with_soup:BuildRequires:	libsoup-devel >= 2.4.0}
 # for taglib
 BuildRequires:	libstdc++-devel
 BuildRequires:	libxml2-devel >= 1:2.6.26
@@ -349,6 +351,19 @@ GStreamer plugin for communicating with Shoutcast servers.
 %description -n gstreamer-shout2 -l pl.UTF-8
 Wtyczka do GStreamera umożliwiająca komunikację z serwerami Shoutcast.
 
+%package -n gstreamer-soup
+Summary:	GStreamer Soup plugin
+Summary(pl.UTF-8):	Wtyczka biblioteki Soup dla GStreamera
+Group:		Libraries
+Requires:	gstreamer-plugins-base >= %{gst_req_ver}
+
+%description -n gstreamer-soup
+GStreamer Plugin for downloading files with Soup library.
+
+%description -n gstreamer-soup -l pl.UTF-8
+Wtyczka GStreamera umożliwiająca ściąganie plików za pomocą biblioteki
+Soup.
+
 %package -n gstreamer-speex
 Summary:	GStreamer speex codec decoder/encoder plugin
 Summary(pl.UTF-8):	Wtyczka do GStreamera obsługująca kodek Speex
@@ -445,6 +460,7 @@ Wtyczka obsługująca bezstratny format dźwięku Wavpack.
 	%{!?with_cdio:--disable-cdio} \
 	--enable-experimental \
 	%{?with_ladspa:--enable-ladspa} \
+	%{!?with_soup:--disable-soup} \
 	%{!?with_speex:--disable-speex} \
 	%{!?with_wavpack:--disable-wavpack} \
 	--disable-static \
@@ -602,6 +618,12 @@ rm -rf $RPM_BUILD_ROOT
 %files -n gstreamer-shout2
 %defattr(644,root,root,755)
 %attr(755,root,root) %{gstlibdir}/libgstshout2.so
+
+%if %{with soup}
+%files -n gstreamer-soup
+%defattr(644,root,root,755)
+%attr(755,root,root) %{gstlibdir}/libgstsouphttpsrc.so
+%endif
 
 %if %{with speex}
 %files -n gstreamer-speex
