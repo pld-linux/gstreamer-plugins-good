@@ -410,11 +410,11 @@ Requires:	gstreamer >= %{gst_req_ver}
 
 %description -n gstreamer-visualisation
 Various plugins for visual effects to use with audio. Included are
-smoothwave, spectrum, goom, chart, monoscope and synaesthesia.
+monoscope, spectrum, goom (2k4) and goom2k1.
 
 %description -n gstreamer-visualisation -l pl.UTF-8
 Różne wtyczki efektów wizualnych do używania z dźwiękiem. Załączone:
-smoothwave, spectrum, goom, chart, monoscope i synaesthesia.
+monoscope, spectrum, goom (2k4) i goom2k1.
 
 %package -n gstreamer-ximagesrc
 Summary:	GStreamer X11 video input plugin using standard Xlib calls
@@ -507,14 +507,12 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{gstlibdir}/libgsticydemux.so
 %attr(755,root,root) %{gstlibdir}/libgstid3demux.so
 %attr(755,root,root) %{gstlibdir}/libgstmatroska.so
-%attr(755,root,root) %{gstlibdir}/libgstmonoscope.so
 %attr(755,root,root) %{gstlibdir}/libgstmultifile.so
 %attr(755,root,root) %{gstlibdir}/libgstmultipart.so
 %attr(755,root,root) %{gstlibdir}/libgstnavigationtest.so
 %attr(755,root,root) %{gstlibdir}/libgstqtdemux.so
 %attr(755,root,root) %{gstlibdir}/libgstrtp.so
 %attr(755,root,root) %{gstlibdir}/libgstrtsp.so
-%attr(755,root,root) %{gstlibdir}/libgstspectrum.so
 %attr(755,root,root) %{gstlibdir}/libgstudp.so
 %attr(755,root,root) %{gstlibdir}/libgstvideo4linux2.so
 %attr(755,root,root) %{gstlibdir}/libgstvideobalance.so
@@ -548,9 +546,9 @@ rm -rf $RPM_BUILD_ROOT
 %files -n gstreamer-audio-effects-good
 %defattr(644,root,root,755)
 %attr(755,root,root) %{gstlibdir}/libgstalaw.so
+%attr(755,root,root) %{gstlibdir}/libgstcutter.so
 %attr(755,root,root) %{gstlibdir}/libgstlevel.so
 %attr(755,root,root) %{gstlibdir}/libgstmulaw.so
-%attr(755,root,root) %{gstlibdir}/libgstcutter.so
 
 %files -n gstreamer-audio-formats
 %defattr(644,root,root,755)
@@ -645,6 +643,9 @@ rm -rf $RPM_BUILD_ROOT
 %files -n gstreamer-visualisation
 %defattr(644,root,root,755)
 %attr(755,root,root) %{gstlibdir}/libgstgoom.so
+%attr(755,root,root) %{gstlibdir}/libgstgoom2k1.so
+%attr(755,root,root) %{gstlibdir}/libgstmonoscope.so
+%attr(755,root,root) %{gstlibdir}/libgstspectrum.so
 
 %if %{with wavpack}
 %files -n gstreamer-wavpack
