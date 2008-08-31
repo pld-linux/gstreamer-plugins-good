@@ -4,7 +4,6 @@
 %bcond_without	apidocs		# disable gtk-doc
 %bcond_without	caca		# don't build caca videosink plugin
 %bcond_without	cairo		# don't build cairo plugin
-%bcond_without	cdio		# don't build cdio plugin
 %bcond_without	gconf		# don't build GConf plugin
 %bcond_with	ladspa		# build ladspa plugin [currently built in plugins-bad]
 %bcond_without	soup		# don't build libsoup 2.4 http source plugin
@@ -19,12 +18,12 @@
 Summary:	Good GStreamer Streaming-media framework plugins
 Summary(pl.UTF-8):	Dobre wtyczki do środowiska obróbki strumieni GStreamer
 Name:		gstreamer-plugins-good
-Version:	0.10.8
-Release:	2
-License:	LGPL
+Version:	0.10.10
+Release:	1
+License:	LGPL v2+
 Group:		Libraries
 Source0:	http://gstreamer.freedesktop.org/src/gst-plugins-good/%{gstname}-%{version}.tar.bz2
-# Source0-md5:	32414def093652d8281f3708ccaf086b
+# Source0-md5:	a57b4f6bdb9a4a00351f9da74de35ae9
 Patch0:		%{name}-bashish.patch
 Patch1:		%{name}-libcaca.patch
 URL:		http://gstreamer.freedesktop.org/
@@ -54,7 +53,6 @@ BuildRequires:	hal-devel >= 0.5.7.1
 %{?with_ladspa:BuildRequires:	ladspa-devel >= 1.12}
 BuildRequires:	libavc1394-devel
 %{?with_caca:BuildRequires:	libcaca-devel}
-%{?with_cdio:BuildRequires:	libcdio-devel >= 0.71}
 BuildRequires:	libdv-devel >= 0.104
 BuildRequires:	libiec61883-devel >= 1.0.0
 BuildRequires:	libjpeg-devel
@@ -65,6 +63,7 @@ BuildRequires:	libshout-devel >= 2.0
 # for taglib
 BuildRequires:	libstdc++-devel
 BuildRequires:	libxml2-devel >= 1:2.6.26
+BuildRequires:	pulseaudio-devel >= 0.9.8
 %{?with_speex:BuildRequires:	speex-devel >= 1:1.1.6}
 BuildRequires:	taglib-devel >= 1.4
 %{?with_wavpack:BuildRequires:	wavpack-devel >= 4.40.0}
@@ -189,20 +188,6 @@ GStreamer cairo plugin.
 %description -n gstreamer-cairo -l pl.UTF-8
 Wtyczka cairo do GStreamera.
 
-%package -n gstreamer-cdio
-Summary:	GStreamer plugin for CD audio input using libcdio
-Summary(pl.UTF-8):	Wtyczka do GStreamera odtwarzająca płyty CD-Audio przy użyciu libcdio
-Group:		Libraries
-Requires:	gstreamer-plugins-base >= %{gstpb_req_ver}
-Requires:	libcdio >= 0.71
-
-%description -n gstreamer-cdio
-Plugin for playing audio tracks using libcdio under GStreamer.
-
-%description -n gstreamer-cdio -l pl.UTF-8
-Wtyczka do odtwarzania ścieżek dźwiękowych pod GStreamerem za pomocą
-libcdio.
-
 %package -n gstreamer-dv
 Summary:	GStreamer dv plugin
 Summary(pl.UTF-8):	Wtyczka dv do GStreamera
@@ -326,6 +311,22 @@ found in the Linux kernels or commercially available from OpenSound.
 Wtyczki wyjścia i wejścia dźwięku używające sterowników
 OpenSoundSystem obecnych w jądrach Linuksa lub dostępnych komercyjnie
 od OpenSound.
+
+%package -n gstreamer-pulseaudio
+Summary:	GStreamer plugin for PulseAudio sound server
+Summary(pl.UTF-8):	Wtyczka GStreamera dla serwera dźwięku PulseAudio
+Group:		Libraries
+Requires:	gstreamer >= %{gst_req_ver}
+Requires:	gstreamer-plugins-base >= %{gstpb_req_ver}
+Requires:	pulseaudio >= 0.9.8
+Obsoletes:	gstreamer-audiosink-polypaudio
+Obsoletes:	gstreamer-polypaudio
+
+%description -n gstreamer-pulseaudio
+GStreamer plugin for PulseAudio sound server.
+
+%description -n gstreamer-pulseaudio -l pl.UTF-8
+Wtyczka GStreamera dla serwera dźwięku PulseAudio.
 
 %package -n gstreamer-raw1394
 Summary:	GStreamer raw1394 Firewire plugin
@@ -457,7 +458,6 @@ Wtyczka obsługująca bezstratny format dźwięku Wavpack.
 	%{!?with_aalib:--disable-aalib} \
 	%{!?with_caca:--disable-libcaca} \
 	%{!?with_cairo:--disable-cairo} \
-	%{!?with_cdio:--disable-cdio} \
 	--enable-experimental \
 	%{?with_ladspa:--enable-ladspa} \
 	%{!?with_soup:--disable-soup} \
@@ -506,11 +506,13 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{gstlibdir}/libgstgamma.so
 %attr(755,root,root) %{gstlibdir}/libgsticydemux.so
 %attr(755,root,root) %{gstlibdir}/libgstid3demux.so
+%attr(755,root,root) %{gstlibdir}/libgstinterleave.so
 %attr(755,root,root) %{gstlibdir}/libgstmatroska.so
 %attr(755,root,root) %{gstlibdir}/libgstmultifile.so
 %attr(755,root,root) %{gstlibdir}/libgstmultipart.so
 %attr(755,root,root) %{gstlibdir}/libgstnavigationtest.so
 %attr(755,root,root) %{gstlibdir}/libgstqtdemux.so
+%attr(755,root,root) %{gstlibdir}/libgstreplaygain.so
 %attr(755,root,root) %{gstlibdir}/libgstrtp.so
 %attr(755,root,root) %{gstlibdir}/libgstrtsp.so
 %attr(755,root,root) %{gstlibdir}/libgstudp.so
@@ -562,12 +564,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{gstlibdir}/libgstcairo.so
 %endif
 
-%if %{with cdio}
-%files -n gstreamer-cdio
-%defattr(644,root,root,755)
-%attr(755,root,root) %{gstlibdir}/libgstcdio.so
-%endif
-
 %files -n gstreamer-dv
 %defattr(644,root,root,755)
 %attr(755,root,root) %{gstlibdir}/libgstdv.so
@@ -608,6 +604,10 @@ rm -rf $RPM_BUILD_ROOT
 %files -n gstreamer-audiosink-oss
 %defattr(644,root,root,755)
 %attr(755,root,root) %{gstlibdir}/libgstossaudio.so
+
+%files -n gstreamer-pulseaudio
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/gstreamer-0.10/libgstpulse.so
 
 %files -n gstreamer-raw1394
 %defattr(644,root,root,755)
