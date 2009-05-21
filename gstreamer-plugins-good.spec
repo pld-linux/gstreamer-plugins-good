@@ -20,12 +20,12 @@
 Summary:	Good GStreamer Streaming-media framework plugins
 Summary(pl.UTF-8):	Dobre wtyczki do środowiska obróbki strumieni GStreamer
 Name:		gstreamer-plugins-good
-Version:	0.10.14
+Version:	0.10.15
 Release:	1
 License:	LGPL v2+
 Group:		Libraries
 Source0:	http://gstreamer.freedesktop.org/src/gst-plugins-good/%{gstname}-%{version}.tar.bz2
-# Source0-md5:	a861ccbb90a176d1242608502f45f0ac
+# Source0-md5:	19bc6cc07951b3382d1ac8525b20e83f
 Patch0:		%{name}-bashish.patch
 Patch1:		%{name}-libcaca.patch
 URL:		http://gstreamer.freedesktop.org/
@@ -504,6 +504,8 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{gstlibdir}/libgstdebug.so
 %attr(755,root,root) %{gstlibdir}/libgstefence.so
 %attr(755,root,root) %{gstlibdir}/libgstequalizer.so
+%attr(755,root,root) %{gstlibdir}/libgstdeinterlace.so
+%attr(755,root,root) %{gstlibdir}/libgstflv.so
 %attr(755,root,root) %{gstlibdir}/libgstflxdec.so
 %attr(755,root,root) %{gstlibdir}/libgstgamma.so
 %attr(755,root,root) %{gstlibdir}/libgsticydemux.so
@@ -523,6 +525,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{gstlibdir}/libgstvideobox.so
 %attr(755,root,root) %{gstlibdir}/libgstvideocrop.so
 %attr(755,root,root) %{gstlibdir}/libgstvideomixer.so
+%attr(755,root,root) %{gstlibdir}/libgsty4menc.so
 %dir %{_datadir}/gstreamer-0.10
 %{_datadir}/gstreamer-0.10/presets
 
