@@ -20,12 +20,12 @@
 Summary:	Good GStreamer Streaming-media framework plugins
 Summary(pl.UTF-8):	Dobre wtyczki do środowiska obróbki strumieni GStreamer
 Name:		gstreamer-plugins-good
-Version:	0.10.15
-Release:	2
+Version:	0.10.16
+Release:	1
 License:	LGPL v2+
 Group:		Libraries
 Source0:	http://gstreamer.freedesktop.org/src/gst-plugins-good/%{gstname}-%{version}.tar.bz2
-# Source0-md5:	19bc6cc07951b3382d1ac8525b20e83f
+# Source0-md5:	f0af97464bb6e060a99df39bb21b7a42
 Patch0:		%{name}-bashish.patch
 Patch1:		%{name}-libcaca.patch
 URL:		http://gstreamer.freedesktop.org/
@@ -518,6 +518,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{gstlibdir}/libgstqtdemux.so
 %attr(755,root,root) %{gstlibdir}/libgstreplaygain.so
 %attr(755,root,root) %{gstlibdir}/libgstrtp.so
+%attr(755,root,root) %{gstlibdir}/libgstrtpmanager.so
 %attr(755,root,root) %{gstlibdir}/libgstrtsp.so
 %attr(755,root,root) %{gstlibdir}/libgstudp.so
 %attr(755,root,root) %{gstlibdir}/libgstvideo4linux2.so
