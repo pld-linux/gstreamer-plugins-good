@@ -12,8 +12,8 @@
 #
 %define		gstname		gst-plugins-good
 %define		gst_major_ver	0.10
-%define		gst_req_ver	0.10.24
-%define		gstpb_req_ver	0.10.24
+%define		gst_req_ver	0.10.25
+%define		gstpb_req_ver	0.10.25
 #
 %include	/usr/lib/rpm/macros.gstreamer
 #
