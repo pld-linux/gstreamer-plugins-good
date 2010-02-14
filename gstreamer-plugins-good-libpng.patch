@@ -9,3 +9,14 @@
  ])
  
  dnl *** pulseaudio ***
+--- gst-plugins-good-0.10.17/ext/libpng/gstpngdec.c.orig	2010-02-14 20:25:19.449956068 +0100
++++ gst-plugins-good-0.10.17/ext/libpng/gstpngdec.c	2010-02-14 20:25:37.008576491 +0100
+@@ -397,7 +397,7 @@ gst_pngdec_caps_create_and_set (GstPngDe
+     png_set_gray_to_rgb (pngdec->png);
+     if (bpc < 8) {              /* Convert to 8 bits */
+       GST_LOG_OBJECT (pngdec, "converting grayscale image to 8 bits");
+-      png_set_gray_1_2_4_to_8 (pngdec->png);
++      png_set_expand_gray_1_2_4_to_8 (pngdec->png);
+     }
+   }
+ 
