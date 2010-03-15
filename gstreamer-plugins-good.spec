@@ -1,3 +1,8 @@
+# TODO
+# - rebuild or patch needed for caca:
+#   (nautilus:18306): GStreamer-WARNING **: Failed to load plugin '/usr/lib/gstreamer-0.10/libgstcacasink.so': /usr/lib/gstreamer-0.10/libgstcacasink.so: undefined symbol: caca_dither_bitmap
+#   objdump -T /usr/lib/gstreamer-0.10/libgstcacasink.so |grep caca_dither_bitmap
+#   00000000      DF *UND*  00000000              caca_dither_bitmap
 #
 # Conditional build:
 %bcond_without	aalib		# don't build aa videosink plugin
@@ -9,14 +14,13 @@
 %bcond_without	soup		# don't build libsoup 2.4 http source plugin
 %bcond_without	speex		# don't build speex plugin
 %bcond_without	wavpack		# don't build wavpack plugin
-#
+
 %define		gstname		gst-plugins-good
 %define		gst_major_ver	0.10
 %define		gst_req_ver	0.10.25
 %define		gstpb_req_ver	0.10.25
-#
+
 %include	/usr/lib/rpm/macros.gstreamer
-#
 Summary:	Good GStreamer Streaming-media framework plugins
 Summary(pl.UTF-8):	Dobre wtyczki do środowiska obróbki strumieni GStreamer
 Name:		gstreamer-plugins-good
