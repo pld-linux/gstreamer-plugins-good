@@ -24,12 +24,12 @@
 Summary:	Good GStreamer Streaming-media framework plugins
 Summary(pl.UTF-8):	Dobre wtyczki do środowiska obróbki strumieni GStreamer
 Name:		gstreamer-plugins-good
-Version:	0.10.22
+Version:	0.10.23
 Release:	1
 License:	LGPL v2+
 Group:		Libraries
 Source0:	http://gstreamer.freedesktop.org/src/gst-plugins-good/%{gstname}-%{version}.tar.bz2
-# Source0-md5:	4804aaa32044af9846914304991cc9d6
+# Source0-md5:	9cddbb0e7e90677f0cc05c23feffef5c
 Patch0:		%{name}-bashish.patch
 Patch1:		%{name}-libcaca.patch
 #Patch2:		%{name}-libpng.patch
@@ -87,10 +87,11 @@ Obsoletes:	gstreamer-flx
 Obsoletes:	gstreamer-matroska
 Obsoletes:	gstreamer-mixer
 Obsoletes:	gstreamer-navigation
+Obsoletes:	gstreamer-oss4
 Obsoletes:	gstreamer-rtp
 Obsoletes:	gstreamer-udp
 Obsoletes:	gstreamer-v4l2
-Conflicts:	gstreamer-plugins-bad < 0.10.4
+Conflicts:	gstreamer-plugins-bad < 0.10.19
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		gstlibdir 	%{_libdir}/gstreamer-%{gst_major_ver}
@@ -514,14 +515,15 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{gstlibdir}/libgstdeinterlace.so
 %attr(755,root,root) %{gstlibdir}/libgstflv.so
 %attr(755,root,root) %{gstlibdir}/libgstflxdec.so
-%attr(755,root,root) %{gstlibdir}/libgstgamma.so
 %attr(755,root,root) %{gstlibdir}/libgsticydemux.so
 %attr(755,root,root) %{gstlibdir}/libgstid3demux.so
+%attr(755,root,root) %{gstlibdir}/libgstimagefreeze.so
 %attr(755,root,root) %{gstlibdir}/libgstinterleave.so
 %attr(755,root,root) %{gstlibdir}/libgstmatroska.so
 %attr(755,root,root) %{gstlibdir}/libgstmultifile.so
 %attr(755,root,root) %{gstlibdir}/libgstmultipart.so
 %attr(755,root,root) %{gstlibdir}/libgstnavigationtest.so
+%attr(755,root,root) %{gstlibdir}/libgstoss4audio.so
 %attr(755,root,root) %{gstlibdir}/libgstqtdemux.so
 %attr(755,root,root) %{gstlibdir}/libgstreplaygain.so
 %attr(755,root,root) %{gstlibdir}/libgstrtp.so
@@ -530,9 +532,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{gstlibdir}/libgstshapewipe.so
 %attr(755,root,root) %{gstlibdir}/libgstudp.so
 %attr(755,root,root) %{gstlibdir}/libgstvideo4linux2.so
-%attr(755,root,root) %{gstlibdir}/libgstvideobalance.so
 %attr(755,root,root) %{gstlibdir}/libgstvideobox.so
 %attr(755,root,root) %{gstlibdir}/libgstvideocrop.so
+%attr(755,root,root) %{gstlibdir}/libgstvideofilter.so
 %attr(755,root,root) %{gstlibdir}/libgstvideomixer.so
 %attr(755,root,root) %{gstlibdir}/libgsty4menc.so
 %dir %{_datadir}/gstreamer-0.10
@@ -654,7 +656,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{gstlibdir}/libgsteffectv.so
 %attr(755,root,root) %{gstlibdir}/libgstjpeg.so
 %attr(755,root,root) %{gstlibdir}/libgstsmpte.so
-%attr(755,root,root) %{gstlibdir}/libgstvideoflip.so
 
 %files -n gstreamer-visualisation
 %defattr(644,root,root,755)
