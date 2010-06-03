@@ -9,6 +9,7 @@
 %bcond_without	apidocs		# disable gtk-doc
 %bcond_without	caca		# don't build caca videosink plugin
 %bcond_without	cairo		# don't build cairo plugin
+%bcond_with	esd		# build ESD plugin
 %bcond_without	gconf		# don't build GConf plugin
 %bcond_with	ladspa		# build ladspa plugin [currently built in plugins-bad]
 %bcond_without	soup		# don't build libsoup 2.4 http source plugin
@@ -25,7 +26,7 @@ Summary:	Good GStreamer Streaming-media framework plugins
 Summary(pl.UTF-8):	Dobre wtyczki do środowiska obróbki strumieni GStreamer
 Name:		gstreamer-plugins-good
 Version:	0.10.23
-Release:	1
+Release:	2
 License:	LGPL v2+
 Group:		Libraries
 Source0:	http://gstreamer.freedesktop.org/src/gst-plugins-good/%{gstname}-%{version}.tar.bz2
@@ -55,7 +56,7 @@ BuildRequires:	rpmbuild(macros) >= 1.198
 %{?with_aalib:BuildRequires:	aalib-devel >= 0.11.0}
 %{?with_cairo:BuildRequires:	cairo-devel >= 1.2.0}
 BuildRequires:	dbus-devel >= 0.91
-BuildRequires:	esound-devel >= 0.2.12
+%{?with_esd:BuildRequires:	esound-devel >= 0.2.12}
 BuildRequires:	flac-devel >= 1.1.3
 BuildRequires:	hal-devel >= 0.5.7.1
 %{?with_ladspa:BuildRequires:	ladspa-devel >= 1.12}
@@ -468,6 +469,7 @@ Wtyczka obsługująca bezstratny format dźwięku Wavpack.
 	%{!?with_aalib:--disable-aalib} \
 	%{!?with_caca:--disable-libcaca} \
 	%{!?with_cairo:--disable-cairo} \
+	%{!?with_esd:--disable-esd} \
 	--enable-experimental \
 	%{?with_ladspa:--enable-ladspa} \
 	%{!?with_soup:--disable-soup} \
@@ -586,9 +588,11 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %{gstlibdir}/libgstdv.so
 
+%if %{with esd}
 %files -n gstreamer-audiosink-esd
 %defattr(644,root,root,755)
 %attr(755,root,root) %{gstlibdir}/libgstesd.so
+%endif
 
 %files -n gstreamer-flac
 %defattr(644,root,root,755)
