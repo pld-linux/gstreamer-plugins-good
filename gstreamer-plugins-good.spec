@@ -1,8 +1,3 @@
-# TODO
-# - rebuild or patch needed for caca:
-#   (nautilus:18306): GStreamer-WARNING **: Failed to load plugin '/usr/lib/gstreamer-0.10/libgstcacasink.so': /usr/lib/gstreamer-0.10/libgstcacasink.so: undefined symbol: caca_dither_bitmap
-#   objdump -T /usr/lib/gstreamer-0.10/libgstcacasink.so |grep caca_dither_bitmap
-#   00000000      DF *UND*  00000000              caca_dither_bitmap
 #
 # Conditional build:
 %bcond_without	aalib		# don't build aa videosink plugin
@@ -34,19 +29,19 @@ Source0:	http://gstreamer.freedesktop.org/src/gst-plugins-good/%{gstname}-%{vers
 Patch0:		%{name}-bashish.patch
 Patch1:		%{name}-libcaca.patch
 URL:		http://gstreamer.freedesktop.org/
-BuildRequires:	autoconf >= 2.59-9
-BuildRequires:	automake >= 1.5
+BuildRequires:	autoconf >= 2.60
+BuildRequires:	automake >= 1:1.10
 BuildRequires:	docbook-dtd412-xml
-BuildRequires:	glib2-devel >= 1:2.12.1
+BuildRequires:	gettext-devel >= 0.17
+BuildRequires:	glib2-devel >= 1:2.18
 BuildRequires:	gstreamer-devel >= %{gst_req_ver}
 BuildRequires:	gstreamer-plugins-base-devel >= %{gstpb_req_ver}
-BuildRequires:	gtk+2-devel >= 2:2.10.1
+BuildRequires:	gtk+2-devel >= 2:2.14.0
 %{?with_apidocs:BuildRequires:	gtk-doc >= 1.7}
 BuildRequires:	libtool >= 1.4
-BuildRequires:	orc-devel >= 0.4.5
+BuildRequires:	orc-devel >= 0.4.11
 BuildRequires:	pkgconfig >= 1:0.9.0
 BuildRequires:	python >= 2.1
-BuildRequires:	python-PyXML
 BuildRequires:	rpmbuild(macros) >= 1.198
 ##
 ## plugins
@@ -56,7 +51,7 @@ BuildRequires:	rpmbuild(macros) >= 1.198
 %{?with_cairo:BuildRequires:	cairo-devel >= 1.2.0}
 BuildRequires:	dbus-devel >= 0.91
 %{?with_esd:BuildRequires:	esound-devel >= 0.2.12}
-BuildRequires:	flac-devel >= 1.1.3
+BuildRequires:	flac-devel >= 1.1.4
 BuildRequires:	hal-devel >= 0.5.7.1
 %{?with_ladspa:BuildRequires:	ladspa-devel >= 1.12}
 BuildRequires:	libavc1394-devel
@@ -65,23 +60,27 @@ BuildRequires:	libdv-devel >= 0.104
 BuildRequires:	libiec61883-devel >= 1.0.0
 BuildRequires:	libjpeg-devel
 BuildRequires:	libpng-devel >= 1.2.0
-BuildRequires:	libraw1394-devel >= 1.2.1
+BuildRequires:	libraw1394-devel >= 2.0.0
 BuildRequires:	libshout-devel >= 2.0
-%{?with_soup:BuildRequires:	libsoup-devel >= 2.4.0}
+%{?with_soup:BuildRequires:	libsoup-devel >= 2.26.0}
 # for taglib
 BuildRequires:	libstdc++-devel
+BuildRequires:	libv4l-devel
 BuildRequires:	libxml2-devel >= 1:2.6.26
-BuildRequires:	pulseaudio-devel >= 0.9.8
+BuildRequires:	pulseaudio-devel >= 0.9.20
 %{?with_speex:BuildRequires:	speex-devel >= 1:1.1.6}
-BuildRequires:	taglib-devel >= 1.4
+BuildRequires:	taglib-devel >= 1.5
+BuildRequires:	udev-glib-devel >= 143
 %{?with_wavpack:BuildRequires:	wavpack-devel >= 4.40.0}
 BuildRequires:	xorg-lib-libX11-devel
 BuildRequires:	xorg-lib-libXdamage-devel
 BuildRequires:	xorg-lib-libXext-devel
 BuildRequires:	xorg-lib-libXfixes-devel
 BuildRequires:	zlib-devel
+Requires:	glib2 >= 1:2.18
 Requires:	gstreamer >= %{gst_req_ver}
 Requires:	gstreamer-plugins-base >= %{gstpb_req_ver}
+Requires:	orc >= 0.4.11
 Obsoletes:	gstreamer-avi
 Obsoletes:	gstreamer-flx
 Obsoletes:	gstreamer-matroska
@@ -90,7 +89,6 @@ Obsoletes:	gstreamer-navigation
 Obsoletes:	gstreamer-oss4
 Obsoletes:	gstreamer-rtp
 Obsoletes:	gstreamer-udp
-Obsoletes:	gstreamer-v4l2
 %if %{without esd}
 Obsoletes:	gstreamer-audiosink-esd
 %endif
@@ -231,6 +229,7 @@ Summary:	GStreamer plugin for FLAC lossless audio format
 Summary(pl.UTF-8):	Wtyczka do GStreamera obsługująca bezstratny format dźwięku FLAC
 Group:		Libraries
 Requires:	gstreamer-plugins-base >= %{gstpb_req_ver}
+Requires:	flac >= 1.1.4
 
 %description -n gstreamer-flac
 Plugin for the free FLAC lossless audio format.
@@ -330,7 +329,7 @@ Summary(pl.UTF-8):	Wtyczka GStreamera dla serwera dźwięku PulseAudio
 Group:		Libraries
 Requires:	gstreamer >= %{gst_req_ver}
 Requires:	gstreamer-plugins-base >= %{gstpb_req_ver}
-Requires:	pulseaudio >= 0.9.8
+Requires:	pulseaudio >= 0.9.20
 Obsoletes:	gstreamer-audiosink-polypaudio
 Provides:	gstreamer-audiosink = %{version}
 Obsoletes:	gstreamer-polypaudio
@@ -370,6 +369,7 @@ Summary:	GStreamer Soup plugin
 Summary(pl.UTF-8):	Wtyczka biblioteki Soup dla GStreamera
 Group:		Libraries
 Requires:	gstreamer-plugins-base >= %{gst_req_ver}
+Requires:	libsoup >= 2.26
 
 %description -n gstreamer-soup
 GStreamer Plugin for downloading files with Soup library.
@@ -396,12 +396,26 @@ Summary:	GStreamer tag writing plugin based on taglib
 Summary(pl.UTF-8):	Wtyczka GStreamera zapisująca znaczniki oparta na bibliotece taglib
 Group:		Libraries
 Requires:	gstreamer >= %{gst_req_ver}
+Requires:	taglib >= 1.5
 
 %description -n gstreamer-taglib
 GStreamer tag writing plugin based on taglib.
 
 %description -n gstreamer-taglib -l pl.UTF-8
 Wtyczka GStreamera zapisująca znaczniki oparta na bibliotece taglib.
+
+%package -n gstreamer-v4l2
+Summary:	GStreamer Video4Linux2 input plugin
+Summary(pl.UTF-8):	Wtyczka wejścia Video4Linux2 dla GStreamera
+Group:		Libraries
+Requires:	%{name} = %{version}-%{release}
+Requires:	udev-glib >= 143
+
+%description -n gstreamer-v4l2
+GStreamer plugin for accessing Video4Linux2 devices.
+
+%description -n gstreamer-v4l2 -l pl.UTF-8
+Wtyczka GStreamera pozwalająca na dostęp do urządzeń Video4Linux2.
 
 %package -n gstreamer-video-effects
 Summary:	GStreamer video effects plugins
@@ -448,6 +462,7 @@ Summary:	GStreamer plugin for Wavpack lossless audio format
 Summary(pl.UTF-8):	Wtyczka do GStreamera obsługująca bezstratny format dźwięku Wavpack
 Group:		Libraries
 Requires:	gstreamer >= %{gst_req_ver}
+Requires:	wavpack-libs >= 4.40.0
 
 %description -n gstreamer-wavpack
 Plugin for lossless Wavpack audio format.
@@ -475,6 +490,7 @@ Wtyczka obsługująca bezstratny format dźwięku Wavpack.
 	--enable-experimental \
 	%{?with_ladspa:--enable-ladspa} \
 	--enable-orc \
+	--disable-silent-rules \
 	%{!?with_soup:--disable-soup} \
 	%{!?with_speex:--disable-speex} \
 	%{!?with_wavpack:--disable-wavpack} \
@@ -491,7 +507,7 @@ rm -rf $RPM_BUILD_ROOT
 	DESTDIR=$RPM_BUILD_ROOT
 
 # We don't need plugins' *.la files
-rm -f $RPM_BUILD_ROOT%{gstlibdir}/*.la
+%{__rm} $RPM_BUILD_ROOT%{gstlibdir}/*.la
 
 %find_lang %{gstname}-%{gst_major_ver}
 
@@ -536,7 +552,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{gstlibdir}/libgstrtsp.so
 %attr(755,root,root) %{gstlibdir}/libgstshapewipe.so
 %attr(755,root,root) %{gstlibdir}/libgstudp.so
-%attr(755,root,root) %{gstlibdir}/libgstvideo4linux2.so
 %attr(755,root,root) %{gstlibdir}/libgstvideobox.so
 %attr(755,root,root) %{gstlibdir}/libgstvideocrop.so
 %attr(755,root,root) %{gstlibdir}/libgstvideofilter.so
@@ -657,6 +672,10 @@ rm -rf $RPM_BUILD_ROOT
 %files -n gstreamer-taglib
 %defattr(644,root,root,755)
 %attr(755,root,root) %{gstlibdir}/libgsttaglib.so
+
+%files -n gstreamer-v4l2
+%defattr(644,root,root,755)
+%attr(755,root,root) %{gstlibdir}/libgstvideo4linux2.so
 
 %files -n gstreamer-video-effects
 %defattr(644,root,root,755)
