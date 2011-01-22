@@ -6,26 +6,26 @@
 %bcond_without	cairo		# don't build cairo plugin
 %bcond_with	esd		# build ESD plugin
 %bcond_without	gconf		# don't build GConf plugin
-%bcond_with	ladspa		# build ladspa plugin [currently built in plugins-bad]
+%bcond_without	jack		# don't build JACK audio plugin
 %bcond_without	soup		# don't build libsoup 2.4 http source plugin
 %bcond_without	speex		# don't build speex plugin
 %bcond_without	wavpack		# don't build wavpack plugin
 
 %define		gstname		gst-plugins-good
 %define		gst_major_ver	0.10
-%define		gst_req_ver	0.10.30
-%define		gstpb_req_ver	0.10.30
+%define		gst_req_ver	0.10.32
+%define		gstpb_req_ver	0.10.32
 
 %include	/usr/lib/rpm/macros.gstreamer
 Summary:	Good GStreamer Streaming-media framework plugins
 Summary(pl.UTF-8):	Dobre wtyczki do środowiska obróbki strumieni GStreamer
 Name:		gstreamer-plugins-good
-Version:	0.10.26
+Version:	0.10.27
 Release:	1
 License:	LGPL v2+
 Group:		Libraries
 Source0:	http://gstreamer.freedesktop.org/src/gst-plugins-good/%{gstname}-%{version}.tar.bz2
-# Source0-md5:	e1ed191adbf81edff04f348f8ce8e198
+# Source0-md5:	c25d6c51916424009dfde4ee42ae1feb
 Patch0:		%{name}-bashish.patch
 Patch1:		%{name}-libcaca.patch
 URL:		http://gstreamer.freedesktop.org/
@@ -33,7 +33,7 @@ BuildRequires:	autoconf >= 2.60
 BuildRequires:	automake >= 1:1.10
 BuildRequires:	docbook-dtd412-xml
 BuildRequires:	gettext-devel >= 0.17
-BuildRequires:	glib2-devel >= 1:2.18
+BuildRequires:	glib2-devel >= 1:2.20
 BuildRequires:	gstreamer-devel >= %{gst_req_ver}
 BuildRequires:	gstreamer-plugins-base-devel >= %{gstpb_req_ver}
 BuildRequires:	gtk+2-devel >= 2:2.14.0
@@ -48,12 +48,13 @@ BuildRequires:	rpmbuild(macros) >= 1.198
 ##
 %{?with_gconf:BuildRequires:	GConf2-devel >= 2.14.0}
 %{?with_aalib:BuildRequires:	aalib-devel >= 0.11.0}
+BuildRequires:	bzip2-devel
 %{?with_cairo:BuildRequires:	cairo-devel >= 1.2.0}
 BuildRequires:	dbus-devel >= 0.91
 %{?with_esd:BuildRequires:	esound-devel >= 0.2.12}
 BuildRequires:	flac-devel >= 1.1.4
 BuildRequires:	hal-devel >= 0.5.7.1
-%{?with_ladspa:BuildRequires:	ladspa-devel >= 1.12}
+%{?with_jack:BuildRequires:	jack-audio-connection-kit-devel >= 0.99.10}
 BuildRequires:	libavc1394-devel
 %{?with_caca:BuildRequires:	libcaca-devel}
 BuildRequires:	libdv-devel >= 0.104
@@ -62,7 +63,7 @@ BuildRequires:	libjpeg-devel
 BuildRequires:	libpng-devel >= 1.2.0
 BuildRequires:	libraw1394-devel >= 2.0.0
 BuildRequires:	libshout-devel >= 2.0
-%{?with_soup:BuildRequires:	libsoup-devel >= 2.26.0}
+%{?with_soup:BuildRequires:	libsoup-devel >= 2.26}
 # for taglib
 BuildRequires:	libstdc++-devel
 BuildRequires:	libv4l-devel
@@ -77,7 +78,7 @@ BuildRequires:	xorg-lib-libXdamage-devel
 BuildRequires:	xorg-lib-libXext-devel
 BuildRequires:	xorg-lib-libXfixes-devel
 BuildRequires:	zlib-devel
-Requires:	glib2 >= 1:2.18
+Requires:	glib2 >= 1:2.20
 Requires:	gstreamer >= %{gst_req_ver}
 Requires:	gstreamer-plugins-base >= %{gstpb_req_ver}
 Requires:	orc >= 0.4.11
@@ -263,18 +264,18 @@ GStreamer plugin to wrap the GStreamer/HAL audio input/output devices.
 Wtyczka GStreamera spinająca urządzenia wejścia/wyjścia dźwięku między
 GStreamerem a HAL-em.
 
-%package -n gstreamer-ladspa
-Summary:	GStreamer wrapper for LADSPA plugins
-Summary(pl.UTF-8):	Wrapper do wtyczek LADSPA dla GStreamera
+%package -n gstreamer-jack
+Summary:	GStreamer plugin for the JACK Sound Server
+Summary(pl.UTF-8):	Wtyczka serwera dźwięku JACK dla GStreamera
 Group:		Libraries
 Requires:	gstreamer-plugins-base >= %{gstpb_req_ver}
+Provides:	gstreamer-audiosink = %{version}
 
-%description -n gstreamer-ladspa
-Plugin which wraps LADSPA plugins for use by GStreamer applications.
+%description -n gstreamer-jack
+Plugin for the JACK professional sound server.
 
-%description -n gstreamer-ladspa -l pl.UTF-8
-Wtyczka pozwalająca na używanie wtyczek LADSPA przez aplikacje
-GStreamera.
+%description -n gstreamer-jack -l pl.UTF-8
+Wtyczka dla profesjonalnego serwera dźwięku JACK.
 
 %package -n gstreamer-videosink-libcaca
 Summary:	GStreamer plugin for libcaca Ascii-art output
@@ -483,19 +484,19 @@ Wtyczka obsługująca bezstratny format dźwięku Wavpack.
 %{__automake}
 %configure \
 	ac_cv_lib_jpeg_mmx_jpeg_set_defaults=no \
+	--disable-silent-rules \
+	--disable-static \
+	--enable-experimental \
 	%{!?with_aalib:--disable-aalib} \
-	%{!?with_caca:--disable-libcaca} \
 	%{!?with_cairo:--disable-cairo} \
 	%{!?with_esd:--disable-esd} \
-	--enable-experimental \
-	%{?with_ladspa:--enable-ladspa} \
-	--enable-orc \
-	--disable-silent-rules \
+	%{!?with_jack:--disable-jack} \
+	%{!?with_caca:--disable-libcaca} \
 	%{!?with_soup:--disable-soup} \
 	%{!?with_speex:--disable-speex} \
 	%{!?with_wavpack:--disable-wavpack} \
-	--disable-static \
-	--%{?with_apidocs:en}%{!?with_apidocs:dis}able-gtk-doc \
+	--enable-gtk-doc%{!?with_apidocs:=no} \
+	--enable-orc \
 	--with-html-dir=%{_gtkdocdir}
 
 %{__make}
@@ -620,16 +621,15 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %{gstlibdir}/libgstgdkpixbuf.so
 
+%if %{with jack}
+%files -n gstreamer-jack
+%defattr(644,root,root,755)
+%attr(755,root,root) %{gstlibdir}/libgstjack.so
+%endif
+
 %files -n gstreamer-hal
 %defattr(644,root,root,755)
 %attr(755,root,root) %{gstlibdir}/libgsthalelements.so
-
-# disabled in ext/Makefile.am, currently built in plugins-bad
-#%if %{with ladspa}
-#%files -n gstreamer-ladspa
-#%defattr(644,root,root,755)
-#%attr(755,root,root) %{gstlibdir}/libgstladspa.so
-#%endif
 
 %if %{with caca}
 %files -n gstreamer-videosink-libcaca
