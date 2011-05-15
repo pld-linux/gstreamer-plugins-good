@@ -13,25 +13,26 @@
 
 %define		gstname		gst-plugins-good
 %define		gst_major_ver	0.10
-%define		gst_req_ver	0.10.32
-%define		gstpb_req_ver	0.10.32
+%define		gst_req_ver	0.10.33
+%define		gstpb_req_ver	0.10.33
 
 %include	/usr/lib/rpm/macros.gstreamer
 Summary:	Good GStreamer Streaming-media framework plugins
 Summary(pl.UTF-8):	Dobre wtyczki do środowiska obróbki strumieni GStreamer
 Name:		gstreamer-plugins-good
-Version:	0.10.28
+Version:	0.10.29
 Release:	1
 License:	LGPL v2+
 Group:		Libraries
 Source0:	http://gstreamer.freedesktop.org/src/gst-plugins-good/%{gstname}-%{version}.tar.bz2
-# Source0-md5:	6ef1588921f59d85c44ee2e49a3c97a0
+# Source0-md5:	5a652416141d9530258b474dc1d384b9
 Patch0:		%{name}-bashish.patch
 Patch1:		%{name}-libcaca.patch
 URL:		http://gstreamer.freedesktop.org/
 BuildRequires:	autoconf >= 2.60
 BuildRequires:	automake >= 1:1.10
 BuildRequires:	docbook-dtd412-xml
+BuildRequires:	gdk-pixbuf2-devel >= 2.8.0
 BuildRequires:	gettext-devel >= 0.17
 BuildRequires:	glib2-devel >= 1:2.20
 BuildRequires:	gstreamer-devel >= %{gst_req_ver}
@@ -50,6 +51,7 @@ BuildRequires:	rpmbuild(macros) >= 1.198
 %{?with_aalib:BuildRequires:	aalib-devel >= 0.11.0}
 BuildRequires:	bzip2-devel
 %{?with_cairo:BuildRequires:	cairo-devel >= 1.2.0}
+%{?with_cairo:BuildRequires:	cairo-gobject-devel >= 1.10.0}
 BuildRequires:	dbus-devel >= 0.91
 %{?with_esd:BuildRequires:	esound-devel >= 0.2.12}
 BuildRequires:	flac-devel >= 1.1.4
@@ -541,12 +543,12 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{gstlibdir}/libgstid3demux.so
 %attr(755,root,root) %{gstlibdir}/libgstimagefreeze.so
 %attr(755,root,root) %{gstlibdir}/libgstinterleave.so
+%attr(755,root,root) %{gstlibdir}/libgstisomp4.so
 %attr(755,root,root) %{gstlibdir}/libgstmatroska.so
 %attr(755,root,root) %{gstlibdir}/libgstmultifile.so
 %attr(755,root,root) %{gstlibdir}/libgstmultipart.so
 %attr(755,root,root) %{gstlibdir}/libgstnavigationtest.so
 %attr(755,root,root) %{gstlibdir}/libgstoss4audio.so
-%attr(755,root,root) %{gstlibdir}/libgstqtdemux.so
 %attr(755,root,root) %{gstlibdir}/libgstreplaygain.so
 %attr(755,root,root) %{gstlibdir}/libgstrtp.so
 %attr(755,root,root) %{gstlibdir}/libgstrtpmanager.so
@@ -594,6 +596,7 @@ rm -rf $RPM_BUILD_ROOT
 %files -n gstreamer-audio-formats
 %defattr(644,root,root,755)
 %attr(755,root,root) %{gstlibdir}/libgstauparse.so
+%attr(755,root,root) %{gstlibdir}/libgstaudioparsers.so
 %attr(755,root,root) %{gstlibdir}/libgstwavparse.so
 %attr(755,root,root) %{gstlibdir}/libgstwavenc.so
 
