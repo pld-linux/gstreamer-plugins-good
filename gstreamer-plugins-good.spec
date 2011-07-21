@@ -6,6 +6,7 @@
 %bcond_without	cairo		# don't build cairo plugin
 %bcond_with	esd		# build ESD plugin
 %bcond_without	gconf		# don't build GConf plugin
+%bcond_with	hal		# build HAL plugin
 %bcond_without	jack		# don't build JACK audio plugin
 %bcond_without	soup		# don't build libsoup 2.4 http source plugin
 %bcond_without	speex		# don't build speex plugin
@@ -21,7 +22,7 @@ Summary:	Good GStreamer Streaming-media framework plugins
 Summary(pl.UTF-8):	Dobre wtyczki do środowiska obróbki strumieni GStreamer
 Name:		gstreamer-plugins-good
 Version:	0.10.30
-Release:	1
+Release:	2
 License:	LGPL v2+
 Group:		Libraries
 Source0:	http://gstreamer.freedesktop.org/src/gst-plugins-good/%{gstname}-%{version}.tar.bz2
@@ -55,7 +56,7 @@ BuildRequires:	bzip2-devel
 BuildRequires:	dbus-devel >= 0.91
 %{?with_esd:BuildRequires:	esound-devel >= 0.2.12}
 BuildRequires:	flac-devel >= 1.1.4
-BuildRequires:	hal-devel >= 0.5.7.1
+%{?with_hal:BuildRequires:	hal-devel >= 0.5.7.1}
 %{?with_jack:BuildRequires:	jack-audio-connection-kit-devel >= 0.99.10}
 BuildRequires:	libavc1394-devel
 %{?with_caca:BuildRequires:	libcaca-devel}
@@ -497,6 +498,7 @@ Wtyczka obsługująca bezstratny format dźwięku Wavpack.
 	%{!?with_soup:--disable-soup} \
 	%{!?with_speex:--disable-speex} \
 	%{!?with_wavpack:--disable-wavpack} \
+	%{!?with_hal:--disable-hal} \
 	--enable-gtk-doc%{!?with_apidocs:=no} \
 	--enable-orc \
 	--with-html-dir=%{_gtkdocdir}
@@ -630,9 +632,11 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{gstlibdir}/libgstjack.so
 %endif
 
+%if %{with hal}
 %files -n gstreamer-hal
 %defattr(644,root,root,755)
 %attr(755,root,root) %{gstlibdir}/libgsthalelements.so
+%endif
 
 %if %{with caca}
 %files -n gstreamer-videosink-libcaca
