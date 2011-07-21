@@ -87,6 +87,7 @@ Requires:	gstreamer-plugins-base >= %{gstpb_req_ver}
 Requires:	orc >= 0.4.11
 Obsoletes:	gstreamer-avi
 Obsoletes:	gstreamer-flx
+%{!?with_hal:Obsoletes:	gstreamer-hal}
 Obsoletes:	gstreamer-matroska
 Obsoletes:	gstreamer-mixer
 Obsoletes:	gstreamer-navigation
