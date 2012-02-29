@@ -14,28 +14,26 @@
 
 %define		gstname		gst-plugins-good
 %define		gst_major_ver	0.10
-%define		gst_req_ver	0.10.33
-%define		gstpb_req_ver	0.10.33
+%define		gst_req_ver	0.10.36
+%define		gstpb_req_ver	0.10.36
 
 %include	/usr/lib/rpm/macros.gstreamer
 Summary:	Good GStreamer Streaming-media framework plugins
 Summary(pl.UTF-8):	Dobre wtyczki do środowiska obróbki strumieni GStreamer
 Name:		gstreamer-plugins-good
-Version:	0.10.30
-Release:	5
+Version:	0.10.31
+Release:	1
 License:	LGPL v2+
 Group:		Libraries
-Source0:	http://gstreamer.freedesktop.org/src/gst-plugins-good/%{gstname}-%{version}.tar.bz2
-# Source0-md5:	62fd7a3ef187c4f99b3d7c352d58dae9
-Patch0:		%{name}-bashish.patch
-Patch1:		%{name}-libcaca.patch
+Source0:	http://gstreamer.freedesktop.org/src/gst-plugins-good/%{gstname}-%{version}.tar.xz
+# Source0-md5:	555845ceab722e517040bab57f9ace95
 URL:		http://gstreamer.freedesktop.org/
 BuildRequires:	autoconf >= 2.60
 BuildRequires:	automake >= 1:1.10
 BuildRequires:	docbook-dtd412-xml
 BuildRequires:	gdk-pixbuf2-devel >= 2.8.0
 BuildRequires:	gettext-devel >= 0.17
-BuildRequires:	glib2-devel >= 1:2.20
+BuildRequires:	glib2-devel >= 1:2.24
 BuildRequires:	gstreamer-devel >= %{gst_req_ver}
 BuildRequires:	gstreamer-plugins-base-devel >= %{gstpb_req_ver}
 BuildRequires:	gtk+2-devel >= 2:2.14.0
@@ -45,6 +43,8 @@ BuildRequires:	orc-devel >= 0.4.11
 BuildRequires:	pkgconfig >= 1:0.9.0
 BuildRequires:	python >= 2.1
 BuildRequires:	rpmbuild(macros) >= 1.198
+BuildRequires:	tar >= 1:1.22
+BuildRequires:	xz
 ##
 ## plugins
 ##
@@ -71,7 +71,7 @@ BuildRequires:	libshout-devel >= 2.0
 BuildRequires:	libstdc++-devel
 BuildRequires:	libv4l-devel
 BuildRequires:	libxml2-devel >= 1:2.6.26
-BuildRequires:	pulseaudio-devel >= 0.9.20
+BuildRequires:	pulseaudio-devel >= 1.0
 %{?with_speex:BuildRequires:	speex-devel >= 1:1.1.6}
 BuildRequires:	taglib-devel >= 1.5
 BuildRequires:	udev-glib-devel >= 143
@@ -80,8 +80,9 @@ BuildRequires:	xorg-lib-libX11-devel
 BuildRequires:	xorg-lib-libXdamage-devel
 BuildRequires:	xorg-lib-libXext-devel
 BuildRequires:	xorg-lib-libXfixes-devel
+BuildRequires:	xorg-lib-libXv-devel
 BuildRequires:	zlib-devel
-Requires:	glib2 >= 1:2.20
+Requires:	glib2 >= 1:2.24
 Requires:	gstreamer >= %{gst_req_ver}
 Requires:	gstreamer-plugins-base >= %{gstpb_req_ver}
 Requires:	orc >= 0.4.11
@@ -334,7 +335,7 @@ Summary(pl.UTF-8):	Wtyczka GStreamera dla serwera dźwięku PulseAudio
 Group:		Libraries
 Requires:	gstreamer >= %{gst_req_ver}
 Requires:	gstreamer-plugins-base >= %{gstpb_req_ver}
-Requires:	pulseaudio >= 0.9.20
+Requires:	pulseaudio >= 1.0
 Obsoletes:	gstreamer-audiosink-polypaudio
 Provides:	gstreamer-audiosink = %{version}
 Obsoletes:	gstreamer-polypaudio
@@ -477,8 +478,6 @@ Wtyczka obsługująca bezstratny format dźwięku Wavpack.
 
 %prep
 %setup -q -n %{gstname}-%{version}
-%patch0 -p1
-%patch1 -p1
 
 %build
 %{__libtoolize}
