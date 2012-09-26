@@ -1,45 +1,45 @@
 #
+# TODO:
+# Cairo plugin has not been ported yet. Temporary commented out.
+#
 # Conditional build:
 %bcond_without	aalib		# don't build aa videosink plugin
 %bcond_without	apidocs		# disable gtk-doc
 %bcond_without	caca		# don't build caca videosink plugin
-%bcond_without	cairo		# don't build cairo plugin
-%bcond_with	esd		# build ESD plugin
-%bcond_without	gconf		# don't build GConf plugin
-%bcond_with	hal		# build HAL plugin
+## %bcond_without	cairo		# don't build cairo plugin
 %bcond_without	jack		# don't build JACK audio plugin
 %bcond_without	soup		# don't build libsoup 2.4 http source plugin
 %bcond_without	speex		# don't build speex plugin
 %bcond_without	wavpack		# don't build wavpack plugin
 
 %define		gstname		gst-plugins-good
-%define		gst_major_ver	0.10
-%define		gst_req_ver	0.10.36
-%define		gstpb_req_ver	0.10.36
+%define		major_ver	1.0
+%define		gst_req_ver	1.0.0
+%define		gstpb_req_ver	1.0.0
 
 %include	/usr/lib/rpm/macros.gstreamer
 Summary:	Good GStreamer Streaming-media framework plugins
 Summary(pl.UTF-8):	Dobre wtyczki do środowiska obróbki strumieni GStreamer
 Name:		gstreamer-plugins-good
-Version:	0.10.31
+Version:	1.0.0
 Release:	1
 License:	LGPL v2+
 Group:		Libraries
 Source0:	http://gstreamer.freedesktop.org/src/gst-plugins-good/%{gstname}-%{version}.tar.xz
-# Source0-md5:	555845ceab722e517040bab57f9ace95
+# Source0-md5:	f711832cd8a9b033eb424fabe89ca9d1
 URL:		http://gstreamer.freedesktop.org/
-BuildRequires:	autoconf >= 2.60
-BuildRequires:	automake >= 1:1.10
+BuildRequires:	autoconf >= 2.62
+BuildRequires:	automake >= 1:1.11
 BuildRequires:	docbook-dtd412-xml
 BuildRequires:	gdk-pixbuf2-devel >= 2.8.0
 BuildRequires:	gettext-devel >= 0.17
-BuildRequires:	glib2-devel >= 1:2.24
+BuildRequires:	glib2-devel >= 1:2.32
 BuildRequires:	gstreamer-devel >= %{gst_req_ver}
 BuildRequires:	gstreamer-plugins-base-devel >= %{gstpb_req_ver}
-BuildRequires:	gtk+2-devel >= 2:2.14.0
-%{?with_apidocs:BuildRequires:	gtk-doc >= 1.7}
+BuildRequires:	gtk+3-devel >= 3.0.0
+%{?with_apidocs:BuildRequires:	gtk-doc >= 1.12}
 BuildRequires:	libtool >= 1.4
-BuildRequires:	orc-devel >= 0.4.11
+BuildRequires:	orc-devel >= 0.4.16
 BuildRequires:	pkgconfig >= 1:0.9.0
 BuildRequires:	python >= 2.1
 BuildRequires:	rpmbuild(macros) >= 1.198
@@ -48,15 +48,12 @@ BuildRequires:	xz
 ##
 ## plugins
 ##
-%{?with_gconf:BuildRequires:	GConf2-devel >= 2.14.0}
 %{?with_aalib:BuildRequires:	aalib-devel >= 0.11.0}
 BuildRequires:	bzip2-devel
-%{?with_cairo:BuildRequires:	cairo-devel >= 1.2.0}
-%{?with_cairo:BuildRequires:	cairo-gobject-devel >= 1.10.0}
+## %{?with_cairo:BuildRequires:	cairo-devel >= 1.2.0}
+## %{?with_cairo:BuildRequires:	cairo-gobject-devel >= 1.10.0}
 BuildRequires:	dbus-devel >= 0.91
-%{?with_esd:BuildRequires:	esound-devel >= 0.2.12}
 BuildRequires:	flac-devel >= 1.1.4
-%{?with_hal:BuildRequires:	hal-devel >= 0.5.7.1}
 %{?with_jack:BuildRequires:	jack-audio-connection-kit-devel >= 0.99.10}
 BuildRequires:	libavc1394-devel
 %{?with_caca:BuildRequires:	libcaca-devel}
@@ -66,7 +63,7 @@ BuildRequires:	libjpeg-devel
 BuildRequires:	libpng-devel >= 1.2.0
 BuildRequires:	libraw1394-devel >= 2.0.0
 BuildRequires:	libshout-devel >= 2.0
-%{?with_soup:BuildRequires:	libsoup-devel >= 2.26}
+%{?with_soup:BuildRequires:	libsoup-devel >= 2.26.1}
 # for taglib
 BuildRequires:	libstdc++-devel
 BuildRequires:	libv4l-devel
@@ -82,13 +79,12 @@ BuildRequires:	xorg-lib-libXext-devel
 BuildRequires:	xorg-lib-libXfixes-devel
 BuildRequires:	xorg-lib-libXv-devel
 BuildRequires:	zlib-devel
-Requires:	glib2 >= 1:2.24
+Requires:	glib2 >= 1:2.32
 Requires:	gstreamer >= %{gst_req_ver}
 Requires:	gstreamer-plugins-base >= %{gstpb_req_ver}
-Requires:	orc >= 0.4.11
+Requires:	orc >= 0.4.16
 Obsoletes:	gstreamer-avi
 Obsoletes:	gstreamer-flx
-%{!?with_hal:Obsoletes:	gstreamer-hal}
 Obsoletes:	gstreamer-matroska
 Obsoletes:	gstreamer-mixer
 Obsoletes:	gstreamer-navigation
@@ -101,7 +97,7 @@ Obsoletes:	gstreamer-audiosink-esd
 Conflicts:	gstreamer-plugins-bad < 0.10.19
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
-%define		gstlibdir 	%{_libdir}/gstreamer-%{gst_major_ver}
+%define		gstlibdir 	%{_libdir}/gstreamer-%{major_ver}
 
 %description
 GStreamer is a streaming-media framework, based on graphs of filters
@@ -131,22 +127,6 @@ Good GStreamer streaming-media framework plugins API documentation.
 %description apidocs -l pl.UTF-8
 Dokumentacja API dobrych wtyczek środowiska obróbki strumieni
 GStreamer.
-
-%package -n gstreamer-GConf
-Summary:	GStreamer GConf schemas
-Summary(pl.UTF-8):	Schematy GConf GStreamera
-Group:		Libraries
-Requires(post,preun):	GConf2
-Requires:	gstreamer >= %{gst_req_ver}
-Obsoletes:	gstreamer-GConf-devel
-
-%description -n gstreamer-GConf
-Installation of GStreamer GConf schemas. These set usable defaults
-used by all GStreamer-enabled GNOME applications.
-
-%description -n gstreamer-GConf -l pl.UTF-8
-Schematy GConf dla GStreamera. Zestaw ten ustawia wartości domyślne
-dla wszystkich aplikacji GNOME korzystających z GStreamera
 
 ## ## Plugins ##
 
@@ -192,17 +172,17 @@ type.
 %description -n gstreamer-audio-formats -l pl.UTF-8
 Wtyczka do odwarzania dźwięku w formacie au, WAV, mod oraz MP3.
 
-%package -n gstreamer-cairo
-Summary:	GStreamer cairo plugin
-Summary(pl.UTF-8):	Wtyczka cairo do GStreamera
-Group:		Libraries
-Requires:	gstreamer >= %{gst_req_ver}
-
-%description -n gstreamer-cairo
-GStreamer cairo plugin.
-
-%description -n gstreamer-cairo -l pl.UTF-8
-Wtyczka cairo do GStreamera.
+## %package -n gstreamer-cairo
+## Summary:	GStreamer cairo plugin
+## Summary(pl.UTF-8):	Wtyczka cairo do GStreamera
+## Group:		Libraries
+## Requires:	gstreamer >= %{gst_req_ver}
+##
+## %description -n gstreamer-cairo
+## GStreamer cairo plugin.
+##
+## %description -n gstreamer-cairo -l pl.UTF-8
+## Wtyczka cairo do GStreamera.
 
 %package -n gstreamer-dv
 Summary:	GStreamer dv plugin
@@ -215,20 +195,6 @@ Plugin for digital video support.
 
 %description -n gstreamer-dv -l pl.UTF-8
 Wtyczka do GStreamera obsługująca cyfrowy obraz.
-
-%package -n gstreamer-audiosink-esd
-Summary:	GStreamer plugin for ESD sound output
-Summary(pl.UTF-8):	Wtyczka wyjścia dźwięku ESD do GStreamera
-Group:		Libraries
-Requires:	gstreamer-plugins-base >= %{gstpb_req_ver}
-Provides:	gstreamer-audiosink = %{version}
-Obsoletes:	gstreamer-esound
-
-%description -n gstreamer-audiosink-esd
-Output plugin for GStreamer for use with the esound package.
-
-%description -n gstreamer-audiosink-esd -l pl.UTF-8
-Wtyczka wyjścia dźwięku ESD (esound) dla GStreamera.
 
 %package -n gstreamer-flac
 Summary:	GStreamer plugin for FLAC lossless audio format
@@ -255,19 +221,6 @@ This GStreamer plugin load images via gdkpixbuf library.
 %description -n gstreamer-gdkpixbuf -l pl.UTF-8
 Ta wtyczka GStreamera wczytuje obrazki za pośrednictwem biblioteki
 gdkpixbuf.
-
-%package -n gstreamer-hal
-Summary:	GStreamer plugin to wrap the GStreamer/HAL audio input/output devices
-Summary(pl.UTF-8):	Wtyczka GStreamera spinająca urządzenia wejścia/wyjścia dźwięku z HAL-em
-Group:		Libraries
-Requires:	gstreamer >= %{gst_req_ver}
-
-%description -n gstreamer-hal
-GStreamer plugin to wrap the GStreamer/HAL audio input/output devices.
-
-%description -n gstreamer-hal -l pl.UTF-8
-Wtyczka GStreamera spinająca urządzenia wejścia/wyjścia dźwięku między
-GStreamerem a HAL-em.
 
 %package -n gstreamer-jack
 Summary:	GStreamer plugin for the JACK Sound Server
@@ -375,7 +328,7 @@ Summary:	GStreamer Soup plugin
 Summary(pl.UTF-8):	Wtyczka biblioteki Soup dla GStreamera
 Group:		Libraries
 Requires:	gstreamer-plugins-base >= %{gst_req_ver}
-Requires:	libsoup >= 2.26
+Requires:	libsoup >= 2.26.1
 
 %description -n gstreamer-soup
 GStreamer Plugin for downloading files with Soup library.
@@ -492,13 +445,11 @@ Wtyczka obsługująca bezstratny format dźwięku Wavpack.
 	--enable-experimental \
 	%{!?with_aalib:--disable-aalib} \
 	%{!?with_cairo:--disable-cairo} \
-	%{!?with_esd:--disable-esd} \
 	%{!?with_jack:--disable-jack} \
 	%{!?with_caca:--disable-libcaca} \
 	%{!?with_soup:--disable-soup} \
 	%{!?with_speex:--disable-speex} \
 	%{!?with_wavpack:--disable-wavpack} \
-	%{!?with_hal:--disable-hal} \
 	--enable-gtk-doc%{!?with_apidocs:=no} \
 	--enable-orc \
 	--with-html-dir=%{_gtkdocdir}
@@ -514,29 +465,21 @@ rm -rf $RPM_BUILD_ROOT
 # We don't need plugins' *.la files
 %{__rm} $RPM_BUILD_ROOT%{gstlibdir}/*.la
 
-%find_lang %{gstname}-%{gst_major_ver}
+%find_lang %{gstname}-%{major_ver}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post	-n gstreamer-GConf
-%gconf_schema_install gstreamer-0.10.schemas
-
-%preun	-n gstreamer-GConf
-%gconf_schema_uninstall gstreamer-0.10.schemas
-
-%files -f %{gstname}-%{gst_major_ver}.lang
+%files -f %{gstname}-%{major_ver}.lang
 %defattr(644,root,root,755)
 %doc AUTHORS ChangeLog NEWS README RELEASE
 %attr(755,root,root) %{gstlibdir}/libgstalphacolor.so
 %attr(755,root,root) %{gstlibdir}/libgstalpha.so
-%attr(755,root,root) %{gstlibdir}/libgstannodex.so
 %attr(755,root,root) %{gstlibdir}/libgstapetag.so
 %attr(755,root,root) %{gstlibdir}/libgstaudiofx.so
 %attr(755,root,root) %{gstlibdir}/libgstautodetect.so
 %attr(755,root,root) %{gstlibdir}/libgstavi.so
 %attr(755,root,root) %{gstlibdir}/libgstdebug.so
-%attr(755,root,root) %{gstlibdir}/libgstefence.so
 %attr(755,root,root) %{gstlibdir}/libgstequalizer.so
 %attr(755,root,root) %{gstlibdir}/libgstdeinterlace.so
 %attr(755,root,root) %{gstlibdir}/libgstflv.so
@@ -562,20 +505,13 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{gstlibdir}/libgstvideofilter.so
 %attr(755,root,root) %{gstlibdir}/libgstvideomixer.so
 %attr(755,root,root) %{gstlibdir}/libgsty4menc.so
-%dir %{_datadir}/gstreamer-0.10
-%{_datadir}/gstreamer-0.10/presets
+%dir %{_datadir}/gstreamer-%{major_ver}
+%{_datadir}/gstreamer-%{major_ver}/presets
 
 %if %{with apidocs}
 %files apidocs
 %defattr(644,root,root,755)
-%{_gtkdocdir}/gst-plugins-good-plugins-*
-%endif
-
-%if %{with gconf}
-%files -n gstreamer-GConf
-%defattr(644,root,root,755)
-%attr(755,root,root) %{gstlibdir}/libgstgconfelements.so
-%{_sysconfdir}/gconf/schemas/gstreamer-0.10.schemas
+%{_gtkdocdir}/gst-plugins-good-plugins-%{major_ver}
 %endif
 
 ##
@@ -602,21 +538,15 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{gstlibdir}/libgstwavparse.so
 %attr(755,root,root) %{gstlibdir}/libgstwavenc.so
 
-%if %{with cairo}
-%files -n gstreamer-cairo
-%defattr(644,root,root,755)
-%attr(755,root,root) %{gstlibdir}/libgstcairo.so
-%endif
+## %if %{with cairo}
+## %files -n gstreamer-cairo
+## %defattr(644,root,root,755)
+## %attr(755,root,root) %{gstlibdir}/libgstcairo.so
+## %endif
 
 %files -n gstreamer-dv
 %defattr(644,root,root,755)
 %attr(755,root,root) %{gstlibdir}/libgstdv.so
-
-%if %{with esd}
-%files -n gstreamer-audiosink-esd
-%defattr(644,root,root,755)
-%attr(755,root,root) %{gstlibdir}/libgstesd.so
-%endif
 
 %files -n gstreamer-flac
 %defattr(644,root,root,755)
@@ -630,12 +560,6 @@ rm -rf $RPM_BUILD_ROOT
 %files -n gstreamer-jack
 %defattr(644,root,root,755)
 %attr(755,root,root) %{gstlibdir}/libgstjack.so
-%endif
-
-%if %{with hal}
-%files -n gstreamer-hal
-%defattr(644,root,root,755)
-%attr(755,root,root) %{gstlibdir}/libgsthalelements.so
 %endif
 
 %if %{with caca}
@@ -654,7 +578,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -n gstreamer-pulseaudio
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/gstreamer-0.10/libgstpulse.so
+%attr(755,root,root) %{gstlibdir}/libgstpulse.so
 
 %files -n gstreamer-raw1394
 %defattr(644,root,root,755)
