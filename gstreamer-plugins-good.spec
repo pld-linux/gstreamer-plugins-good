@@ -93,9 +93,6 @@ Obsoletes:	gstreamer-navigation
 Obsoletes:	gstreamer-oss4
 Obsoletes:	gstreamer-rtp
 Obsoletes:	gstreamer-udp
-%if %{without esd}
-Obsoletes:	gstreamer-audiosink-esd
-%endif
 Conflicts:	gstreamer-plugins-bad < 0.10.19
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
