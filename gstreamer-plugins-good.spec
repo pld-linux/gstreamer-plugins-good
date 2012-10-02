@@ -1,16 +1,16 @@
 #
 # TODO:
-# Cairo plugin has not been ported yet. Temporary commented out.
+# Cairo plugin has not been ported yet. Temporarily disabled.
 #
 # Conditional build:
-%bcond_without	aalib		# don't build aa videosink plugin
 %bcond_without	apidocs		# disable gtk-doc
-%bcond_without	caca		# don't build caca videosink plugin
-## %bcond_without	cairo		# don't build cairo plugin
-%bcond_without	jack		# don't build JACK audio plugin
-%bcond_without	soup		# don't build libsoup 2.4 http source plugin
-%bcond_without	speex		# don't build speex plugin
-%bcond_without	wavpack		# don't build wavpack plugin
+%bcond_without	aalib		# aa videosink plugin
+%bcond_without	caca		# caca videosink plugin
+%bcond_with	cairo		# cairo plugin [not ported yet - as of 1.0.0]
+%bcond_without	jack		# JACK audio plugin
+%bcond_without	soup		# libsoup 2.4 http source plugin
+%bcond_without	speex		# speex plugin
+%bcond_without	wavpack		# wavpack plugin
 
 %define		gstname		gst-plugins-good
 %define		major_ver	1.0
@@ -50,8 +50,8 @@ BuildRequires:	xz
 ##
 %{?with_aalib:BuildRequires:	aalib-devel >= 0.11.0}
 BuildRequires:	bzip2-devel
-## %{?with_cairo:BuildRequires:	cairo-devel >= 1.2.0}
-## %{?with_cairo:BuildRequires:	cairo-gobject-devel >= 1.10.0}
+%{?with_cairo:BuildRequires:	cairo-devel >= 1.0.0}
+%{?with_cairo:BuildRequires:	cairo-gobject-devel >= 1.10.0}
 BuildRequires:	dbus-devel >= 0.91
 BuildRequires:	flac-devel >= 1.1.4
 %{?with_jack:BuildRequires:	jack-audio-connection-kit-devel >= 0.99.10}
@@ -64,14 +64,16 @@ BuildRequires:	libpng-devel >= 1.2.0
 BuildRequires:	libraw1394-devel >= 2.0.0
 BuildRequires:	libshout-devel >= 2.0
 %{?with_soup:BuildRequires:	libsoup-devel >= 2.26.1}
+%{?with_soup:BuildRequires:	libsoup-gnome-devel >= 2.3.2}
 # for taglib
 BuildRequires:	libstdc++-devel
 BuildRequires:	libv4l-devel
+BuildRequires:	libvpx-devel >= 1.1.0
 BuildRequires:	libxml2-devel >= 1:2.6.26
 BuildRequires:	pulseaudio-devel >= 1.0
 %{?with_speex:BuildRequires:	speex-devel >= 1:1.1.6}
 BuildRequires:	taglib-devel >= 1.5
-BuildRequires:	udev-glib-devel >= 143
+BuildRequires:	udev-glib-devel >= 1:143
 %{?with_wavpack:BuildRequires:	wavpack-devel >= 4.40.0}
 BuildRequires:	xorg-lib-libX11-devel
 BuildRequires:	xorg-lib-libXdamage-devel
@@ -172,23 +174,26 @@ type.
 %description -n gstreamer-audio-formats -l pl.UTF-8
 Wtyczka do odwarzania dźwięku w formacie au, WAV, mod oraz MP3.
 
-## %package -n gstreamer-cairo
-## Summary:	GStreamer cairo plugin
-## Summary(pl.UTF-8):	Wtyczka cairo do GStreamera
-## Group:		Libraries
-## Requires:	gstreamer >= %{gst_req_ver}
-##
-## %description -n gstreamer-cairo
-## GStreamer cairo plugin.
-##
-## %description -n gstreamer-cairo -l pl.UTF-8
-## Wtyczka cairo do GStreamera.
+%package -n gstreamer-cairo
+Summary:	GStreamer cairo plugin
+Summary(pl.UTF-8):	Wtyczka cairo do GStreamera
+Group:		Libraries
+Requires:	gstreamer >= %{gst_req_ver}
+Requires:	cairo >= 1.0.0
+Requires:	cairo-gobject >= 1.10.0
+
+%description -n gstreamer-cairo
+GStreamer cairo plugin.
+
+%description -n gstreamer-cairo -l pl.UTF-8
+Wtyczka cairo do GStreamera.
 
 %package -n gstreamer-dv
 Summary:	GStreamer dv plugin
 Summary(pl.UTF-8):	Wtyczka dv do GStreamera
 Group:		Libraries
 Requires:	gstreamer-plugins-base >= %{gstpb_req_ver}
+Requires:	libdv >= 0.104
 
 %description -n gstreamer-dv
 Plugin for digital video support.
@@ -329,6 +334,7 @@ Summary(pl.UTF-8):	Wtyczka biblioteki Soup dla GStreamera
 Group:		Libraries
 Requires:	gstreamer-plugins-base >= %{gst_req_ver}
 Requires:	libsoup >= 2.26.1
+Requires:	libsoup-gnome >= 2.3.2
 
 %description -n gstreamer-soup
 GStreamer Plugin for downloading files with Soup library.
@@ -368,7 +374,7 @@ Summary:	GStreamer Video4Linux2 input plugin
 Summary(pl.UTF-8):	Wtyczka wejścia Video4Linux2 dla GStreamera
 Group:		Libraries
 Requires:	%{name} = %{version}-%{release}
-Requires:	udev-glib >= 143
+Requires:	udev-glib >= 1:143
 
 %description -n gstreamer-v4l2
 GStreamer plugin for accessing Video4Linux2 devices.
@@ -415,6 +421,20 @@ GStreamer X11 video input plugin using standard Xlib calls.
 %description -n gstreamer-ximagesrc -l pl.UTF-8
 Wtyczka wejścia obrazu X11 GStreamera używająca standardowych wywołań
 Xlib.
+
+%package -n gstreamer-vpx
+Summary:	GStreamer plugin for VP8 video format
+Summary(pl.UTF-8):	Wtyczka do GStreamera obsługująca format obrazu VP8
+Group:		Libraries
+Requires:	gstreamer >= %{gst_req_ver}
+Requires:	libvpx >= 1.1.0
+
+%description -n gstreamer-vpx
+GStreamer plugin for VP8 video format using libvpx library.
+
+%description -n gstreamer-vpx -l pl.UTF-8
+Wtyczka do GStreamera obsługująca format obrazu VP8 przy użyciu
+biblioteki libvpx.
 
 %package -n gstreamer-wavpack
 Summary:	GStreamer plugin for Wavpack lossless audio format
@@ -538,11 +558,11 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{gstlibdir}/libgstwavparse.so
 %attr(755,root,root) %{gstlibdir}/libgstwavenc.so
 
-## %if %{with cairo}
-## %files -n gstreamer-cairo
-## %defattr(644,root,root,755)
-## %attr(755,root,root) %{gstlibdir}/libgstcairo.so
-## %endif
+%if %{with cairo}
+%files -n gstreamer-cairo
+%defattr(644,root,root,755)
+%attr(755,root,root) %{gstlibdir}/libgstcairo.so
+%endif
 
 %files -n gstreamer-dv
 %defattr(644,root,root,755)
@@ -620,6 +640,10 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{gstlibdir}/libgstgoom2k1.so
 %attr(755,root,root) %{gstlibdir}/libgstmonoscope.so
 %attr(755,root,root) %{gstlibdir}/libgstspectrum.so
+
+%files -n gstreamer-vpx
+%defattr(644,root,root,755)
+%attr(755,root,root) %{gstlibdir}/libgstvpx.so
 
 %if %{with wavpack}
 %files -n gstreamer-wavpack
