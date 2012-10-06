@@ -425,6 +425,7 @@ Summary(pl.UTF-8):	Wtyczka do GStreamera obsługująca format obrazu VP8
 Group:		Libraries
 Requires:	gstreamer >= %{gst_req_ver}
 Requires:	libvpx >= 1.1.0
+Obsoletes:	gstreamer-vp8
 
 %description -n gstreamer-vpx
 GStreamer plugin for VP8 video format using libvpx library.
