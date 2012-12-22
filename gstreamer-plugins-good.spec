@@ -21,12 +21,12 @@
 Summary:	Good GStreamer Streaming-media framework plugins
 Summary(pl.UTF-8):	Dobre wtyczki do środowiska obróbki strumieni GStreamer
 Name:		gstreamer-plugins-good
-Version:	1.0.3
+Version:	1.0.4
 Release:	1
 License:	LGPL v2+
 Group:		Libraries
 Source0:	http://gstreamer.freedesktop.org/src/gst-plugins-good/%{gstname}-%{version}.tar.xz
-# Source0-md5:	5cfc3f18dede15d60f0af8666f68193e
+# Source0-md5:	7a3f76b68cadafd1588af36f5f261bb8
 URL:		http://gstreamer.freedesktop.org/
 BuildRequires:	autoconf >= 2.62
 BuildRequires:	automake >= 1:1.11
@@ -54,6 +54,7 @@ BuildRequires:	bzip2-devel
 %{?with_cairo:BuildRequires:	cairo-gobject-devel >= 1.10.0}
 BuildRequires:	dbus-devel >= 0.91
 BuildRequires:	flac-devel >= 1.1.4
+BuildRequires:	gdk-pixbuf2-devel >= 2.8.0
 %{?with_jack:BuildRequires:	jack-audio-connection-kit-devel >= 0.99.10}
 BuildRequires:	libavc1394-devel
 %{?with_caca:BuildRequires:	libcaca-devel}
@@ -215,6 +216,7 @@ Wtyczka obsługująca wolnodostępny, bezstratny format dźwięku FLAC.
 Summary:	GStreamer images input plugin
 Summary(pl.UTF-8):	Wtyczka do GStreamera wczytująca obrazki
 Group:		Libraries
+Requires:	gdk-pixbuf2 >= 2.8.0
 Requires:	gstreamer >= %{gst_req_ver}
 
 %description -n gstreamer-gdkpixbuf
