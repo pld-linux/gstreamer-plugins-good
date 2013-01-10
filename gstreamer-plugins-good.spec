@@ -1,12 +1,9 @@
 #
-# TODO:
-# Cairo plugin has not been ported yet. Temporarily disabled.
-#
 # Conditional build:
 %bcond_without	apidocs		# disable gtk-doc
 %bcond_without	aalib		# aa videosink plugin
 %bcond_without	caca		# caca videosink plugin
-%bcond_with	cairo		# cairo plugin [not ported yet - as of 1.0.0]
+%bcond_without	cairo		# cairo plugin [not ported yet - as of 1.0.0]
 %bcond_without	jack		# JACK audio plugin
 %bcond_without	soup		# libsoup 2.4 http source plugin
 %bcond_without	speex		# speex plugin
@@ -21,17 +18,17 @@
 Summary:	Good GStreamer Streaming-media framework plugins
 Summary(pl.UTF-8):	Dobre wtyczki do środowiska obróbki strumieni GStreamer
 Name:		gstreamer-plugins-good
-Version:	1.0.4
+Version:	1.0.5
 Release:	1
 License:	LGPL v2+
 Group:		Libraries
 Source0:	http://gstreamer.freedesktop.org/src/gst-plugins-good/%{gstname}-%{version}.tar.xz
-# Source0-md5:	7a3f76b68cadafd1588af36f5f261bb8
+# Source0-md5:	e1d451b8b198ab50f645635c1fc8a3cb
+Patch0:		%{name}-am.patch
 URL:		http://gstreamer.freedesktop.org/
 BuildRequires:	autoconf >= 2.62
 BuildRequires:	automake >= 1:1.11
 BuildRequires:	docbook-dtd412-xml
-BuildRequires:	gdk-pixbuf2-devel >= 2.8.0
 BuildRequires:	gettext-devel >= 0.17
 BuildRequires:	glib2-devel >= 1:2.32
 BuildRequires:	gstreamer-devel >= %{gst_req_ver}
@@ -50,7 +47,7 @@ BuildRequires:	xz
 ##
 %{?with_aalib:BuildRequires:	aalib-devel >= 0.11.0}
 BuildRequires:	bzip2-devel
-%{?with_cairo:BuildRequires:	cairo-devel >= 1.0.0}
+%{?with_cairo:BuildRequires:	cairo-devel >= 1.10.0}
 %{?with_cairo:BuildRequires:	cairo-gobject-devel >= 1.10.0}
 BuildRequires:	dbus-devel >= 0.91
 BuildRequires:	flac-devel >= 1.1.4
@@ -177,7 +174,7 @@ Summary:	GStreamer cairo plugin
 Summary(pl.UTF-8):	Wtyczka cairo do GStreamera
 Group:		Libraries
 Requires:	gstreamer >= %{gst_req_ver}
-Requires:	cairo >= 1.0.0
+Requires:	cairo >= 1.10.0
 Requires:	cairo-gobject >= 1.10.0
 
 %description -n gstreamer-cairo
@@ -451,6 +448,7 @@ Wtyczka obsługująca bezstratny format dźwięku Wavpack.
 
 %prep
 %setup -q -n %{gstname}-%{version}
+%patch0 -p1
 
 %build
 %{__libtoolize}
