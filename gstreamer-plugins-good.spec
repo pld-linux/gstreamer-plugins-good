@@ -25,7 +25,7 @@ Group:		Libraries
 Source0:	http://gstreamer.freedesktop.org/src/gst-plugins-good/%{gstname}-%{version}.tar.xz
 # Source0-md5:	df96825d4154940fd934aa0a95b40836
 URL:		http://gstreamer.freedesktop.org/
-BuildRequires:	autoconf >= 2.62
+BuildRequires:	autoconf >= 2.68
 BuildRequires:	automake >= 1:1.11
 BuildRequires:	docbook-dtd412-xml
 BuildRequires:	gettext-devel >= 0.17
@@ -35,7 +35,7 @@ BuildRequires:	gstreamer-plugins-base-devel >= %{gstpb_req_ver}
 BuildRequires:	gtk+3-devel >= 3.0.0
 %{?with_apidocs:BuildRequires:	gtk-doc >= 1.12}
 BuildRequires:	libtool >= 1.4
-BuildRequires:	orc-devel >= 0.4.16
+BuildRequires:	orc-devel >= 0.4.17
 BuildRequires:	pkgconfig >= 1:0.9.0
 BuildRequires:	python >= 2.1
 BuildRequires:	rpmbuild(macros) >= 1.198
@@ -60,14 +60,13 @@ BuildRequires:	libjpeg-devel
 BuildRequires:	libpng-devel >= 1.2.0
 BuildRequires:	libraw1394-devel >= 2.0.0
 BuildRequires:	libshout-devel >= 2.0
-%{?with_soup:BuildRequires:	libsoup-devel >= 2.26.1}
-%{?with_soup:BuildRequires:	libsoup-gnome-devel >= 2.3.2}
+%{?with_soup:BuildRequires:	libsoup-devel >= 2.38}
 # for taglib
 BuildRequires:	libstdc++-devel
 BuildRequires:	libv4l-devel
 BuildRequires:	libvpx-devel >= 1.1.0
 BuildRequires:	libxml2-devel >= 1:2.6.26
-BuildRequires:	pulseaudio-devel >= 1.0
+BuildRequires:	pulseaudio-devel >= 2.0
 %{?with_speex:BuildRequires:	speex-devel >= 1:1.1.6}
 BuildRequires:	taglib-devel >= 1.5
 BuildRequires:	udev-glib-devel >= 1:143
@@ -81,7 +80,7 @@ BuildRequires:	zlib-devel
 Requires:	glib2 >= 1:2.32
 Requires:	gstreamer >= %{gst_req_ver}
 Requires:	gstreamer-plugins-base >= %{gstpb_req_ver}
-Requires:	orc >= 0.4.16
+Requires:	orc >= 0.4.17
 Obsoletes:	gstreamer-avi
 Obsoletes:	gstreamer-flx
 Obsoletes:	gstreamer-matroska
@@ -288,7 +287,7 @@ Summary(pl.UTF-8):	Wtyczka GStreamera dla serwera dźwięku PulseAudio
 Group:		Libraries
 Requires:	gstreamer >= %{gst_req_ver}
 Requires:	gstreamer-plugins-base >= %{gstpb_req_ver}
-Requires:	pulseaudio >= 1.0
+Requires:	pulseaudio >= 2.0
 Obsoletes:	gstreamer-audiosink-polypaudio
 Provides:	gstreamer-audiosink = %{version}
 Obsoletes:	gstreamer-polypaudio
@@ -328,8 +327,7 @@ Summary:	GStreamer Soup plugin
 Summary(pl.UTF-8):	Wtyczka biblioteki Soup dla GStreamera
 Group:		Libraries
 Requires:	gstreamer-plugins-base >= %{gst_req_ver}
-Requires:	libsoup >= 2.26.1
-Requires:	libsoup-gnome >= 2.3.2
+Requires:	libsoup >= 2.38
 
 %description -n gstreamer-soup
 GStreamer Plugin for downloading files with Soup library.
