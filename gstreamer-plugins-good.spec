@@ -1,3 +1,4 @@
+# TODO: bump libvpx to 1.3.0 when available
 #
 # Conditional build:
 %bcond_without	apidocs		# disable gtk-doc
@@ -18,12 +19,12 @@
 Summary:	Good GStreamer Streaming-media framework plugins
 Summary(pl.UTF-8):	Dobre wtyczki do środowiska obróbki strumieni GStreamer
 Name:		gstreamer-plugins-good
-Version:	1.2.1
+Version:	1.2.2
 Release:	1
 License:	LGPL v2+
 Group:		Libraries
 Source0:	http://gstreamer.freedesktop.org/src/gst-plugins-good/%{gstname}-%{version}.tar.xz
-# Source0-md5:	082156e9fb737ee6132b6b663f2901a1
+# Source0-md5:	f8a9be6c5362d13ee41b600c74e843f4
 URL:		http://gstreamer.freedesktop.org/
 BuildRequires:	autoconf >= 2.68
 BuildRequires:	automake >= 1:1.11
@@ -65,6 +66,7 @@ BuildRequires:	libshout-devel >= 2.0
 BuildRequires:	libstdc++-devel
 BuildRequires:	libv4l-devel
 BuildRequires:	libvpx-devel >= 1.1.0
+#BuildRequires:	libvpx-devel >= 1.3.0
 BuildRequires:	libxml2-devel >= 1:2.6.26
 BuildRequires:	pulseaudio-devel >= 2.0
 %{?with_speex:BuildRequires:	speex-devel >= 1:1.1.6}
@@ -416,18 +418,19 @@ Wtyczka wejścia obrazu X11 GStreamera używająca standardowych wywołań
 Xlib.
 
 %package -n gstreamer-vpx
-Summary:	GStreamer plugin for VP8 video format
-Summary(pl.UTF-8):	Wtyczka do GStreamera obsługująca format obrazu VP8
+Summary:	GStreamer plugin for VP8/VP9 video format
+Summary(pl.UTF-8):	Wtyczka do GStreamera obsługująca format obrazu VP8/VP9
 Group:		Libraries
 Requires:	gstreamer >= %{gst_req_ver}
 Requires:	libvpx >= 1.1.0
+#Requires:	libvpx >= 1.3.0
 Obsoletes:	gstreamer-vp8
 
 %description -n gstreamer-vpx
-GStreamer plugin for VP8 video format using libvpx library.
+GStreamer plugin for VP8/VP9 video format using libvpx library.
 
 %description -n gstreamer-vpx -l pl.UTF-8
-Wtyczka do GStreamera obsługująca format obrazu VP8 przy użyciu
+Wtyczka do GStreamera obsługująca format obrazu VP8/VP9 przy użyciu
 biblioteki libvpx.
 
 %package -n gstreamer-wavpack
