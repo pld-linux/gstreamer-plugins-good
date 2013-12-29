@@ -1,4 +1,3 @@
-# TODO: bump libvpx to 1.3.0 when available
 #
 # Conditional build:
 %bcond_without	apidocs		# disable gtk-doc
@@ -65,8 +64,7 @@ BuildRequires:	libshout-devel >= 2.0
 # for taglib
 BuildRequires:	libstdc++-devel
 BuildRequires:	libv4l-devel
-BuildRequires:	libvpx-devel >= 1.1.0
-#BuildRequires:	libvpx-devel >= 1.3.0
+BuildRequires:	libvpx-devel >= 1.3.0
 BuildRequires:	libxml2-devel >= 1:2.6.26
 BuildRequires:	pulseaudio-devel >= 2.0
 %{?with_speex:BuildRequires:	speex-devel >= 1:1.1.6}
@@ -422,8 +420,7 @@ Summary:	GStreamer plugin for VP8/VP9 video format
 Summary(pl.UTF-8):	Wtyczka do GStreamera obsługująca format obrazu VP8/VP9
 Group:		Libraries
 Requires:	gstreamer >= %{gst_req_ver}
-Requires:	libvpx >= 1.1.0
-#Requires:	libvpx >= 1.3.0
+Requires:	libvpx >= 1.3.0
 Obsoletes:	gstreamer-vp8
 
 %description -n gstreamer-vpx
