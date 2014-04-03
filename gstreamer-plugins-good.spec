@@ -19,7 +19,7 @@ Summary:	Good GStreamer Streaming-media framework plugins
 Summary(pl.UTF-8):	Dobre wtyczki do środowiska obróbki strumieni GStreamer
 Name:		gstreamer-plugins-good
 Version:	1.2.3
-Release:	1
+Release:	2
 License:	LGPL v2+
 Group:		Libraries
 Source0:	http://gstreamer.freedesktop.org/src/gst-plugins-good/%{gstname}-%{version}.tar.xz
@@ -115,6 +115,9 @@ Summary:	Good GStreamer streaming-media framework plugins API documentation
 Summary(pl.UTF-8):	Dokumentacja API dobrych wtyczek środowiska obróbki strumieni GStreamer
 Group:		Documentation
 Requires:	gtk-doc-common
+%if "%{_rpmversion}" >= "5"
+BuildArch:	noarch
+%endif
 
 %description apidocs
 Good GStreamer streaming-media framework plugins API documentation.
@@ -171,9 +174,9 @@ Wtyczka do odwarzania dźwięku w formacie au, WAV, mod oraz MP3.
 Summary:	GStreamer cairo plugin
 Summary(pl.UTF-8):	Wtyczka cairo do GStreamera
 Group:		Libraries
-Requires:	gstreamer >= %{gst_req_ver}
 Requires:	cairo >= 1.10.0
 Requires:	cairo-gobject >= 1.10.0
+Requires:	gstreamer >= %{gst_req_ver}
 
 %description -n gstreamer-cairo
 GStreamer cairo plugin.
@@ -198,8 +201,8 @@ Wtyczka do GStreamera obsługująca cyfrowy obraz.
 Summary:	GStreamer plugin for FLAC lossless audio format
 Summary(pl.UTF-8):	Wtyczka do GStreamera obsługująca bezstratny format dźwięku FLAC
 Group:		Libraries
-Requires:	gstreamer-plugins-base >= %{gstpb_req_ver}
 Requires:	flac >= 1.1.4
+Requires:	gstreamer-plugins-base >= %{gstpb_req_ver}
 
 %description -n gstreamer-flac
 Plugin for the free FLAC lossless audio format.
@@ -288,8 +291,8 @@ Group:		Libraries
 Requires:	gstreamer >= %{gst_req_ver}
 Requires:	gstreamer-plugins-base >= %{gstpb_req_ver}
 Requires:	pulseaudio >= 2.0
-Obsoletes:	gstreamer-audiosink-polypaudio
 Provides:	gstreamer-audiosink = %{version}
+Obsoletes:	gstreamer-audiosink-polypaudio
 Obsoletes:	gstreamer-polypaudio
 
 %description -n gstreamer-pulseaudio
