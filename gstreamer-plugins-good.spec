@@ -5,25 +5,25 @@
 %bcond_without	caca		# caca videosink plugin
 %bcond_without	cairo		# cairo plugin
 %bcond_without	jack		# JACK audio plugin
-%bcond_without	soup		# libsoup 2.4 http source plugin
+%bcond_without	soup		# libsoup (2.4 API) http source plugin
 %bcond_without	speex		# speex plugin
 %bcond_without	wavpack		# wavpack plugin
 
 %define		gstname		gst-plugins-good
 %define		major_ver	1.0
-%define		gst_req_ver	1.2.0
-%define		gstpb_req_ver	1.2.3
+%define		gst_req_ver	1.4.0
+%define		gstpb_req_ver	1.4.0
 
 %include	/usr/lib/rpm/macros.gstreamer
 Summary:	Good GStreamer Streaming-media framework plugins
 Summary(pl.UTF-8):	Dobre wtyczki do środowiska obróbki strumieni GStreamer
 Name:		gstreamer-plugins-good
-Version:	1.2.4
+Version:	1.4.0
 Release:	1
 License:	LGPL v2+
 Group:		Libraries
 Source0:	http://gstreamer.freedesktop.org/src/gst-plugins-good/%{gstname}-%{version}.tar.xz
-# Source0-md5:	8aac024ee0cd98b67a3066ad31d8c677
+# Source0-md5:	8007d57a38f6b2882961b2547fa4597c
 URL:		http://gstreamer.freedesktop.org/
 BuildRequires:	autoconf >= 2.68
 BuildRequires:	automake >= 1:1.11
@@ -60,16 +60,15 @@ BuildRequires:	libjpeg-devel
 BuildRequires:	libpng-devel >= 1.2.0
 BuildRequires:	libraw1394-devel >= 2.0.0
 BuildRequires:	libshout-devel >= 2.0
-%{?with_soup:BuildRequires:	libsoup-devel >= 2.38}
+%{?with_soup:BuildRequires:	libsoup-devel >= 2.40}
 # for taglib
 BuildRequires:	libstdc++-devel
 BuildRequires:	libv4l-devel
 BuildRequires:	libvpx-devel >= 1.3.0
-BuildRequires:	libxml2-devel >= 1:2.6.26
 BuildRequires:	pulseaudio-devel >= 2.0
 %{?with_speex:BuildRequires:	speex-devel >= 1:1.1.6}
 BuildRequires:	taglib-devel >= 1.5
-BuildRequires:	udev-glib-devel >= 1:143
+BuildRequires:	udev-glib-devel >= 1:147
 %{?with_wavpack:BuildRequires:	wavpack-devel >= 4.40.0}
 BuildRequires:	xorg-lib-libX11-devel
 BuildRequires:	xorg-lib-libXdamage-devel
@@ -330,7 +329,7 @@ Summary:	GStreamer Soup plugin
 Summary(pl.UTF-8):	Wtyczka biblioteki Soup dla GStreamera
 Group:		Libraries
 Requires:	gstreamer-plugins-base >= %{gst_req_ver}
-Requires:	libsoup >= 2.38
+Requires:	libsoup >= 2.40
 
 %description -n gstreamer-soup
 GStreamer Plugin for downloading files with Soup library.
@@ -370,7 +369,7 @@ Summary:	GStreamer Video4Linux2 input plugin
 Summary(pl.UTF-8):	Wtyczka wejścia Video4Linux2 dla GStreamera
 Group:		Libraries
 Requires:	%{name} = %{version}-%{release}
-Requires:	udev-glib >= 1:143
+Requires:	udev-glib >= 1:147
 
 %description -n gstreamer-v4l2
 GStreamer plugin for accessing Video4Linux2 devices.
