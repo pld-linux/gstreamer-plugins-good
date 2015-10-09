@@ -11,30 +11,30 @@
 
 %define		gstname		gst-plugins-good
 %define		major_ver	1.0
-%define		gst_req_ver	1.4.0
-%define		gstpb_req_ver	1.4.0
+%define		gst_req_ver	1.6.0
+%define		gstpb_req_ver	1.6.0
 
 %include	/usr/lib/rpm/macros.gstreamer
 Summary:	Good GStreamer Streaming-media framework plugins
 Summary(pl.UTF-8):	Dobre wtyczki do środowiska obróbki strumieni GStreamer
 Name:		gstreamer-plugins-good
-Version:	1.4.5
-Release:	3
+Version:	1.6.0
+Release:	1
 License:	LGPL v2+
 Group:		Libraries
 Source0:	http://gstreamer.freedesktop.org/src/gst-plugins-good/%{gstname}-%{version}.tar.xz
-# Source0-md5:	eaf1a6daf73749bc423feac301d60038
+# Source0-md5:	a28d0d46c929f0064432d2fd94c12ef1
 URL:		http://gstreamer.freedesktop.org/
-BuildRequires:	autoconf >= 2.68
-BuildRequires:	automake >= 1:1.11
+BuildRequires:	autoconf >= 2.69
+BuildRequires:	automake >= 1:1.14
 BuildRequires:	docbook-dtd412-xml
 BuildRequires:	gettext-tools >= 0.17
-BuildRequires:	glib2-devel >= 1:2.32
+BuildRequires:	glib2-devel >= 1:2.32.0
 BuildRequires:	gstreamer-devel >= %{gst_req_ver}
 BuildRequires:	gstreamer-plugins-base-devel >= %{gstpb_req_ver}
 BuildRequires:	gtk+3-devel >= 3.0.0
 %{?with_apidocs:BuildRequires:	gtk-doc >= 1.12}
-BuildRequires:	libtool >= 1.4
+BuildRequires:	libtool >= 2:2.2.6
 BuildRequires:	orc-devel >= 0.4.17
 BuildRequires:	pkgconfig >= 1:0.9.0
 BuildRequires:	python >= 2.1
@@ -69,14 +69,14 @@ BuildRequires:	pulseaudio-devel >= 2.0
 %{?with_speex:BuildRequires:	speex-devel >= 1:1.1.6}
 BuildRequires:	taglib-devel >= 1.5
 BuildRequires:	udev-glib-devel >= 1:147
-%{?with_wavpack:BuildRequires:	wavpack-devel >= 4.40.0}
+%{?with_wavpack:BuildRequires:	wavpack-devel >= 4.60.0}
 BuildRequires:	xorg-lib-libX11-devel
 BuildRequires:	xorg-lib-libXdamage-devel
 BuildRequires:	xorg-lib-libXext-devel
 BuildRequires:	xorg-lib-libXfixes-devel
 BuildRequires:	xorg-lib-libXv-devel
 BuildRequires:	zlib-devel
-Requires:	glib2 >= 1:2.32
+Requires:	glib2 >= 1:2.32.0
 Requires:	gstreamer >= %{gst_req_ver}
 Requires:	gstreamer-plugins-base >= %{gstpb_req_ver}
 Requires:	orc >= 0.4.17
@@ -437,7 +437,7 @@ Summary:	GStreamer plugin for Wavpack lossless audio format
 Summary(pl.UTF-8):	Wtyczka do GStreamera obsługująca bezstratny format dźwięku Wavpack
 Group:		Libraries
 Requires:	gstreamer >= %{gst_req_ver}
-Requires:	wavpack-libs >= 4.40.0
+Requires:	wavpack-libs >= 4.60.0
 
 %description -n gstreamer-wavpack
 Plugin for lossless Wavpack audio format.
