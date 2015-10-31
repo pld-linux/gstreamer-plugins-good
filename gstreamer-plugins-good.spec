@@ -237,7 +237,7 @@ Group:		Libraries
 Requires:	gstreamer >= %{gst_req_ver}
 Requires:	gstreamer-plugins-base >= %{gstpb_req_ver}
 # for locales
-Requires:	%{name} = %{version}-%{relaese}
+Requires:	%{name} = %{version}-%{release}
 Provides:	gstreamer-audiosink = %{version}
 
 %description -n gstreamer-jack
