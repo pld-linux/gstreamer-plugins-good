@@ -11,25 +11,25 @@
 
 %define		gstname		gst-plugins-good
 %define		major_ver	1.0
-%define		gst_req_ver	1.6.3
-%define		gstpb_req_ver	1.6.3
+%define		gst_req_ver	1.8.0
+%define		gstpb_req_ver	1.8.0
 
 %include	/usr/lib/rpm/macros.gstreamer
 Summary:	Good GStreamer Streaming-media framework plugins
 Summary(pl.UTF-8):	Dobre wtyczki do środowiska obróbki strumieni GStreamer
 Name:		gstreamer-plugins-good
-Version:	1.6.3
+Version:	1.8.0
 Release:	1
 License:	LGPL v2+
 Group:		Libraries
 Source0:	http://gstreamer.freedesktop.org/src/gst-plugins-good/%{gstname}-%{version}.tar.xz
-# Source0-md5:	a1958df7aa498b42793e2f2048673815
+# Source0-md5:	91ed4649c7c2e43a61f731d144f6f6d0
 URL:		http://gstreamer.freedesktop.org/
 BuildRequires:	autoconf >= 2.69
 BuildRequires:	automake >= 1:1.14
 BuildRequires:	docbook-dtd412-xml
 BuildRequires:	gettext-tools >= 0.17
-BuildRequires:	glib2-devel >= 1:2.32.0
+BuildRequires:	glib2-devel >= 1:2.40
 BuildRequires:	gstreamer-devel >= %{gst_req_ver}
 BuildRequires:	gstreamer-plugins-base-devel >= %{gstpb_req_ver}
 BuildRequires:	gtk+3-devel >= 3.0.0
@@ -60,7 +60,7 @@ BuildRequires:	libjpeg-devel
 BuildRequires:	libpng-devel >= 1.2.0
 BuildRequires:	libraw1394-devel >= 2.0.0
 BuildRequires:	libshout-devel >= 2.0
-%{?with_soup:BuildRequires:	libsoup-devel >= 2.40}
+%{?with_soup:BuildRequires:	libsoup-devel >= 2.48}
 # for taglib
 BuildRequires:	libstdc++-devel
 BuildRequires:	libv4l-devel
@@ -76,7 +76,7 @@ BuildRequires:	xorg-lib-libXext-devel
 BuildRequires:	xorg-lib-libXfixes-devel
 BuildRequires:	xorg-lib-libXv-devel
 BuildRequires:	zlib-devel
-Requires:	glib2 >= 1:2.32.0
+Requires:	glib2 >= 1:2.40
 Requires:	gstreamer >= %{gst_req_ver}
 Requires:	gstreamer-plugins-base >= %{gstpb_req_ver}
 Requires:	orc >= 0.4.17
@@ -347,7 +347,7 @@ Summary(pl.UTF-8):	Wtyczka biblioteki Soup dla GStreamera
 Group:		Libraries
 Requires:	gstreamer >= %{gst_req_ver}
 Requires:	gstreamer-plugins-base >= %{gstpb_req_ver}
-Requires:	libsoup >= 2.40
+Requires:	libsoup >= 2.48
 # for locales
 Requires:	%{name} = %{version}-%{release}
 
