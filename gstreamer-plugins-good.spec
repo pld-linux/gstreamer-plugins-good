@@ -18,13 +18,13 @@
 Summary:	Good GStreamer Streaming-media framework plugins
 Summary(pl.UTF-8):	Dobre wtyczki do środowiska obróbki strumieni GStreamer
 Name:		gstreamer-plugins-good
-Version:	1.8.1
-Release:	2
+Version:	1.8.3
+Release:	1
 License:	LGPL v2+
 Group:		Libraries
-Source0:	http://gstreamer.freedesktop.org/src/gst-plugins-good/%{gstname}-%{version}.tar.xz
-# Source0-md5:	3eabe7277681b9bef8a64c312de03d47
-URL:		http://gstreamer.freedesktop.org/
+Source0:	https://gstreamer.freedesktop.org/src/gst-plugins-good/%{gstname}-%{version}.tar.xz
+# Source0-md5:	473ebb1f15c67de99ddb6e4d027c0876
+URL:		https://gstreamer.freedesktop.org/
 BuildRequires:	autoconf >= 2.69
 BuildRequires:	automake >= 1:1.14
 BuildRequires:	docbook-dtd412-xml
@@ -64,7 +64,7 @@ BuildRequires:	libshout-devel >= 2.0
 # for taglib
 BuildRequires:	libstdc++-devel
 BuildRequires:	libv4l-devel
-BuildRequires:	libvpx-devel >= 1.3.0
+BuildRequires:	libvpx-devel >= 1.4.0
 BuildRequires:	pulseaudio-devel >= 2.0
 %{?with_speex:BuildRequires:	speex-devel >= 1:1.1.6}
 BuildRequires:	taglib-devel >= 1.5
@@ -74,7 +74,6 @@ BuildRequires:	xorg-lib-libX11-devel
 BuildRequires:	xorg-lib-libXdamage-devel
 BuildRequires:	xorg-lib-libXext-devel
 BuildRequires:	xorg-lib-libXfixes-devel
-BuildRequires:	xorg-lib-libXv-devel
 BuildRequires:	zlib-devel
 Requires:	glib2 >= 1:2.40
 Requires:	gstreamer >= %{gst_req_ver}
@@ -437,7 +436,7 @@ Summary(pl.UTF-8):	Wtyczka do GStreamera obsługująca format obrazu VP8/VP9
 Group:		Libraries
 Requires:	gstreamer >= %{gst_req_ver}
 Requires:	gstreamer-plugins-base >= %{gstpb_req_ver}
-Requires:	libvpx >= 1.3.0
+Requires:	libvpx >= 1.4.0
 Obsoletes:	gstreamer-vp8
 
 %description -n gstreamer-vpx
