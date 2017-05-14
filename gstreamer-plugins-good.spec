@@ -5,25 +5,26 @@
 %bcond_without	caca		# caca videosink plugin
 %bcond_without	cairo		# cairo plugin
 %bcond_without	jack		# JACK audio plugin
+%bcond_with	jack1		# JACK 1 (0.12x) instead of JACK 2 (1.9.x)
 %bcond_without	soup		# libsoup (2.4 API) http source plugin
 %bcond_without	speex		# speex plugin
 %bcond_without	wavpack		# wavpack plugin
 
 %define		gstname		gst-plugins-good
 %define		major_ver	1.0
-%define		gst_req_ver	1.10.0
-%define		gstpb_req_ver	1.10.1
+%define		gst_req_ver	1.12.0
+%define		gstpb_req_ver	1.12.0
 
 %include	/usr/lib/rpm/macros.gstreamer
 Summary:	Good GStreamer Streaming-media framework plugins
 Summary(pl.UTF-8):	Dobre wtyczki do środowiska obróbki strumieni GStreamer
 Name:		gstreamer-plugins-good
-Version:	1.10.2
+Version:	1.12.0
 Release:	1
 License:	LGPL v2+
 Group:		Libraries
 Source0:	https://gstreamer.freedesktop.org/src/gst-plugins-good/%{gstname}-%{version}.tar.xz
-# Source0-md5:	65c4ff9d406c3ea9383b4d38a6504349
+# Source0-md5:	9294b22ddab3bec373cbc5e84ff4c084
 URL:		https://gstreamer.freedesktop.org/
 BuildRequires:	autoconf >= 2.69
 BuildRequires:	automake >= 1:1.14
@@ -51,7 +52,10 @@ BuildRequires:	bzip2-devel
 BuildRequires:	dbus-devel >= 0.91
 BuildRequires:	flac-devel >= 1.1.4
 BuildRequires:	gdk-pixbuf2-devel >= 2.8.0
-%{?with_jack:BuildRequires:	jack-audio-connection-kit-devel >= 0.99.10}
+%if %{with jack}
+%{?with_jack1:BuildRequires:	jack-audio-connection-kit-devel >= 0.120.1}
+%{!?with_jack1:BuildRequires:	jack-audio-connection-kit-devel >= 1.9.7}
+%endif
 BuildRequires:	libavc1394-devel
 %{?with_caca:BuildRequires:	libcaca-devel}
 BuildRequires:	libdv-devel >= 0.104
@@ -61,7 +65,6 @@ BuildRequires:	libpng-devel >= 1.2.0
 BuildRequires:	libraw1394-devel >= 2.0.0
 BuildRequires:	libshout-devel >= 2.0
 %{?with_soup:BuildRequires:	libsoup-devel >= 2.48}
-# for taglib
 BuildRequires:	libstdc++-devel
 BuildRequires:	libv4l-devel
 BuildRequires:	libvpx-devel >= 1.4.0
@@ -235,6 +238,8 @@ Summary(pl.UTF-8):	Wtyczka serwera dźwięku JACK dla GStreamera
 Group:		Libraries
 Requires:	gstreamer >= %{gst_req_ver}
 Requires:	gstreamer-plugins-base >= %{gstpb_req_ver}
+%{?with_jack1:Requires:	jack-audio-connection-kit-libs >= 0.120.1}
+%{!?with_jack1:Requires:	jack-audio-connection-kit-libs >= 1.9.7}
 # for locales
 Requires:	%{name} = %{version}-%{release}
 Provides:	gstreamer-audiosink = %{version}
@@ -540,7 +545,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{gstlibdir}/libgstmultifile.so
 %attr(755,root,root) %{gstlibdir}/libgstmultipart.so
 %attr(755,root,root) %{gstlibdir}/libgstnavigationtest.so
-%attr(755,root,root) %{gstlibdir}/libgstoss4audio.so
+%attr(755,root,root) %{gstlibdir}/libgstoss4.so
 %attr(755,root,root) %{gstlibdir}/libgstreplaygain.so
 %attr(755,root,root) %{gstlibdir}/libgstrtp.so
 %attr(755,root,root) %{gstlibdir}/libgstrtpmanager.so
@@ -625,7 +630,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -n gstreamer-pulseaudio
 %defattr(644,root,root,755)
-%attr(755,root,root) %{gstlibdir}/libgstpulse.so
+%attr(755,root,root) %{gstlibdir}/libgstpulseaudio.so
 
 %files -n gstreamer-raw1394
 %defattr(644,root,root,755)
@@ -638,7 +643,7 @@ rm -rf $RPM_BUILD_ROOT
 %if %{with soup}
 %files -n gstreamer-soup
 %defattr(644,root,root,755)
-%attr(755,root,root) %{gstlibdir}/libgstsouphttpsrc.so
+%attr(755,root,root) %{gstlibdir}/libgstsoup.so
 %endif
 
 %if %{with speex}
