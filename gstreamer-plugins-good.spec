@@ -4,37 +4,42 @@
 %bcond_without	aalib		# aa videosink plugin
 %bcond_without	caca		# caca videosink plugin
 %bcond_without	cairo		# cairo plugin
+%bcond_without	gtk		# GTK+ (3.x) elements (video sink plugin)
 %bcond_without	jack		# JACK audio plugin
 %bcond_with	jack1		# JACK 1 (0.12x) instead of JACK 2 (1.9.x)
+%bcond_without	lame		# LAME MP2/MP3 encoding plugin
+%bcond_without	mpg123		# MPG123-based MP3 plugin
+%bcond_without	qt		# Qt (5.x) elements (video sink plugin)
 %bcond_without	soup		# libsoup (2.4 API) http source plugin
 %bcond_without	speex		# speex plugin
 %bcond_without	wavpack		# wavpack plugin
 
 %define		gstname		gst-plugins-good
 %define		major_ver	1.0
-%define		gst_req_ver	1.12.0
-%define		gstpb_req_ver	1.12.0
+%define		gst_req_ver	1.14.4
+%define		gstpb_req_ver	1.14.4
 
 %include	/usr/lib/rpm/macros.gstreamer
 Summary:	Good GStreamer Streaming-media framework plugins
 Summary(pl.UTF-8):	Dobre wtyczki do środowiska obróbki strumieni GStreamer
 Name:		gstreamer-plugins-good
-Version:	1.12.4
+Version:	1.14.4
 Release:	1
 License:	LGPL v2+
 Group:		Libraries
 Source0:	https://gstreamer.freedesktop.org/src/gst-plugins-good/%{gstname}-%{version}.tar.xz
-# Source0-md5:	bdf4791a2b788ec6a149b81ff4032038
+# Source0-md5:	6e3b247097366cf2639f22abfece7113
 URL:		https://gstreamer.freedesktop.org/
 BuildRequires:	autoconf >= 2.69
 BuildRequires:	automake >= 1:1.14
 BuildRequires:	docbook-dtd412-xml
 BuildRequires:	gettext-tools >= 0.17
 BuildRequires:	glib2-devel >= 1:2.40
-%if %(locale -a | grep -q '^C\.UTF-8$'; echo $?)
+%if %(locale -a | grep -q '^C\.utf8$'; echo $?)
 BuildRequires:	glibc-localedb-all
 %endif
 BuildRequires:	gstreamer-devel >= %{gst_req_ver}
+BuildRequires:	gstreamer-gl-devel >= %{gstpb_req_ver}
 BuildRequires:	gstreamer-plugins-base-devel >= %{gstpb_req_ver}
 BuildRequires:	gtk+3-devel >= 3.0.0
 %{?with_apidocs:BuildRequires:	gtk-doc >= 1.12}
@@ -48,6 +53,12 @@ BuildRequires:	xz
 ##
 ## plugins
 ##
+%{?with_qt:BuildRequires:	Qt5Core-devel >= 5.4.0}
+%{?with_qt:BuildRequires:	Qt5Gui-devel >= 5.4.0}
+%{?with_qt:BuildRequires:	Qt5Quick-devel >= 5.4.0}
+%{?with_qt:BuildRequires:	Qt5Qml-devel >= 5.4.0}
+%{?with_qt:BuildRequires:	Qt5X11Extras-devel >= 5.4.0}
+%{?with_qt:BuildRequires:	Qt5WaylandClient-devel >= 5.4.0}
 %{?with_aalib:BuildRequires:	aalib-devel >= 0.11.0}
 BuildRequires:	bzip2-devel
 %{?with_cairo:BuildRequires:	cairo-devel >= 1.10.0}
@@ -55,16 +66,19 @@ BuildRequires:	bzip2-devel
 BuildRequires:	dbus-devel >= 0.91
 BuildRequires:	flac-devel >= 1.1.4
 BuildRequires:	gdk-pixbuf2-devel >= 2.8.0
+%{?with_gtk:BuildRequires:	gtk+3-devel >= 3.15.0}
 %if %{with jack}
 %{?with_jack1:BuildRequires:	jack-audio-connection-kit-devel >= 0.120.1}
 %{!?with_jack1:BuildRequires:	jack-audio-connection-kit-devel >= 1.9.7}
 %endif
+%{?with_lame:BuildRequires:	lame-libs-devel}
 BuildRequires:	libavc1394-devel
 %{?with_caca:BuildRequires:	libcaca-devel}
 BuildRequires:	libdv-devel >= 0.104
 BuildRequires:	libiec61883-devel >= 1.0.0
 BuildRequires:	libjpeg-devel
-BuildRequires:	libpng-devel >= 1.2.0
+%{?with_mpg123:BuildRequires:	libmpg123-devel >= 1.14}
+BuildRequires:	libpng-devel >= 2:1.5.1
 BuildRequires:	libraw1394-devel >= 2.0.0
 BuildRequires:	libshout-devel >= 2.0
 %{?with_soup:BuildRequires:	libsoup-devel >= 2.48}
@@ -72,8 +86,10 @@ BuildRequires:	libstdc++-devel
 BuildRequires:	libv4l-devel
 BuildRequires:	libvpx-devel >= 1.4.0
 BuildRequires:	pulseaudio-devel >= 2.0
+%{?with_qt:BuildRequires:	qt5-build >= 5.4.0}
 %{?with_speex:BuildRequires:	speex-devel >= 1:1.1.6}
 BuildRequires:	taglib-devel >= 1.5
+%{?with_lame:BuildRequires:	twolame-devel >= 0.3.10}
 BuildRequires:	udev-glib-devel >= 1:147
 %{?with_wavpack:BuildRequires:	wavpack-devel >= 4.60.0}
 BuildRequires:	xorg-lib-libX11-devel
@@ -235,6 +251,22 @@ This GStreamer plugin load images via gdkpixbuf library.
 Ta wtyczka GStreamera wczytuje obrazki za pośrednictwem biblioteki
 gdkpixbuf.
 
+%package -n gstreamer-videosink-gtk
+Summary:	GStreamer GTK+ (3.x) output plugin
+Summary(pl.UTF-8):	Wtyczka wyjścia obrazu GTK+ (3.x) dla GStreamera
+Group:		Libraries
+Requires:	gstreamer >= %{gst_req_ver}
+Requires:	gstreamer-gl-libs >= %{gstpb_req_ver}
+Requires:	gstreamer-plugins-base >= %{gstpb_req_ver}
+Requires:	gtk+3 >= 3.15.0
+Provides:	gstreamer-videosink = %{version}
+
+%description -n gstreamer-videosink-gtk
+GStreamer GTK+ (3.x) output plugin.
+
+%description -n gstreamer-videosink-gtk -l pl.UTF-8
+Wtyczka wyjścia obrazu GTK+ (3.x) dla GStreamera.
+
 %package -n gstreamer-jack
 Summary:	GStreamer plugin for the JACK Sound Server
 Summary(pl.UTF-8):	Wtyczka serwera dźwięku JACK dla GStreamera
@@ -267,6 +299,38 @@ GStreamer plug-in for libcaca Ascii-art output.
 %description -n gstreamer-videosink-libcaca -l pl.UTF-8
 Wtyczka libcaca do GStreamera.
 
+%package -n gstreamer-lame
+Summary:	GStreamer plugin encoding MP3 songs
+Summary(pl.UTF-8):	Wtyczka do GStreamera kodująca pliki MP3
+Group:		Libraries
+# for NLS
+Requires:	%{name} = %{version}-%{release}
+Requires:	gstreamer >= %{gst_req_ver}
+Requires:	gstreamer-plugins-base >= %{gstpb_req_ver}
+Requires:	twolame-libs >= 0.3.10
+
+%description -n gstreamer-lame
+Plugin for encoding MP3 with lame.
+
+%description -n gstreamer-lame -l pl.UTF-8
+Wtyczka do GStreamera kodująca pliki MP3 przy użyciu lame.
+
+%package -n gstreamer-mpg123
+Summary:	GStreamer mpg123 plugin
+Summary(pl.UTF-8):	Wtyczka mpg123 do GStreamera
+Group:		Libraries
+Requires:	gstreamer >= %{gst_req_ver}
+Requires:	gstreamer-plugins-base >= %{gstpb_req_ver}
+Requires:	libmpg123 >= 1.14
+# plugin obsoleted in 1.12.0, functionality in mpg123 plugin (or libav)
+Obsoletes:	gstreamer-mad < 1.12.0
+
+%description -n gstreamer-mpg123
+GStreamer mpg123 plugin for MP3 playback.
+
+%description -n gstreamer-mpg123 -l pl.UTF-8
+Wtyczka mpg123 do GStreamera, odtwarzająca MP3.
+
 %package -n gstreamer-libpng
 Summary:	GStreamer plugin to encode png images
 Summary(pl.UTF-8):	Wtyczka GStreamera kodująca pliki png
@@ -275,7 +339,7 @@ Requires:	gstreamer >= %{gst_req_ver}
 Requires:	gstreamer-plugins-base >= %{gstpb_req_ver}
 # for locales
 Requires:	%{name} = %{version}-%{release}
-Requires:	libpng >= 1.2.0
+Requires:	libpng >= 2:1.5.1
 
 %description -n gstreamer-libpng
 Plugin for encoding png images.
@@ -321,6 +385,24 @@ GStreamer plugin for PulseAudio sound server.
 
 %description -n gstreamer-pulseaudio -l pl.UTF-8
 Wtyczka GStreamera dla serwera dźwięku PulseAudio.
+
+%package -n gstreamer-videosink-qt
+Summary:	GStreamer Qt (5.x) output plugin
+Summary(pl.UTF-8):	Wtyczka wyjścia obrazu Qt (5.x) dla GStreamera
+Group:		Libraries
+Requires:	Qt5Core >= 5.4.0
+Requires:	Qt5Gui >= 5.4.0
+Requires:	Qt5Quick >= 5.4.0
+Requires:	gstreamer >= %{gst_req_ver}
+Requires:	gstreamer-gl-libs >= %{gstpb_req_ver}
+Requires:	gstreamer-plugins-base >= %{gstpb_req_ver}
+Provides:	gstreamer-videosink = %{version}
+
+%description -n gstreamer-videosink-qt
+GStreamer Qt (5.x) output plugin.
+
+%description -n gstreamer-videosink-qt -l pl.UTF-8
+Wtyczka wyjścia obrazu Qt (5.x) dla GStreamera.
 
 %package -n gstreamer-raw1394
 Summary:	GStreamer raw1394 Firewire plugin
@@ -499,8 +581,12 @@ Xlib.
 	--enable-experimental \
 	%{!?with_aalib:--disable-aalib} \
 	%{!?with_cairo:--disable-cairo} \
+	%{!?with_gtk:--disable-gtk} \
 	%{!?with_jack:--disable-jack} \
+	%{!?with_lame:--disable-lame --disable-twolame} \
 	%{!?with_caca:--disable-libcaca} \
+	%{!?with_mpg123:--disable-mpg123} \
+	%{!?with_qt:--disable-qt} \
 	%{!?with_soup:--disable-soup} \
 	%{!?with_speex:--disable-speex} \
 	%{!?with_wavpack:--disable-wavpack} \
@@ -612,6 +698,12 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %{gstlibdir}/libgstgdkpixbuf.so
 
+%if %{with gtk}
+%files -n gstreamer-videosink-gtk
+%defattr(644,root,root,755)
+%attr(755,root,root) %{gstlibdir}/libgstgtk.so
+%endif
+
 %if %{with jack}
 %files -n gstreamer-jack
 %defattr(644,root,root,755)
@@ -622,6 +714,17 @@ rm -rf $RPM_BUILD_ROOT
 %files -n gstreamer-videosink-libcaca
 %defattr(644,root,root,755)
 %attr(755,root,root) %{gstlibdir}/libgstcacasink.so
+%endif
+
+%files -n gstreamer-lame
+%defattr(644,root,root,755)
+%attr(755,root,root) %{gstlibdir}/libgstlame.so
+%attr(755,root,root) %{gstlibdir}/libgsttwolame.so
+
+%if %{with mpg123}
+%files -n gstreamer-mpg123
+%defattr(644,root,root,755)
+%attr(755,root,root) %{gstlibdir}/libgstmpg123.so
 %endif
 
 %files -n gstreamer-libpng
@@ -635,6 +738,12 @@ rm -rf $RPM_BUILD_ROOT
 %files -n gstreamer-pulseaudio
 %defattr(644,root,root,755)
 %attr(755,root,root) %{gstlibdir}/libgstpulseaudio.so
+
+%if %{with qt}
+%files -n gstreamer-videosink-qt
+%defattr(644,root,root,755)
+%attr(755,root,root) %{gstlibdir}/libgstqmlgl.so
+%endif
 
 %files -n gstreamer-raw1394
 %defattr(644,root,root,755)
