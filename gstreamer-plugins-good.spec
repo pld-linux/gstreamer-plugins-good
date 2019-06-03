@@ -16,20 +16,19 @@
 
 %define		gstname		gst-plugins-good
 %define		major_ver	1.0
-%define		gst_req_ver	1.14.4
-%define		gstpb_req_ver	1.14.4
+%define		gst_req_ver	1.16.0
+%define		gstpb_req_ver	1.16.0
 
 %include	/usr/lib/rpm/macros.gstreamer
 Summary:	Good GStreamer Streaming-media framework plugins
 Summary(pl.UTF-8):	Dobre wtyczki do środowiska obróbki strumieni GStreamer
 Name:		gstreamer-plugins-good
-Version:	1.14.4
-Release:	2
+Version:	1.16.0
+Release:	1
 License:	LGPL v2+
 Group:		Libraries
 Source0:	https://gstreamer.freedesktop.org/src/gst-plugins-good/%{gstname}-%{version}.tar.xz
-# Source0-md5:	6e3b247097366cf2639f22abfece7113
-Patch0:		libvpx1.8.patch
+# Source0-md5:	d1a7b442994d9522418de4af4330e034
 URL:		https://gstreamer.freedesktop.org/
 BuildRequires:	autoconf >= 2.69
 BuildRequires:	automake >= 1:1.14
@@ -568,7 +567,6 @@ Xlib.
 
 %prep
 %setup -q -n %{gstname}-%{version}
-%patch0 -p1
 
 %build
 %{__libtoolize}
