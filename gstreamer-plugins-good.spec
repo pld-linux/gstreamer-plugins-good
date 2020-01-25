@@ -19,7 +19,6 @@
 %define		gst_ver		1.16.0
 %define		gstpb_ver	1.16.0
 
-%include	/usr/lib/rpm/macros.gstreamer
 Summary:	Good GStreamer Streaming-media framework plugins
 Summary(pl.UTF-8):	Dobre wtyczki do środowiska obróbki strumieni GStreamer
 Name:		gstreamer-plugins-good
