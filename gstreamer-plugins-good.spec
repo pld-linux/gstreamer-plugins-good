@@ -16,8 +16,8 @@
 
 %define		gstname		gst-plugins-good
 %define		gstmver		1.0
-%define		gst_ver		1.16.2
-%define		gstpb_ver	1.16.2
+%define		gst_ver		1.16.3
+%define		gstpb_ver	1.16.3
 
 Summary:	Good GStreamer Streaming-media framework plugins
 Summary(pl.UTF-8):	Dobre wtyczki do środowiska obróbki strumieni GStreamer
