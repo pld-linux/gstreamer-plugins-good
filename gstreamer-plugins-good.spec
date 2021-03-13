@@ -22,12 +22,12 @@
 Summary:	Good GStreamer Streaming-media framework plugins
 Summary(pl.UTF-8):	Dobre wtyczki do środowiska obróbki strumieni GStreamer
 Name:		gstreamer-plugins-good
-Version:	1.16.2
+Version:	1.16.3
 Release:	1
 License:	LGPL v2+
 Group:		Libraries
 Source0:	https://gstreamer.freedesktop.org/src/gst-plugins-good/%{gstname}-%{version}.tar.xz
-# Source0-md5:	bd025f8f14974f94b75ac69a9d1b9c93
+# Source0-md5:	c79b6c2f8eaadb2bb66615b694db399e
 URL:		https://gstreamer.freedesktop.org/
 BuildRequires:	autoconf >= 2.69
 BuildRequires:	automake >= 1:1.14
@@ -46,6 +46,7 @@ BuildRequires:	libtool >= 2:2.2.6
 BuildRequires:	orc-devel >= 0.4.17
 BuildRequires:	pkgconfig >= 1:0.9.0
 BuildRequires:	python >= 2.1
+BuildRequires:	rpm-build >= 4.6
 BuildRequires:	rpmbuild(macros) >= 1.198
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	xz
@@ -100,14 +101,14 @@ Requires:	glib2 >= 1:2.40
 Requires:	gstreamer >= %{gst_ver}
 Requires:	gstreamer-plugins-base >= %{gstpb_ver}
 Requires:	orc >= 0.4.17
-Obsoletes:	gstreamer-avi
-Obsoletes:	gstreamer-flx
-Obsoletes:	gstreamer-matroska
-Obsoletes:	gstreamer-mixer
-Obsoletes:	gstreamer-navigation
-Obsoletes:	gstreamer-oss4
-Obsoletes:	gstreamer-rtp
-Obsoletes:	gstreamer-udp
+Obsoletes:	gstreamer-avi < 0.10
+Obsoletes:	gstreamer-flx < 0.10
+Obsoletes:	gstreamer-matroska < 0.10
+Obsoletes:	gstreamer-mixer < 0.10
+Obsoletes:	gstreamer-navigation < 0.10
+Obsoletes:	gstreamer-oss4 < 0.10
+Obsoletes:	gstreamer-rtp < 0.10
+Obsoletes:	gstreamer-udp < 0.10
 Conflicts:	gstreamer-plugins-bad < 0.10.19
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -152,7 +153,7 @@ Group:		Libraries
 Requires:	gstreamer >= %{gst_ver}
 Requires:	gstreamer-plugins-base >= %{gstpb_ver}
 Provides:	gstreamer-videosink = %{version}
-Obsoletes:	gstreamer-aalib
+Obsoletes:	gstreamer-aalib < 0.10
 
 %description -n gstreamer-videosink-aa
 Plugin for viewing movies in Ascii-art using aalib library.
@@ -166,7 +167,7 @@ Summary(pl.UTF-8):	Dobre wtyczki efektów dźwiękowych do GStreamera
 Group:		Libraries
 Requires:	gstreamer >= %{gst_ver}
 Requires:	gstreamer-plugins-base >= %{gstpb_ver}
-Obsoletes:	gstreamer-audio-effects
+Obsoletes:	gstreamer-audio-effects < 0.10
 
 %description -n gstreamer-audio-effects-good
 Good GStreamer audio effects plugins.
@@ -353,7 +354,7 @@ Requires:	gstreamer-plugins-base >= %{gstpb_ver}
 # for locales
 Requires:	%{name} = %{version}-%{release}
 Provides:	gstreamer-audiosink = %{version}
-Obsoletes:	gstreamer-oss
+Obsoletes:	gstreamer-oss < 0.10
 
 %description -n gstreamer-audiosink-oss
 Plugins for output and input to the OpenSoundSystem audio drivers
@@ -374,8 +375,8 @@ Requires:	pulseaudio >= 2.0
 # for locales
 Requires:	%{name} = %{version}-%{release}
 Provides:	gstreamer-audiosink = %{version}
-Obsoletes:	gstreamer-audiosink-polypaudio
-Obsoletes:	gstreamer-polypaudio
+Obsoletes:	gstreamer-audiosink-polypaudio < 0.10
+Obsoletes:	gstreamer-polypaudio < 0.10
 
 %description -n gstreamer-pulseaudio
 GStreamer plugin for PulseAudio sound server.
@@ -524,7 +525,7 @@ Group:		Libraries
 Requires:	gstreamer >= %{gst_ver}
 Requires:	gstreamer-plugins-base >= %{gstpb_ver}
 Requires:	libvpx >= 1.8.0
-Obsoletes:	gstreamer-vp8
+Obsoletes:	gstreamer-vp8 < 1.0
 
 %description -n gstreamer-vpx
 GStreamer plugin for VP8/VP9 video format using libvpx library.
