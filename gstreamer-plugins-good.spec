@@ -297,21 +297,20 @@ GStreamer plug-in for libcaca Ascii-art output.
 Wtyczka libcaca do GStreamera.
 
 %package -n gstreamer-lame
-Summary:	GStreamer plugins encoding MP2/MP3 songs
-Summary(pl.UTF-8):	Wtyczki do GStreamera kodujące pliki MP2/MP3
+Summary:	GStreamer plugin encoding MP3 songs
+Summary(pl.UTF-8):	Wtyczka do GStreamera kodująca pliki MP3
 Group:		Libraries
 # for NLS
 Requires:	%{name} = %{version}-%{release}
 Requires:	gstreamer >= %{gst_ver}
 Requires:	gstreamer-plugins-base >= %{gstpb_ver}
-%{?with_twolame:Requires:	twolame-libs >= 0.3.13}
+Requires:	lame-libs >= 3.98
 
 %description -n gstreamer-lame
-Plugins for encoding MP2/MP3 with twolame or lame.
+Plugin for encoding MP3 with lame.
 
 %description -n gstreamer-lame -l pl.UTF-8
-Wtyczki do GStreamera kodująca pliki MP2/MP3 przy użyciu twolame lub
-lame.
+Wtyczka do GStreamera kodująca pliki MP3 przy użyciu lame.
 
 %package -n gstreamer-mpg123
 Summary:	GStreamer mpg123 plugin
@@ -476,6 +475,22 @@ GStreamer tag writing plugin based on taglib.
 
 %description -n gstreamer-taglib -l pl.UTF-8
 Wtyczka GStreamera zapisująca znaczniki oparta na bibliotece taglib.
+
+%package -n gstreamer-twolame
+Summary:	GStreamer plugin encoding MP2 songs
+Summary(pl.UTF-8):	Wtyczka do GStreamera kodujące pliki MP2
+Group:		Libraries
+# for NLS
+Requires:	%{name} = %{version}-%{release}
+Requires:	gstreamer >= %{gst_ver}
+Requires:	gstreamer-plugins-base >= %{gstpb_ver}
+Requires:	twolame-libs >= 0.3.13
+
+%description -n gstreamer-twolame
+Plugin for encoding MP2 with twolame.
+
+%description -n gstreamer-twolame -l pl.UTF-8
+Wtyczka do GStreamera kodująca pliki MP2 przy użyciu twolame.
 
 %package -n gstreamer-v4l2
 Summary:	GStreamer Video4Linux2 input plugin
@@ -788,15 +803,10 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{gstlibdir}/libgstcacasink.so
 %endif
 
-%if %{with lame} || %{with twolame}
+%if %{with lame}
 %files -n gstreamer-lame
 %defattr(644,root,root,755)
-%if %{with lame}
 %attr(755,root,root) %{gstlibdir}/libgstlame.so
-%endif
-%if %{with twolame}
-%attr(755,root,root) %{gstlibdir}/libgsttwolame.so
-%endif
 %endif
 
 %if %{with mpg123}
@@ -846,6 +856,12 @@ rm -rf $RPM_BUILD_ROOT
 %files -n gstreamer-taglib
 %defattr(644,root,root,755)
 %attr(755,root,root) %{gstlibdir}/libgsttaglib.so
+
+%if %{with twolame}
+%files -n gstreamer-twolame
+%defattr(644,root,root,755)
+%attr(755,root,root) %{gstlibdir}/libgsttwolame.so
+%endif
 
 %files -n gstreamer-v4l2
 %defattr(644,root,root,755)
