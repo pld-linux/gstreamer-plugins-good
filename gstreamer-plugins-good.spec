@@ -6,34 +6,32 @@
 %bcond_without	cairo		# cairo plugin
 %bcond_without	gtk		# GTK+ (3.x) elements (video sink plugin)
 %bcond_without	jack		# JACK audio plugin
-%bcond_with	jack1		# JACK 1 (0.12x) instead of JACK 2 (1.9.x)
-%bcond_without	lame		# LAME MP2/MP3 encoding plugin
+%bcond_without	lame		# LAME MP3 encoding plugin
 %bcond_without	mpg123		# MPG123-based MP3 plugin
 %bcond_without	qt		# Qt (5.x) elements (video sink plugin)
 %bcond_without	soup		# libsoup (2.4 API) http source plugin
 %bcond_without	speex		# speex plugin
+%bcond_without	twolame		# twolame MP2 encoding plugin
 %bcond_without	wavpack		# wavpack plugin
 
 %define		gstname		gst-plugins-good
 %define		gstmver		1.0
-%define		gst_ver		1.16.3
-%define		gstpb_ver	1.16.3
+%define		gst_ver		1.18.4
+%define		gstpb_ver	1.18.4
 
 Summary:	Good GStreamer Streaming-media framework plugins
 Summary(pl.UTF-8):	Dobre wtyczki do środowiska obróbki strumieni GStreamer
 Name:		gstreamer-plugins-good
-Version:	1.16.3
+Version:	1.18.4
 Release:	1
 License:	LGPL v2+
 Group:		Libraries
 Source0:	https://gstreamer.freedesktop.org/src/gst-plugins-good/%{gstname}-%{version}.tar.xz
-# Source0-md5:	c79b6c2f8eaadb2bb66615b694db399e
+# Source0-md5:	4ecf1ac5cd422d9c13fe05dbf5e3df26
 URL:		https://gstreamer.freedesktop.org/
-BuildRequires:	autoconf >= 2.69
-BuildRequires:	automake >= 1:1.14
 BuildRequires:	docbook-dtd412-xml
 BuildRequires:	gettext-tools >= 0.17
-BuildRequires:	glib2-devel >= 1:2.40
+BuildRequires:	glib2-devel >= 1:2.44
 %if %(locale -a | grep -q '^C\.utf8$'; echo $?)
 BuildRequires:	glibc-localedb-all
 %endif
@@ -41,15 +39,20 @@ BuildRequires:	gstreamer-devel >= %{gst_ver}
 BuildRequires:	gstreamer-gl-devel >= %{gstpb_ver}
 BuildRequires:	gstreamer-plugins-base-devel >= %{gstpb_ver}
 BuildRequires:	gtk+3-devel >= 3.0.0
-%{?with_apidocs:BuildRequires:	gtk-doc >= 1.12}
-BuildRequires:	libtool >= 2:2.2.6
+%{?with_apidocs:BuildRequires:	hotdoc >= 0.11.0}
+BuildRequires:	meson >= 0.48
+%ifarch %{x8664}
+BuildRequires:	nasm >= 2.13
+%endif
+BuildRequires:	ninja >= 1.5
 BuildRequires:	orc-devel >= 0.4.17
 BuildRequires:	pkgconfig >= 1:0.9.0
-BuildRequires:	python >= 2.1
+BuildRequires:	python3 >= 1:3.2
 BuildRequires:	rpm-build >= 4.6
-BuildRequires:	rpmbuild(macros) >= 1.198
+BuildRequires:	rpmbuild(macros) >= 1.736
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	xz
+BuildRequires:	zlib-devel
 ##
 ## plugins
 ##
@@ -60,19 +63,16 @@ BuildRequires:	xz
 %{?with_qt:BuildRequires:	Qt5X11Extras-devel >= 5.4.0}
 %{?with_qt:BuildRequires:	Qt5WaylandClient-devel >= 5.4.0}
 %{?with_aalib:BuildRequires:	aalib-devel >= 0.11.0}
+# for matroska
 BuildRequires:	bzip2-devel
 %{?with_cairo:BuildRequires:	cairo-devel >= 1.10.0}
 %{?with_cairo:BuildRequires:	cairo-gobject-devel >= 1.10.0}
-BuildRequires:	dbus-devel >= 0.91
 BuildRequires:	flac-devel >= 1.1.4
 BuildRequires:	gdk-pixbuf2-devel >= 2.8.0
 %{?with_gtk:BuildRequires:	gtk+3-devel >= 3.15.0}
-%if %{with jack}
-%{?with_jack1:BuildRequires:	jack-audio-connection-kit-devel >= 0.120.1}
-%{!?with_jack1:BuildRequires:	jack-audio-connection-kit-devel >= 1.9.7}
-%endif
-%{?with_lame:BuildRequires:	lame-libs-devel}
-BuildRequires:	libavc1394-devel
+%{?with_jack:BuildRequires:	jack-audio-connection-kit-devel >= 1.9.7}
+%{?with_lame:BuildRequires:	lame-libs-devel >= 3.98}
+BuildRequires:	libavc1394-devel >= 0.5.4
 %{?with_caca:BuildRequires:	libcaca-devel}
 BuildRequires:	libdv-devel >= 0.104
 BuildRequires:	libiec61883-devel >= 1.0.0
@@ -82,22 +82,22 @@ BuildRequires:	libpng-devel >= 2:1.5.1
 BuildRequires:	libraw1394-devel >= 2.0.0
 BuildRequires:	libshout-devel >= 2.0
 %{?with_soup:BuildRequires:	libsoup-devel >= 2.48}
-BuildRequires:	libstdc++-devel
+# for qt and taglib
+BuildRequires:	libstdc++-devel >= 6:4.7
 BuildRequires:	libv4l-devel
 BuildRequires:	libvpx-devel >= 1.8.0
 BuildRequires:	pulseaudio-devel >= 2.0
 %{?with_qt:BuildRequires:	qt5-build >= 5.4.0}
 %{?with_speex:BuildRequires:	speex-devel >= 1:1.1.6}
 BuildRequires:	taglib-devel >= 1.5
-%{?with_lame:BuildRequires:	twolame-devel >= 0.3.10}
+%{?with_twolame:BuildRequires:	twolame-devel >= 0.3.13}
 BuildRequires:	udev-glib-devel >= 1:147
 %{?with_wavpack:BuildRequires:	wavpack-devel >= 4.60.0}
 BuildRequires:	xorg-lib-libX11-devel
 BuildRequires:	xorg-lib-libXdamage-devel
 BuildRequires:	xorg-lib-libXext-devel
 BuildRequires:	xorg-lib-libXfixes-devel
-BuildRequires:	zlib-devel
-Requires:	glib2 >= 1:2.40
+Requires:	glib2 >= 1:2.44
 Requires:	gstreamer >= %{gst_ver}
 Requires:	gstreamer-plugins-base >= %{gstpb_ver}
 Requires:	orc >= 0.4.17
@@ -271,8 +271,7 @@ Summary(pl.UTF-8):	Wtyczka serwera dźwięku JACK dla GStreamera
 Group:		Libraries
 Requires:	gstreamer >= %{gst_ver}
 Requires:	gstreamer-plugins-base >= %{gstpb_ver}
-%{?with_jack1:Requires:	jack-audio-connection-kit-libs >= 0.120.1}
-%{!?with_jack1:Requires:	jack-audio-connection-kit-libs >= 1.9.7}
+Requires:	jack-audio-connection-kit-libs >= 1.9.7
 # for locales
 Requires:	%{name} = %{version}-%{release}
 Provides:	gstreamer-audiosink = %{version}
@@ -298,20 +297,21 @@ GStreamer plug-in for libcaca Ascii-art output.
 Wtyczka libcaca do GStreamera.
 
 %package -n gstreamer-lame
-Summary:	GStreamer plugin encoding MP3 songs
-Summary(pl.UTF-8):	Wtyczka do GStreamera kodująca pliki MP3
+Summary:	GStreamer plugins encoding MP2/MP3 songs
+Summary(pl.UTF-8):	Wtyczki do GStreamera kodujące pliki MP2/MP3
 Group:		Libraries
 # for NLS
 Requires:	%{name} = %{version}-%{release}
 Requires:	gstreamer >= %{gst_ver}
 Requires:	gstreamer-plugins-base >= %{gstpb_ver}
-Requires:	twolame-libs >= 0.3.10
+%{?with_twolame:Requires:	twolame-libs >= 0.3.13}
 
 %description -n gstreamer-lame
-Plugin for encoding MP3 with lame.
+Plugins for encoding MP2/MP3 with twolame or lame.
 
 %description -n gstreamer-lame -l pl.UTF-8
-Wtyczka do GStreamera kodująca pliki MP3 przy użyciu lame.
+Wtyczki do GStreamera kodująca pliki MP2/MP3 przy użyciu twolame lub
+lame.
 
 %package -n gstreamer-mpg123
 Summary:	GStreamer mpg123 plugin
@@ -407,6 +407,9 @@ Summary:	GStreamer raw1394 Firewire plugin
 Summary(pl.UTF-8):	Wtyczka FireWire dla GStreamera
 Group:		Libraries
 Requires:	gstreamer >= %{gst_ver}
+Requires:	libavc1394 >= 0.5.4
+Requires:	libiec61883 >= 1.0.0
+Requires:	libraw1394 >= 2.0.0
 
 %description -n gstreamer-raw1394
 Plugin for digital video support using raw1394.
@@ -419,6 +422,7 @@ Summary:	GStreamer plugin for communicating with Shoutcast servers
 Summary(pl.UTF-8):	Wtyczka do GStreamera umożliwiająca komunikację z serwerami Shoutcast
 Group:		Libraries
 Requires:	gstreamer >= %{gst_ver}
+Requires:	libshout >= 2.0
 # for locales
 Requires:	%{name} = %{version}-%{release}
 
@@ -567,6 +571,32 @@ Xlib.
 %setup -q -n %{gstname}-%{version}
 
 %build
+%meson build \
+	--default-library=shared \
+	%{!?with_aalib:-Daalib=disabled} \
+	%{!?with_cairo:-Dcairo=disabled} \
+	%{!?with_apidocs:-Ddoc=disabled} \
+	%{!?with_gtk:-Dgtk3=disabled} \
+	%{!?with_jack:-Djack=disabled} \
+	%{!?with_lame:-Dlame=disabled} \
+	%{!?with_caca:-Dlibcaca=disabled} \
+	%{!?with_mpg123:-Dmpg123=disabled} \
+	%{!?with_qt:-Dqt5=disabled} \
+	%{!?with_soup:-Dsoup=disabled} \
+	%{!?with_speex:-Dspeex=disabled} \
+	%{!?with_twolame:-Dtwolame=disabled} \
+	%{!?with_wavpack:-Dwavpack=disabled}
+
+%ninja_build -C build
+
+%if %{with apidocs}
+cd build/docs
+for config in *-doc.json ; do
+	LC_ALL=C.UTF-8 hotdoc run --conf-file "$config"
+done
+%endif
+
+%if 0
 %{__libtoolize}
 %{__aclocal} -I m4 -I common/m4
 %{__autoconf}
@@ -594,15 +624,17 @@ Xlib.
 
 LC_ALL=C.UTF-8 \
 %{__make}
+%endif
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
-%{__make} install \
-	DESTDIR=$RPM_BUILD_ROOT
+%ninja_install -C build
 
-# We don't need plugins' *.la files
-%{__rm} $RPM_BUILD_ROOT%{gstlibdir}/*.la
+%if %{with apidocs}
+install -d $RPM_BUILD_ROOT%{_docdir}/gstreamer-%{gstmver}
+cp -pr build/docs/*-doc $RPM_BUILD_ROOT%{_docdir}/gstreamer-%{gstmver}
+%endif
 
 %find_lang %{gstname}-%{gstmver}
 
@@ -651,7 +683,79 @@ rm -rf $RPM_BUILD_ROOT
 %if %{with apidocs}
 %files apidocs
 %defattr(644,root,root,755)
-%{_gtkdocdir}/gst-plugins-good-plugins-%{gstmver}
+%{_docdir}/gstreamer-%{gstmver}/1394-doc
+%{_docdir}/gstreamer-%{gstmver}/aasink-doc
+%{_docdir}/gstreamer-%{gstmver}/alaw-doc
+%{_docdir}/gstreamer-%{gstmver}/alpha-doc
+%{_docdir}/gstreamer-%{gstmver}/alphacolor-doc
+%{_docdir}/gstreamer-%{gstmver}/apetag-doc
+%{_docdir}/gstreamer-%{gstmver}/audiofx-doc
+%{_docdir}/gstreamer-%{gstmver}/audioparsers-doc
+%{_docdir}/gstreamer-%{gstmver}/auparse-doc
+%{_docdir}/gstreamer-%{gstmver}/autodetect-doc
+%{_docdir}/gstreamer-%{gstmver}/avi-doc
+%{_docdir}/gstreamer-%{gstmver}/cacasink-doc
+%{_docdir}/gstreamer-%{gstmver}/cairo-doc
+%{_docdir}/gstreamer-%{gstmver}/cutter-doc
+%{_docdir}/gstreamer-%{gstmver}/debug-doc
+%{_docdir}/gstreamer-%{gstmver}/deinterlace-doc
+%{_docdir}/gstreamer-%{gstmver}/dtmf-doc
+%{_docdir}/gstreamer-%{gstmver}/dv-doc
+%{_docdir}/gstreamer-%{gstmver}/effectv-doc
+%{_docdir}/gstreamer-%{gstmver}/equalizer-doc
+%{_docdir}/gstreamer-%{gstmver}/flac-doc
+%{_docdir}/gstreamer-%{gstmver}/flv-doc
+%{_docdir}/gstreamer-%{gstmver}/flxdec-doc
+%{_docdir}/gstreamer-%{gstmver}/gdkpixbuf-doc
+%{_docdir}/gstreamer-%{gstmver}/goom-doc
+%{_docdir}/gstreamer-%{gstmver}/goom2k1-doc
+%{_docdir}/gstreamer-%{gstmver}/gtk-doc
+%{_docdir}/gstreamer-%{gstmver}/icydemux-doc
+%{_docdir}/gstreamer-%{gstmver}/id3demux-doc
+%{_docdir}/gstreamer-%{gstmver}/imagefreeze-doc
+%{_docdir}/gstreamer-%{gstmver}/interleave-doc
+%{_docdir}/gstreamer-%{gstmver}/isomp4-doc
+%{_docdir}/gstreamer-%{gstmver}/jack-doc
+%{_docdir}/gstreamer-%{gstmver}/jpeg-doc
+%{_docdir}/gstreamer-%{gstmver}/lame-doc
+%{_docdir}/gstreamer-%{gstmver}/level-doc
+%{_docdir}/gstreamer-%{gstmver}/matroska-doc
+%{_docdir}/gstreamer-%{gstmver}/monoscope-doc
+%{_docdir}/gstreamer-%{gstmver}/mpg123-doc
+%{_docdir}/gstreamer-%{gstmver}/mulaw-doc
+%{_docdir}/gstreamer-%{gstmver}/multifile-doc
+%{_docdir}/gstreamer-%{gstmver}/multipart-doc
+%{_docdir}/gstreamer-%{gstmver}/navigationtest-doc
+%{_docdir}/gstreamer-%{gstmver}/oss4-doc
+%{_docdir}/gstreamer-%{gstmver}/ossaudio-doc
+%{_docdir}/gstreamer-%{gstmver}/png-doc
+%{_docdir}/gstreamer-%{gstmver}/pulseaudio-doc
+%{_docdir}/gstreamer-%{gstmver}/qmlgl-doc
+%{_docdir}/gstreamer-%{gstmver}/replaygain-doc
+%{_docdir}/gstreamer-%{gstmver}/rpicamsrc-doc
+%{_docdir}/gstreamer-%{gstmver}/rtp-doc
+%{_docdir}/gstreamer-%{gstmver}/rtpmanager-doc
+%{_docdir}/gstreamer-%{gstmver}/rtsp-doc
+%{_docdir}/gstreamer-%{gstmver}/shapewipe-doc
+%{_docdir}/gstreamer-%{gstmver}/shout2-doc
+%{_docdir}/gstreamer-%{gstmver}/smpte-doc
+%{_docdir}/gstreamer-%{gstmver}/soup-doc
+%{_docdir}/gstreamer-%{gstmver}/spectrum-doc
+%{_docdir}/gstreamer-%{gstmver}/speex-doc
+%{_docdir}/gstreamer-%{gstmver}/taglib-doc
+%{_docdir}/gstreamer-%{gstmver}/twolame-doc
+%{_docdir}/gstreamer-%{gstmver}/udp-doc
+%{_docdir}/gstreamer-%{gstmver}/video4linux2-doc
+%{_docdir}/gstreamer-%{gstmver}/videobox-doc
+%{_docdir}/gstreamer-%{gstmver}/videocrop-doc
+%{_docdir}/gstreamer-%{gstmver}/videofilter-doc
+%{_docdir}/gstreamer-%{gstmver}/videomixer-doc
+%{_docdir}/gstreamer-%{gstmver}/vpx-doc
+%{_docdir}/gstreamer-%{gstmver}/wavenc-doc
+%{_docdir}/gstreamer-%{gstmver}/wavpack-doc
+%{_docdir}/gstreamer-%{gstmver}/wavparse-doc
+%{_docdir}/gstreamer-%{gstmver}/ximagesrc-doc
+%{_docdir}/gstreamer-%{gstmver}/y4menc-doc
 %endif
 
 ##
@@ -714,10 +818,16 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{gstlibdir}/libgstcacasink.so
 %endif
 
+%if %{with lame} || %{with twolame}
 %files -n gstreamer-lame
 %defattr(644,root,root,755)
+%if %{with lame}
 %attr(755,root,root) %{gstlibdir}/libgstlame.so
+%endif
+%if %{with twolame}
 %attr(755,root,root) %{gstlibdir}/libgsttwolame.so
+%endif
+%endif
 
 %if %{with mpg123}
 %files -n gstreamer-mpg123
