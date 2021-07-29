@@ -596,36 +596,6 @@ for config in *-doc.json ; do
 done
 %endif
 
-%if 0
-%{__libtoolize}
-%{__aclocal} -I m4 -I common/m4
-%{__autoconf}
-%{__autoheader}
-%{__automake}
-%configure \
-	ac_cv_lib_jpeg_mmx_jpeg_set_defaults=no \
-	--disable-silent-rules \
-	--disable-static \
-	--enable-experimental \
-	%{!?with_aalib:--disable-aalib} \
-	%{!?with_cairo:--disable-cairo} \
-	%{!?with_gtk:--disable-gtk} \
-	%{!?with_jack:--disable-jack} \
-	%{!?with_lame:--disable-lame --disable-twolame} \
-	%{!?with_caca:--disable-libcaca} \
-	%{!?with_mpg123:--disable-mpg123} \
-	%{!?with_qt:--disable-qt} \
-	%{!?with_soup:--disable-soup} \
-	%{!?with_speex:--disable-speex} \
-	%{!?with_wavpack:--disable-wavpack} \
-	--enable-gtk-doc%{!?with_apidocs:=no} \
-	--enable-orc \
-	--with-html-dir=%{_gtkdocdir}
-
-LC_ALL=C.UTF-8 \
-%{__make}
-%endif
-
 %install
 rm -rf $RPM_BUILD_ROOT
 
