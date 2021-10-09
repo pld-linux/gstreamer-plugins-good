@@ -16,18 +16,18 @@
 
 %define		gstname		gst-plugins-good
 %define		gstmver		1.0
-%define		gst_ver		1.18.4
-%define		gstpb_ver	1.18.4
+%define		gst_ver		1.18.5
+%define		gstpb_ver	1.18.5
 
 Summary:	Good GStreamer Streaming-media framework plugins
 Summary(pl.UTF-8):	Dobre wtyczki do środowiska obróbki strumieni GStreamer
 Name:		gstreamer-plugins-good
-Version:	1.18.4
+Version:	1.18.5
 Release:	1
 License:	LGPL v2+
 Group:		Libraries
 Source0:	https://gstreamer.freedesktop.org/src/gst-plugins-good/%{gstname}-%{version}.tar.xz
-# Source0-md5:	4ecf1ac5cd422d9c13fe05dbf5e3df26
+# Source0-md5:	1c8ec6b14d166d7affbb216e863c9e42
 URL:		https://gstreamer.freedesktop.org/
 BuildRequires:	docbook-dtd412-xml
 BuildRequires:	gettext-tools >= 0.17
@@ -134,7 +134,6 @@ nowych typów danych lub możliwości obróbki.
 Summary:	Good GStreamer streaming-media framework plugins API documentation
 Summary(pl.UTF-8):	Dokumentacja API dobrych wtyczek środowiska obróbki strumieni GStreamer
 Group:		Documentation
-Requires:	gtk-doc-common
 BuildArch:	noarch
 
 %description apidocs
@@ -144,7 +143,9 @@ Good GStreamer streaming-media framework plugins API documentation.
 Dokumentacja API dobrych wtyczek środowiska obróbki strumieni
 GStreamer.
 
-## ## Plugins ##
+##
+## Plugins
+##
 
 %package -n gstreamer-videosink-aa
 Summary:	GStreamer plugin for Ascii-art output
