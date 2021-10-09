@@ -663,7 +663,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{gstlibdir}/libgstvideofilter.so
 %attr(755,root,root) %{gstlibdir}/libgstvideomixer.so
 %attr(755,root,root) %{gstlibdir}/libgsty4menc.so
-%dir %{_datadir}/gstreamer-%{gstmver}
 %{_datadir}/gstreamer-%{gstmver}/presets
 
 %if %{with apidocs}
