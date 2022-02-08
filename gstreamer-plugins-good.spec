@@ -16,18 +16,18 @@
 
 %define		gstname		gst-plugins-good
 %define		gstmver		1.0
-%define		gst_ver		1.19.3
-%define		gstpb_ver	1.19.3
+%define		gst_ver		1.20.0
+%define		gstpb_ver	1.20.0
 
 Summary:	Good GStreamer Streaming-media framework plugins
 Summary(pl.UTF-8):	Dobre wtyczki do środowiska obróbki strumieni GStreamer
 Name:		gstreamer-plugins-good
-Version:	1.19.3
-Release:	2
+Version:	1.20.0
+Release:	1
 License:	LGPL v2+
 Group:		Libraries
 Source0:	https://gstreamer.freedesktop.org/src/gst-plugins-good/%{gstname}-%{version}.tar.xz
-# Source0-md5:	6d17023a08bc1e83b241877088631265
+# Source0-md5:	f952449915499ed3402c32e79d1037fa
 URL:		https://gstreamer.freedesktop.org/
 BuildRequires:	docbook-dtd412-xml
 BuildRequires:	gettext-tools >= 0.17
@@ -56,12 +56,12 @@ BuildRequires:	zlib-devel
 ##
 ## plugins
 ##
-%{?with_qt:BuildRequires:	Qt5Core-devel >= 5.4.0}
-%{?with_qt:BuildRequires:	Qt5Gui-devel >= 5.4.0}
-%{?with_qt:BuildRequires:	Qt5Quick-devel >= 5.4.0}
-%{?with_qt:BuildRequires:	Qt5Qml-devel >= 5.4.0}
-%{?with_qt:BuildRequires:	Qt5X11Extras-devel >= 5.4.0}
-%{?with_qt:BuildRequires:	Qt5WaylandClient-devel >= 5.4.0}
+%{?with_qt:BuildRequires:	Qt5Core-devel >= 5.9.0}
+%{?with_qt:BuildRequires:	Qt5Gui-devel >= 5.9.0}
+%{?with_qt:BuildRequires:	Qt5Quick-devel >= 5.9.0}
+%{?with_qt:BuildRequires:	Qt5Qml-devel >= 5.9.0}
+%{?with_qt:BuildRequires:	Qt5X11Extras-devel >= 5.9.0}
+%{?with_qt:BuildRequires:	Qt5WaylandClient-devel >= 5.9.0}
 %{?with_aalib:BuildRequires:	aalib-devel >= 0.11.0}
 # for matroska
 BuildRequires:	bzip2-devel
@@ -87,7 +87,7 @@ BuildRequires:	libstdc++-devel >= 6:4.7
 BuildRequires:	libv4l-devel
 BuildRequires:	libvpx-devel >= 1.8.0
 BuildRequires:	pulseaudio-devel >= 2.0
-%{?with_qt:BuildRequires:	qt5-build >= 5.4.0}
+%{?with_qt:BuildRequires:	qt5-build >= 5.9.0}
 %{?with_speex:BuildRequires:	speex-devel >= 1:1.1.6}
 BuildRequires:	taglib-devel >= 1.5
 %{?with_twolame:BuildRequires:	twolame-devel >= 0.3.13}
@@ -388,9 +388,9 @@ Wtyczka GStreamera dla serwera dźwięku PulseAudio.
 Summary:	GStreamer Qt (5.x) output plugin
 Summary(pl.UTF-8):	Wtyczka wyjścia obrazu Qt (5.x) dla GStreamera
 Group:		Libraries
-Requires:	Qt5Core >= 5.4.0
-Requires:	Qt5Gui >= 5.4.0
-Requires:	Qt5Quick >= 5.4.0
+Requires:	Qt5Core >= 5.9.0
+Requires:	Qt5Gui >= 5.9.0
+Requires:	Qt5Quick >= 5.9.0
 Requires:	gstreamer >= %{gst_ver}
 Requires:	gstreamer-gl-libs >= %{gstpb_ver}
 Requires:	gstreamer-plugins-base >= %{gstpb_ver}
@@ -610,6 +610,8 @@ cd build/docs
 for config in *-doc.json ; do
 	LC_ALL=C.UTF-8 hotdoc run --conf-file "$config"
 done
+# not available on Linux
+%{__rm} -r osxaudio-doc osxvideo-doc
 %endif
 
 %install
