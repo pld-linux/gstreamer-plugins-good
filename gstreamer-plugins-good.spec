@@ -1,3 +1,4 @@
+# TODO: qt6 (Core Gui Qml Quick WaylandClient)
 #
 # Conditional build:
 %bcond_without	apidocs		# disable gtk-doc
@@ -8,7 +9,7 @@
 %bcond_without	jack		# JACK audio plugin
 %bcond_without	lame		# LAME MP3 encoding plugin
 %bcond_without	mpg123		# MPG123-based MP3 plugin
-%bcond_without	qt		# Qt (5.x) elements (video sink plugin)
+%bcond_without	qt5		# Qt 5.x elements (video sink plugin)
 %bcond_without	soup		# libsoup (2.4 API) http source plugin
 %bcond_without	speex		# speex plugin
 %bcond_without	twolame		# twolame MP2 encoding plugin
@@ -16,22 +17,22 @@
 
 %define		gstname		gst-plugins-good
 %define		gstmver		1.0
-%define		gst_ver		1.20.0
-%define		gstpb_ver	1.20.0
+%define		gst_ver		1.22.0
+%define		gstpb_ver	1.22.0
 
 Summary:	Good GStreamer Streaming-media framework plugins
 Summary(pl.UTF-8):	Dobre wtyczki do środowiska obróbki strumieni GStreamer
 Name:		gstreamer-plugins-good
-Version:	1.20.5
+Version:	1.22.1
 Release:	1
 License:	LGPL v2+
 Group:		Libraries
 Source0:	https://gstreamer.freedesktop.org/src/gst-plugins-good/%{gstname}-%{version}.tar.xz
-# Source0-md5:	63e55373d026497a486dabb1f5bf5abb
+# Source0-md5:	270286bf2827940f54bc55a226b9334b
 URL:		https://gstreamer.freedesktop.org/
 BuildRequires:	docbook-dtd412-xml
 BuildRequires:	gettext-tools >= 0.17
-BuildRequires:	glib2-devel >= 1:2.56.0
+BuildRequires:	glib2-devel >= 1:2.62.0
 %if %(locale -a | grep -q '^C\.utf8$'; echo $?)
 BuildRequires:	glibc-localedb-all
 %endif
@@ -40,7 +41,7 @@ BuildRequires:	gstreamer-gl-devel >= %{gstpb_ver}
 BuildRequires:	gstreamer-plugins-base-devel >= %{gstpb_ver}
 BuildRequires:	gtk+3-devel >= 3.0.0
 %{?with_apidocs:BuildRequires:	hotdoc >= 0.11.0}
-BuildRequires:	meson >= 0.59
+BuildRequires:	meson >= 0.62
 %ifarch %{x8664}
 BuildRequires:	nasm >= 2.13
 %endif
@@ -56,12 +57,12 @@ BuildRequires:	zlib-devel
 ##
 ## plugins
 ##
-%{?with_qt:BuildRequires:	Qt5Core-devel >= 5.9.0}
-%{?with_qt:BuildRequires:	Qt5Gui-devel >= 5.9.0}
-%{?with_qt:BuildRequires:	Qt5Quick-devel >= 5.9.0}
-%{?with_qt:BuildRequires:	Qt5Qml-devel >= 5.9.0}
-%{?with_qt:BuildRequires:	Qt5X11Extras-devel >= 5.9.0}
-%{?with_qt:BuildRequires:	Qt5WaylandClient-devel >= 5.9.0}
+%{?with_qt5:BuildRequires:	Qt5Core-devel >= 5.9.0}
+%{?with_qt5:BuildRequires:	Qt5Gui-devel >= 5.9.0}
+%{?with_qt5:BuildRequires:	Qt5Quick-devel >= 5.9.0}
+%{?with_qt5:BuildRequires:	Qt5Qml-devel >= 5.9.0}
+%{?with_qt5:BuildRequires:	Qt5X11Extras-devel >= 5.9.0}
+%{?with_qt5:BuildRequires:	Qt5WaylandClient-devel >= 5.9.0}
 %{?with_aalib:BuildRequires:	aalib-devel >= 0.11.0}
 # for matroska
 BuildRequires:	bzip2-devel
@@ -80,14 +81,19 @@ BuildRequires:	libjpeg-devel
 %{?with_mpg123:BuildRequires:	libmpg123-devel >= 1.14}
 BuildRequires:	libpng-devel >= 2:1.5.1
 BuildRequires:	libraw1394-devel >= 2.0.0
-BuildRequires:	libshout-devel >= 2.0
+BuildRequires:	libshout-devel >= 2.4.6
+# or libsoup3-devel >= 3.0 (runtime detected)
 %{?with_soup:BuildRequires:	libsoup-devel >= 2.48}
-# for qt and taglib
+# for qt and taglib; 6:7 for qt6
 BuildRequires:	libstdc++-devel >= 6:4.7
 BuildRequires:	libv4l-devel
 BuildRequires:	libvpx-devel >= 1.8.0
+# for adaptivedemux2
+BuildRequires:	libxml2-devel >= 1:2.8
+# for adaptivedemux2 (hls); also gcrypt and openssl possible
+BuildRequires:	nettle-devel >= 3.0
 BuildRequires:	pulseaudio-devel >= 2.0
-%{?with_qt:BuildRequires:	qt5-build >= 5.9.0}
+%{?with_qt5:BuildRequires:	qt5-build >= 5.9.0}
 %{?with_speex:BuildRequires:	speex-devel >= 1:1.1.6}
 BuildRequires:	taglib-devel >= 1.5
 %{?with_twolame:BuildRequires:	twolame-devel >= 0.3.13}
@@ -97,7 +103,7 @@ BuildRequires:	xorg-lib-libX11-devel
 BuildRequires:	xorg-lib-libXdamage-devel
 BuildRequires:	xorg-lib-libXext-devel
 BuildRequires:	xorg-lib-libXfixes-devel
-Requires:	glib2 >= 1:2.56.0
+Requires:	glib2 >= 1:2.62.0
 Requires:	gstreamer >= %{gst_ver}
 Requires:	gstreamer-plugins-base >= %{gstpb_ver}
 Requires:	orc >= 0.4.17
@@ -110,6 +116,8 @@ Obsoletes:	gstreamer-oss4 < 0.10
 Obsoletes:	gstreamer-rtp < 0.10
 Obsoletes:	gstreamer-udp < 0.10
 Conflicts:	gstreamer-plugins-bad < 0.10.19
+# xingmux plugin moved here
+Conflicts:	gstreamer-plugins-ugly < 1.22
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		gstlibdir 	%{_libdir}/gstreamer-%{gstmver}
@@ -134,6 +142,8 @@ nowych typów danych lub możliwości obróbki.
 Summary:	Good GStreamer streaming-media framework plugins API documentation
 Summary(pl.UTF-8):	Dokumentacja API dobrych wtyczek środowiska obróbki strumieni GStreamer
 Group:		Documentation
+# xingmux plugin moved here
+Conflicts:	gstreamer-plugins-ugly-apidocs < 1.22
 BuildArch:	noarch
 
 %description apidocs
@@ -422,7 +432,7 @@ Summary:	GStreamer plugin for communicating with Shoutcast servers
 Summary(pl.UTF-8):	Wtyczka do GStreamera umożliwiająca komunikację z serwerami Shoutcast
 Group:		Libraries
 Requires:	gstreamer >= %{gst_ver}
-Requires:	libshout >= 2.0
+Requires:	libshout >= 2.4.6
 # for locales
 Requires:	%{name} = %{version}-%{release}
 
@@ -438,7 +448,7 @@ Summary(pl.UTF-8):	Wtyczka biblioteki Soup dla GStreamera
 Group:		Libraries
 Requires:	gstreamer >= %{gst_ver}
 Requires:	gstreamer-plugins-base >= %{gstpb_ver}
-# or libsoup3
+# or libsoup3 (runtime detected)
 Requires:	libsoup >= 2.48
 # for locales
 Requires:	%{name} = %{version}-%{release}
@@ -598,7 +608,7 @@ Xlib.
 	%{!?with_lame:-Dlame=disabled} \
 	%{!?with_caca:-Dlibcaca=disabled} \
 	%{!?with_mpg123:-Dmpg123=disabled} \
-	%{!?with_qt:-Dqt5=disabled} \
+	%{!?with_qt5:-Dqt5=disabled} \
 	%{!?with_soup:-Dsoup=disabled} \
 	%{!?with_speex:-Dspeex=disabled} \
 	%{!?with_twolame:-Dtwolame=disabled} \
@@ -633,6 +643,7 @@ rm -rf $RPM_BUILD_ROOT
 %files -f %{gstname}-%{gstmver}.lang
 %defattr(644,root,root,755)
 %doc AUTHORS ChangeLog NEWS README.md RELEASE
+%attr(755,root,root) %{gstlibdir}/libgstadaptivedemux2.so
 %attr(755,root,root) %{gstlibdir}/libgstalphacolor.so
 %attr(755,root,root) %{gstlibdir}/libgstalpha.so
 %attr(755,root,root) %{gstlibdir}/libgstapetag.so
@@ -665,6 +676,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{gstlibdir}/libgstvideocrop.so
 %attr(755,root,root) %{gstlibdir}/libgstvideofilter.so
 %attr(755,root,root) %{gstlibdir}/libgstvideomixer.so
+%attr(755,root,root) %{gstlibdir}/libgstxingmux.so
 %attr(755,root,root) %{gstlibdir}/libgsty4menc.so
 %{_datadir}/gstreamer-%{gstmver}/presets
 
@@ -673,6 +685,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %{_docdir}/gstreamer-%{gstmver}/1394-doc
 %{_docdir}/gstreamer-%{gstmver}/aasink-doc
+%{_docdir}/gstreamer-%{gstmver}/adaptivedemux2-doc
 %{_docdir}/gstreamer-%{gstmver}/alaw-doc
 %{_docdir}/gstreamer-%{gstmver}/alpha-doc
 %{_docdir}/gstreamer-%{gstmver}/alphacolor-doc
@@ -743,6 +756,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_docdir}/gstreamer-%{gstmver}/wavpack-doc
 %{_docdir}/gstreamer-%{gstmver}/wavparse-doc
 %{_docdir}/gstreamer-%{gstmver}/ximagesrc-doc
+%{_docdir}/gstreamer-%{gstmver}/xingmux-doc
 %{_docdir}/gstreamer-%{gstmver}/y4menc-doc
 %endif
 
@@ -830,7 +844,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %{gstlibdir}/libgstpulseaudio.so
 
-%if %{with qt}
+%if %{with qt5}
 %files -n gstreamer-videosink-qt
 %defattr(644,root,root,755)
 %attr(755,root,root) %{gstlibdir}/libgstqmlgl.so
