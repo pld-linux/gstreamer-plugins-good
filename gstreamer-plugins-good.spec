@@ -1,4 +1,3 @@
-# TODO: qt6 (Core Gui Qml Quick WaylandClient)
 #
 # Conditional build:
 %bcond_without	apidocs		# disable gtk-doc
@@ -10,6 +9,7 @@
 %bcond_without	lame		# LAME MP3 encoding plugin
 %bcond_without	mpg123		# MPG123-based MP3 plugin
 %bcond_without	qt5		# Qt 5.x elements (video sink plugin)
+%bcond_without	qt6		# Qt 6.x elements (video sink plugin)
 %bcond_without	soup		# libsoup (2.4 API) http source plugin
 %bcond_without	speex		# speex plugin
 %bcond_without	twolame		# twolame MP2 encoding plugin
@@ -59,10 +59,15 @@ BuildRequires:	zlib-devel
 ##
 %{?with_qt5:BuildRequires:	Qt5Core-devel >= 5.9.0}
 %{?with_qt5:BuildRequires:	Qt5Gui-devel >= 5.9.0}
-%{?with_qt5:BuildRequires:	Qt5Quick-devel >= 5.9.0}
 %{?with_qt5:BuildRequires:	Qt5Qml-devel >= 5.9.0}
+%{?with_qt5:BuildRequires:	Qt5Quick-devel >= 5.9.0}
 %{?with_qt5:BuildRequires:	Qt5X11Extras-devel >= 5.9.0}
 %{?with_qt5:BuildRequires:	Qt5WaylandClient-devel >= 5.9.0}
+%{?with_qt6:BuildRequires:	Qt6Core-devel >= 6}
+%{?with_qt6:BuildRequires:	Qt6Gui-devel >= 6}
+%{?with_qt6:BuildRequires:	Qt6Qml-devel >= 6}
+%{?with_qt6:BuildRequires:	Qt6Quick-devel >= 6}
+%{?with_qt6:BuildRequires:	Qt6WaylandClient-devel >= 6}
 %{?with_aalib:BuildRequires:	aalib-devel >= 0.11.0}
 # for matroska
 BuildRequires:	bzip2-devel
@@ -84,8 +89,9 @@ BuildRequires:	libraw1394-devel >= 2.0.0
 BuildRequires:	libshout-devel >= 2.4.6
 # or libsoup3-devel >= 3.0 (runtime detected)
 %{?with_soup:BuildRequires:	libsoup-devel >= 2.48}
-# for qt and taglib; 6:7 for qt6
+# for qt and taglib
 BuildRequires:	libstdc++-devel >= 6:4.7
+%{?with_qt6:BuildRequires:	libstdc++-devel >= 6:7}
 BuildRequires:	libv4l-devel
 BuildRequires:	libvpx-devel >= 1.8.0
 # for adaptivedemux2
@@ -94,6 +100,7 @@ BuildRequires:	libxml2-devel >= 1:2.8
 BuildRequires:	nettle-devel >= 3.0
 BuildRequires:	pulseaudio-devel >= 2.0
 %{?with_qt5:BuildRequires:	qt5-build >= 5.9.0}
+%{?with_qt6:BuildRequires:	qt6-build >= 6}
 %{?with_speex:BuildRequires:	speex-devel >= 1:1.1.6}
 BuildRequires:	taglib-devel >= 1.5
 %{?with_twolame:BuildRequires:	twolame-devel >= 0.3.13}
@@ -412,6 +419,21 @@ GStreamer Qt (5.x) output plugin.
 %description -n gstreamer-videosink-qt -l pl.UTF-8
 Wtyczka wyjścia obrazu Qt (5.x) dla GStreamera.
 
+%package -n gstreamer-videosink-qt6
+Summary:	GStreamer Qt 6.x output plugin
+Summary(pl.UTF-8):	Wtyczka wyjścia obrazu Qt 6.x dla GStreamera
+Group:		Libraries
+Requires:	gstreamer >= %{gst_ver}
+Requires:	gstreamer-gl-libs >= %{gstpb_ver}
+Requires:	gstreamer-plugins-base >= %{gstpb_ver}
+Provides:	gstreamer-videosink = %{version}
+
+%description -n gstreamer-videosink-qt6
+GStreamer Qt 6.x output plugin.
+
+%description -n gstreamer-videosink-qt6 -l pl.UTF-8
+Wtyczka wyjścia obrazu Qt 6.x dla GStreamera.
+
 %package -n gstreamer-raw1394
 Summary:	GStreamer raw1394 Firewire plugin
 Summary(pl.UTF-8):	Wtyczka FireWire dla GStreamera
@@ -609,6 +631,7 @@ Xlib.
 	%{!?with_caca:-Dlibcaca=disabled} \
 	%{!?with_mpg123:-Dmpg123=disabled} \
 	%{!?with_qt5:-Dqt5=disabled} \
+	%{!?with_qt6:-Dqt6=disabled} \
 	%{!?with_soup:-Dsoup=disabled} \
 	%{!?with_speex:-Dspeex=disabled} \
 	%{!?with_twolame:-Dtwolame=disabled} \
@@ -848,6 +871,12 @@ rm -rf $RPM_BUILD_ROOT
 %files -n gstreamer-videosink-qt
 %defattr(644,root,root,755)
 %attr(755,root,root) %{gstlibdir}/libgstqmlgl.so
+%endif
+
+%if %{with qt5}
+%files -n gstreamer-videosink-qt6
+%defattr(644,root,root,755)
+%attr(755,root,root) %{gstlibdir}/libgstqml6.so
 %endif
 
 %files -n gstreamer-raw1394
