@@ -101,6 +101,7 @@ BuildRequires:	nettle-devel >= 3.0
 BuildRequires:	pulseaudio-devel >= 2.0
 %{?with_qt5:BuildRequires:	qt5-build >= 5.9.0}
 %{?with_qt6:BuildRequires:	qt6-build >= 6}
+%{?with_qt6:BuildRequires:	qt6-linguist >= 6}
 %{?with_speex:BuildRequires:	speex-devel >= 1:1.1.6}
 BuildRequires:	taglib-devel >= 1.5
 %{?with_twolame:BuildRequires:	twolame-devel >= 0.3.13}
