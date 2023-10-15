@@ -23,12 +23,12 @@
 Summary:	Good GStreamer Streaming-media framework plugins
 Summary(pl.UTF-8):	Dobre wtyczki do środowiska obróbki strumieni GStreamer
 Name:		gstreamer-plugins-good
-Version:	1.22.5
-Release:	2
+Version:	1.22.6
+Release:	1
 License:	LGPL v2+
 Group:		Libraries
 Source0:	https://gstreamer.freedesktop.org/src/gst-plugins-good/%{gstname}-%{version}.tar.xz
-# Source0-md5:	8c5a67f702ff5f30290be35ac27b3ac9
+# Source0-md5:	96908725329c734eabeefcf2c443fbf4
 URL:		https://gstreamer.freedesktop.org/
 BuildRequires:	docbook-dtd412-xml
 BuildRequires:	gettext-tools >= 0.17
@@ -874,7 +874,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{gstlibdir}/libgstqmlgl.so
 %endif
 
-%if %{with qt5}
+%if %{with qt6}
 %files -n gstreamer-videosink-qt6
 %defattr(644,root,root,755)
 %attr(755,root,root) %{gstlibdir}/libgstqml6.so
