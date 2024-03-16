@@ -2,6 +2,7 @@
 # Conditional build:
 %bcond_without	apidocs		# disable gtk-doc
 %bcond_without	aalib		# aa videosink plugin
+%bcond_without	amr		# AMR-NB/AMR-WB plugins
 %bcond_without	caca		# caca videosink plugin
 %bcond_without	cairo		# cairo plugin
 %bcond_without	gtk		# GTK+ (3.x) elements (video sink plugin)
@@ -17,22 +18,22 @@
 
 %define		gstname		gst-plugins-good
 %define		gstmver		1.0
-%define		gst_ver		1.22.0
-%define		gstpb_ver	1.22.0
+%define		gst_ver		1.24.0
+%define		gstpb_ver	1.24.0
 
 Summary:	Good GStreamer Streaming-media framework plugins
 Summary(pl.UTF-8):	Dobre wtyczki do środowiska obróbki strumieni GStreamer
 Name:		gstreamer-plugins-good
-Version:	1.22.6
+Version:	1.24.0
 Release:	1
 License:	LGPL v2+
 Group:		Libraries
 Source0:	https://gstreamer.freedesktop.org/src/gst-plugins-good/%{gstname}-%{version}.tar.xz
-# Source0-md5:	96908725329c734eabeefcf2c443fbf4
+# Source0-md5:	f4ed416b9bd08114aeb586e3525f9165
 URL:		https://gstreamer.freedesktop.org/
 BuildRequires:	docbook-dtd412-xml
 BuildRequires:	gettext-tools >= 0.17
-BuildRequires:	glib2-devel >= 1:2.62.0
+BuildRequires:	glib2-devel >= 1:2.64.0
 %if %(locale -a | grep -q '^C\.utf8$'; echo $?)
 BuildRequires:	glibc-localedb-all
 %endif
@@ -41,12 +42,12 @@ BuildRequires:	gstreamer-gl-devel >= %{gstpb_ver}
 BuildRequires:	gstreamer-plugins-base-devel >= %{gstpb_ver}
 BuildRequires:	gtk+3-devel >= 3.0.0
 %{?with_apidocs:BuildRequires:	hotdoc >= 0.11.0}
-BuildRequires:	meson >= 0.62
+BuildRequires:	meson >= 1.1
 %ifarch %{x8664}
 BuildRequires:	nasm >= 2.13
 %endif
 BuildRequires:	ninja >= 1.5
-BuildRequires:	orc-devel >= 0.4.17
+BuildRequires:	orc-devel >= 0.4.38
 BuildRequires:	pkgconfig >= 1:0.9.0
 BuildRequires:	python3 >= 1:3.2
 BuildRequires:	rpm-build >= 4.6
@@ -87,17 +88,17 @@ BuildRequires:	libjpeg-devel
 BuildRequires:	libpng-devel >= 2:1.5.1
 BuildRequires:	libraw1394-devel >= 2.0.0
 BuildRequires:	libshout-devel >= 2.4.6
-# or libsoup3-devel >= 3.0 (runtime detected)
-%{?with_soup:BuildRequires:	libsoup-devel >= 2.48}
-# for qt and taglib
-BuildRequires:	libstdc++-devel >= 6:4.7
-%{?with_qt6:BuildRequires:	libstdc++-devel >= 6:7}
+# or libsoup2-devel >= 2.48 (runtime detected)
+%{?with_soup:BuildRequires:	libsoup3-devel >= 3.0}
+# for qt (C++11), qt6 and taglib
+BuildRequires:	libstdc++-devel >= 6:7
 BuildRequires:	libv4l-devel
 BuildRequires:	libvpx-devel >= 1.8.0
 # for adaptivedemux2
 BuildRequires:	libxml2-devel >= 1:2.8
 # for adaptivedemux2 (hls); also gcrypt and openssl possible
 BuildRequires:	nettle-devel >= 3.0
+%{?with_amr:BuildRequires:	opencore-amr-devel >= 0.1.3}
 BuildRequires:	pulseaudio-devel >= 2.0
 %{?with_qt5:BuildRequires:	qt5-build >= 5.9.0}
 %{?with_qt5:BuildRequires:	qt5-linguist >= 5.9.0}
@@ -112,10 +113,10 @@ BuildRequires:	xorg-lib-libX11-devel
 BuildRequires:	xorg-lib-libXdamage-devel
 BuildRequires:	xorg-lib-libXext-devel
 BuildRequires:	xorg-lib-libXfixes-devel
-Requires:	glib2 >= 1:2.62.0
+Requires:	glib2 >= 1:2.64.0
 Requires:	gstreamer >= %{gst_ver}
 Requires:	gstreamer-plugins-base >= %{gstpb_ver}
-Requires:	orc >= 0.4.17
+Requires:	orc >= 0.4.38
 Obsoletes:	gstreamer-avi < 0.10
 Obsoletes:	gstreamer-flx < 0.10
 Obsoletes:	gstreamer-matroska < 0.10
@@ -180,6 +181,34 @@ Plugin for viewing movies in Ascii-art using aalib library.
 
 %description -n gstreamer-videosink-aa -l pl.UTF-8
 Wtyczka wyjścia obrazu Ascii-art używająca biblioteki aalib.
+
+%package -n gstreamer-amrnb
+Summary:	GStreamer AMR-NB decoder plugin
+Summary(pl.UTF-8):	Wtyczka do GStreamera dekodująca pliki AMR-NB
+Group:		Libraries
+Requires:	gstreamer >= %{gst_ver}
+Requires:	gstreamer-plugins-base >= %{gstpb_ver}
+Requires:	opencore-amr >= 0.1.3
+
+%description -n gstreamer-amrnb
+Plugin for decoding of AMR-NB files.
+
+%description -n gstreamer-amrnb -l pl.UTF-8
+Wtyczka dekodująca pliki AMR-NB.
+
+%package -n gstreamer-amrwb
+Summary:	GStreamer AMR-WB decoder plugin
+Summary(pl.UTF-8):	Wtyczka do GStreamera dekodująca pliki AMR-WB
+Group:		Libraries
+Requires:	gstreamer >= %{gst_ver}
+Requires:	gstreamer-plugins-base >= %{gstpb_ver}
+Requires:	opencore-amr >= 0.1.3
+
+%description -n gstreamer-amrwb
+Plugin for decoding of AMR-WB files.
+
+%description -n gstreamer-amrwb -l pl.UTF-8
+Wtyczka dekodująca pliki AMR-WB.
 
 %package -n gstreamer-audio-effects-good
 Summary:	Good GStreamer audio effects plugins
@@ -625,6 +654,8 @@ Xlib.
 %meson build \
 	--default-library=shared \
 	%{!?with_aalib:-Daalib=disabled} \
+	%{!?with_amr:-Damrnb=disabled} \
+	%{!?with_amr:-Damrwbdec=disabled} \
 	%{!?with_cairo:-Dcairo=disabled} \
 	%{!?with_apidocs:-Ddoc=disabled} \
 	%{!?with_gtk:-Dgtk3=disabled} \
@@ -643,11 +674,11 @@ Xlib.
 
 %if %{with apidocs}
 cd build/docs
-for config in *-doc.json ; do
+for config in plugin-*.json ; do
 	LC_ALL=C.UTF-8 hotdoc run --conf-file "$config"
 done
 # not available on Linux
-%{__rm} -r osxaudio-doc osxvideo-doc
+%{__rm} -r plugin-{osxaudio,osxvideo}
 %endif
 
 %install
@@ -657,7 +688,9 @@ rm -rf $RPM_BUILD_ROOT
 
 %if %{with apidocs}
 install -d $RPM_BUILD_ROOT%{_docdir}/gstreamer-%{gstmver}
-cp -pr build/docs/*-doc $RPM_BUILD_ROOT%{_docdir}/gstreamer-%{gstmver}
+for d in build/docs/plugin-* ; do
+	[ ! -d "$d" ] || cp -pr "$d" $RPM_BUILD_ROOT%{_docdir}/gstreamer-%{gstmver}
+done
 %endif
 
 %find_lang %{gstname}-%{gstmver}
@@ -708,81 +741,83 @@ rm -rf $RPM_BUILD_ROOT
 %if %{with apidocs}
 %files apidocs
 %defattr(644,root,root,755)
-%{_docdir}/gstreamer-%{gstmver}/1394-doc
-%{_docdir}/gstreamer-%{gstmver}/aasink-doc
-%{_docdir}/gstreamer-%{gstmver}/adaptivedemux2-doc
-%{_docdir}/gstreamer-%{gstmver}/alaw-doc
-%{_docdir}/gstreamer-%{gstmver}/alpha-doc
-%{_docdir}/gstreamer-%{gstmver}/alphacolor-doc
-%{_docdir}/gstreamer-%{gstmver}/apetag-doc
-%{_docdir}/gstreamer-%{gstmver}/audiofx-doc
-%{_docdir}/gstreamer-%{gstmver}/audioparsers-doc
-%{_docdir}/gstreamer-%{gstmver}/auparse-doc
-%{_docdir}/gstreamer-%{gstmver}/autodetect-doc
-%{_docdir}/gstreamer-%{gstmver}/avi-doc
-%{_docdir}/gstreamer-%{gstmver}/cacasink-doc
-%{_docdir}/gstreamer-%{gstmver}/cairo-doc
-%{_docdir}/gstreamer-%{gstmver}/cutter-doc
-%{_docdir}/gstreamer-%{gstmver}/debug-doc
-%{_docdir}/gstreamer-%{gstmver}/deinterlace-doc
-%{_docdir}/gstreamer-%{gstmver}/dtmf-doc
-%{_docdir}/gstreamer-%{gstmver}/dv-doc
-%{_docdir}/gstreamer-%{gstmver}/effectv-doc
-%{_docdir}/gstreamer-%{gstmver}/equalizer-doc
-%{_docdir}/gstreamer-%{gstmver}/flac-doc
-%{_docdir}/gstreamer-%{gstmver}/flv-doc
-%{_docdir}/gstreamer-%{gstmver}/flxdec-doc
-%{_docdir}/gstreamer-%{gstmver}/gdkpixbuf-doc
-%{_docdir}/gstreamer-%{gstmver}/goom-doc
-%{_docdir}/gstreamer-%{gstmver}/goom2k1-doc
-%{_docdir}/gstreamer-%{gstmver}/gtk-doc
-%{_docdir}/gstreamer-%{gstmver}/icydemux-doc
-%{_docdir}/gstreamer-%{gstmver}/id3demux-doc
-%{_docdir}/gstreamer-%{gstmver}/imagefreeze-doc
-%{_docdir}/gstreamer-%{gstmver}/interleave-doc
-%{_docdir}/gstreamer-%{gstmver}/isomp4-doc
-%{_docdir}/gstreamer-%{gstmver}/jack-doc
-%{_docdir}/gstreamer-%{gstmver}/jpeg-doc
-%{_docdir}/gstreamer-%{gstmver}/lame-doc
-%{_docdir}/gstreamer-%{gstmver}/level-doc
-%{_docdir}/gstreamer-%{gstmver}/matroska-doc
-%{_docdir}/gstreamer-%{gstmver}/monoscope-doc
-%{_docdir}/gstreamer-%{gstmver}/mpg123-doc
-%{_docdir}/gstreamer-%{gstmver}/mulaw-doc
-%{_docdir}/gstreamer-%{gstmver}/multifile-doc
-%{_docdir}/gstreamer-%{gstmver}/multipart-doc
-%{_docdir}/gstreamer-%{gstmver}/navigationtest-doc
-%{_docdir}/gstreamer-%{gstmver}/oss4-doc
-%{_docdir}/gstreamer-%{gstmver}/ossaudio-doc
-%{_docdir}/gstreamer-%{gstmver}/png-doc
-%{_docdir}/gstreamer-%{gstmver}/pulseaudio-doc
-%{_docdir}/gstreamer-%{gstmver}/qmlgl-doc
-%{_docdir}/gstreamer-%{gstmver}/replaygain-doc
-%{_docdir}/gstreamer-%{gstmver}/rpicamsrc-doc
-%{_docdir}/gstreamer-%{gstmver}/rtp-doc
-%{_docdir}/gstreamer-%{gstmver}/rtpmanager-doc
-%{_docdir}/gstreamer-%{gstmver}/rtsp-doc
-%{_docdir}/gstreamer-%{gstmver}/shapewipe-doc
-%{_docdir}/gstreamer-%{gstmver}/shout2-doc
-%{_docdir}/gstreamer-%{gstmver}/smpte-doc
-%{_docdir}/gstreamer-%{gstmver}/soup-doc
-%{_docdir}/gstreamer-%{gstmver}/spectrum-doc
-%{_docdir}/gstreamer-%{gstmver}/speex-doc
-%{_docdir}/gstreamer-%{gstmver}/taglib-doc
-%{_docdir}/gstreamer-%{gstmver}/twolame-doc
-%{_docdir}/gstreamer-%{gstmver}/udp-doc
-%{_docdir}/gstreamer-%{gstmver}/video4linux2-doc
-%{_docdir}/gstreamer-%{gstmver}/videobox-doc
-%{_docdir}/gstreamer-%{gstmver}/videocrop-doc
-%{_docdir}/gstreamer-%{gstmver}/videofilter-doc
-%{_docdir}/gstreamer-%{gstmver}/videomixer-doc
-%{_docdir}/gstreamer-%{gstmver}/vpx-doc
-%{_docdir}/gstreamer-%{gstmver}/wavenc-doc
-%{_docdir}/gstreamer-%{gstmver}/wavpack-doc
-%{_docdir}/gstreamer-%{gstmver}/wavparse-doc
-%{_docdir}/gstreamer-%{gstmver}/ximagesrc-doc
-%{_docdir}/gstreamer-%{gstmver}/xingmux-doc
-%{_docdir}/gstreamer-%{gstmver}/y4menc-doc
+%{_docdir}/gstreamer-%{gstmver}/plugin-1394
+%{_docdir}/gstreamer-%{gstmver}/plugin-aasink
+%{_docdir}/gstreamer-%{gstmver}/plugin-adaptivedemux2
+%{_docdir}/gstreamer-%{gstmver}/plugin-alaw
+%{_docdir}/gstreamer-%{gstmver}/plugin-alpha
+%{_docdir}/gstreamer-%{gstmver}/plugin-alphacolor
+%{_docdir}/gstreamer-%{gstmver}/plugin-amrnb
+%{_docdir}/gstreamer-%{gstmver}/plugin-amrwbdec
+%{_docdir}/gstreamer-%{gstmver}/plugin-apetag
+%{_docdir}/gstreamer-%{gstmver}/plugin-audiofx
+%{_docdir}/gstreamer-%{gstmver}/plugin-audioparsers
+%{_docdir}/gstreamer-%{gstmver}/plugin-auparse
+%{_docdir}/gstreamer-%{gstmver}/plugin-autodetect
+%{_docdir}/gstreamer-%{gstmver}/plugin-avi
+%{_docdir}/gstreamer-%{gstmver}/plugin-cacasink
+%{_docdir}/gstreamer-%{gstmver}/plugin-cairo
+%{_docdir}/gstreamer-%{gstmver}/plugin-cutter
+%{_docdir}/gstreamer-%{gstmver}/plugin-debug
+%{_docdir}/gstreamer-%{gstmver}/plugin-deinterlace
+%{_docdir}/gstreamer-%{gstmver}/plugin-dtmf
+%{_docdir}/gstreamer-%{gstmver}/plugin-dv
+%{_docdir}/gstreamer-%{gstmver}/plugin-effectv
+%{_docdir}/gstreamer-%{gstmver}/plugin-equalizer
+%{_docdir}/gstreamer-%{gstmver}/plugin-flac
+%{_docdir}/gstreamer-%{gstmver}/plugin-flv
+%{_docdir}/gstreamer-%{gstmver}/plugin-flxdec
+%{_docdir}/gstreamer-%{gstmver}/plugin-gdkpixbuf
+%{_docdir}/gstreamer-%{gstmver}/plugin-goom
+%{_docdir}/gstreamer-%{gstmver}/plugin-goom2k1
+%{_docdir}/gstreamer-%{gstmver}/plugin-gtk
+%{_docdir}/gstreamer-%{gstmver}/plugin-icydemux
+%{_docdir}/gstreamer-%{gstmver}/plugin-id3demux
+%{_docdir}/gstreamer-%{gstmver}/plugin-imagefreeze
+%{_docdir}/gstreamer-%{gstmver}/plugin-interleave
+%{_docdir}/gstreamer-%{gstmver}/plugin-isomp4
+%{_docdir}/gstreamer-%{gstmver}/plugin-jack
+%{_docdir}/gstreamer-%{gstmver}/plugin-jpeg
+%{_docdir}/gstreamer-%{gstmver}/plugin-lame
+%{_docdir}/gstreamer-%{gstmver}/plugin-level
+%{_docdir}/gstreamer-%{gstmver}/plugin-matroska
+%{_docdir}/gstreamer-%{gstmver}/plugin-monoscope
+%{_docdir}/gstreamer-%{gstmver}/plugin-mpg123
+%{_docdir}/gstreamer-%{gstmver}/plugin-mulaw
+%{_docdir}/gstreamer-%{gstmver}/plugin-multifile
+%{_docdir}/gstreamer-%{gstmver}/plugin-multipart
+%{_docdir}/gstreamer-%{gstmver}/plugin-navigationtest
+%{_docdir}/gstreamer-%{gstmver}/plugin-oss4
+%{_docdir}/gstreamer-%{gstmver}/plugin-ossaudio
+%{_docdir}/gstreamer-%{gstmver}/plugin-png
+%{_docdir}/gstreamer-%{gstmver}/plugin-pulseaudio
+%{_docdir}/gstreamer-%{gstmver}/plugin-qmlgl
+%{_docdir}/gstreamer-%{gstmver}/plugin-replaygain
+%{_docdir}/gstreamer-%{gstmver}/plugin-rpicamsrc
+%{_docdir}/gstreamer-%{gstmver}/plugin-rtp
+%{_docdir}/gstreamer-%{gstmver}/plugin-rtpmanager
+%{_docdir}/gstreamer-%{gstmver}/plugin-rtsp
+%{_docdir}/gstreamer-%{gstmver}/plugin-shapewipe
+%{_docdir}/gstreamer-%{gstmver}/plugin-shout2
+%{_docdir}/gstreamer-%{gstmver}/plugin-smpte
+%{_docdir}/gstreamer-%{gstmver}/plugin-soup
+%{_docdir}/gstreamer-%{gstmver}/plugin-spectrum
+%{_docdir}/gstreamer-%{gstmver}/plugin-speex
+%{_docdir}/gstreamer-%{gstmver}/plugin-taglib
+%{_docdir}/gstreamer-%{gstmver}/plugin-twolame
+%{_docdir}/gstreamer-%{gstmver}/plugin-udp
+%{_docdir}/gstreamer-%{gstmver}/plugin-video4linux2
+%{_docdir}/gstreamer-%{gstmver}/plugin-videobox
+%{_docdir}/gstreamer-%{gstmver}/plugin-videocrop
+%{_docdir}/gstreamer-%{gstmver}/plugin-videofilter
+%{_docdir}/gstreamer-%{gstmver}/plugin-videomixer
+%{_docdir}/gstreamer-%{gstmver}/plugin-vpx
+%{_docdir}/gstreamer-%{gstmver}/plugin-wavenc
+%{_docdir}/gstreamer-%{gstmver}/plugin-wavpack
+%{_docdir}/gstreamer-%{gstmver}/plugin-wavparse
+%{_docdir}/gstreamer-%{gstmver}/plugin-ximagesrc
+%{_docdir}/gstreamer-%{gstmver}/plugin-xingmux
+%{_docdir}/gstreamer-%{gstmver}/plugin-y4menc
 %endif
 
 ##
@@ -793,6 +828,16 @@ rm -rf $RPM_BUILD_ROOT
 %files -n gstreamer-videosink-aa
 %defattr(644,root,root,755)
 %attr(755,root,root) %{gstlibdir}/libgstaasink.so
+%endif
+
+%if %{with amr}
+%files -n gstreamer-amrnb
+%defattr(644,root,root,755)
+%attr(755,root,root) %{gstlibdir}/libgstamrnb.so
+
+%files -n gstreamer-amrwb
+%defattr(644,root,root,755)
+%attr(755,root,root) %{gstlibdir}/libgstamrwbdec.so
 %endif
 
 %files -n gstreamer-audio-effects-good
