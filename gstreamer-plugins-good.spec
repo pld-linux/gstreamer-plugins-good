@@ -51,7 +51,7 @@ BuildRequires:	orc-devel >= 0.4.38
 BuildRequires:	pkgconfig >= 1:0.9.0
 BuildRequires:	python3 >= 1:3.2
 BuildRequires:	rpm-build >= 4.6
-BuildRequires:	rpmbuild(macros) >= 1.736
+BuildRequires:	rpmbuild(macros) >= 2.042
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	xz
 BuildRequires:	zlib-devel
@@ -652,7 +652,7 @@ Xlib.
 %setup -q -n %{gstname}-%{version}
 
 %build
-%meson build \
+%meson \
 	--default-library=shared \
 	%{!?with_aalib:-Daalib=disabled} \
 	%{!?with_amr:-Damrnb=disabled} \
@@ -671,7 +671,7 @@ Xlib.
 	%{!?with_twolame:-Dtwolame=disabled} \
 	%{!?with_wavpack:-Dwavpack=disabled}
 
-%ninja_build -C build
+%meson_build
 
 %if %{with apidocs}
 cd build/docs
@@ -685,7 +685,7 @@ done
 %install
 rm -rf $RPM_BUILD_ROOT
 
-%ninja_install -C build
+%meson_install
 
 %if %{with apidocs}
 install -d $RPM_BUILD_ROOT%{_docdir}/gstreamer-%{gstmver}
