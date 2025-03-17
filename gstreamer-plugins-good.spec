@@ -18,18 +18,18 @@
 
 %define		gstname		gst-plugins-good
 %define		gstmver		1.0
-%define		gst_ver		1.24.0
-%define		gstpb_ver	1.24.0
+%define		gst_ver		1.26.0
+%define		gstpb_ver	1.26.0
 
 Summary:	Good GStreamer Streaming-media framework plugins
 Summary(pl.UTF-8):	Dobre wtyczki do środowiska obróbki strumieni GStreamer
 Name:		gstreamer-plugins-good
-Version:	1.24.12
+Version:	1.26.0
 Release:	1
 License:	LGPL v2+
 Group:		Libraries
 Source0:	https://gstreamer.freedesktop.org/src/gst-plugins-good/%{gstname}-%{version}.tar.xz
-# Source0-md5:	99f259e6aca8b499ece578948cb91bbc
+# Source0-md5:	6e9543bba898324032a0a78e405caebb
 URL:		https://gstreamer.freedesktop.org/
 BuildRequires:	docbook-dtd412-xml
 BuildRequires:	gettext-tools >= 0.17
@@ -42,12 +42,12 @@ BuildRequires:	gstreamer-gl-devel >= %{gstpb_ver}
 BuildRequires:	gstreamer-plugins-base-devel >= %{gstpb_ver}
 BuildRequires:	gtk+3-devel >= 3.0.0
 %{?with_apidocs:BuildRequires:	hotdoc >= 0.11.0}
-BuildRequires:	meson >= 1.1
+BuildRequires:	meson >= 1.4
 %ifarch %{x8664}
 BuildRequires:	nasm >= 2.13
 %endif
 BuildRequires:	ninja >= 1.5
-BuildRequires:	orc-devel >= 0.4.38
+BuildRequires:	orc-devel >= 0.4.41
 BuildRequires:	pkgconfig >= 1:0.9.0
 BuildRequires:	python3 >= 1:3.2
 BuildRequires:	rpm-build >= 4.6
@@ -114,10 +114,11 @@ BuildRequires:	xorg-lib-libX11-devel
 BuildRequires:	xorg-lib-libXdamage-devel
 BuildRequires:	xorg-lib-libXext-devel
 BuildRequires:	xorg-lib-libXfixes-devel
+BuildRequires:	xorg-lib-libXtst-devel
 Requires:	glib2 >= 1:2.64.0
 Requires:	gstreamer >= %{gst_ver}
 Requires:	gstreamer-plugins-base >= %{gstpb_ver}
-Requires:	orc >= 0.4.38
+Requires:	orc >= 0.4.41
 Obsoletes:	gstreamer-avi < 0.10
 Obsoletes:	gstreamer-flx < 0.10
 Obsoletes:	gstreamer-matroska < 0.10
@@ -654,27 +655,109 @@ Xlib.
 %build
 %meson \
 	--default-library=shared \
-	%{!?with_aalib:-Daalib=disabled} \
-	%{!?with_amr:-Damrnb=disabled} \
-	%{!?with_amr:-Damrwbdec=disabled} \
-	%{!?with_cairo:-Dcairo=disabled} \
-	%{!?with_apidocs:-Ddoc=disabled} \
-	%{!?with_gtk:-Dgtk3=disabled} \
-	%{!?with_jack:-Djack=disabled} \
-	%{!?with_lame:-Dlame=disabled} \
-	%{!?with_caca:-Dlibcaca=disabled} \
-	%{!?with_mpg123:-Dmpg123=disabled} \
-	%{!?with_qt5:-Dqt5=disabled} \
-	%{!?with_qt6:-Dqt6=disabled} \
+	-Daalib=%{__enabled_disabled aalib} \
+	-Dadaptivedemux2=enabled \
+	-Dalpha=enabled \
+	-Damrnb=%{__enabled_disabled amr} \
+	-Damrwbdec=%{__enabled_disabled amr} \
+	-Dapetag=enabled \
+	-Dasm=enabled \
+	-Daudiofx=enabled \
+	-Daudioparsers=enabled \
+	-Dauparse=enabled \
+	-Dautodetect=enabled \
+	-Davi=enabled \
+	-Dbz2=enabled \
+	-Dcairo=%{__enabled_disabled cairo} \
+	-Dcutter=enabled \
+	-Ddebugutils=enabled \
+	-Ddeinterlace=enabled \
+	-Ddirectsound=disabled \
+	-Ddoc=%{__enabled_disabled apidocs} \
+	-Ddv=enabled \
+	-Ddv1394=enabled \
+	-Ddtmf=enabled \
+	-Deffectv=enabled \
+	-Dequalizer=enabled \
+	-Dexamples=disabled \
+	-Dflac=enabled \
+	-Dflv=enabled \
+	-Dflx=enabled \
+	-Dgdk-pixbuf=enabled \
+	-Dglib_assert=false \
+	-Dglib_checks=false \
+	-Dglib_debug=disabled \
+	-Dgoom=enabled \
+	-Dgoom2k1=enabled \
+	-Dgtk3=%{__enabled_disabled gtk} \
+	-Dhls-crypto=nettle \
+	-Dicydemux=enabled \
+	-Did3demux=enabled \
+	-Dimagefreeze=enabled \
+	-Dinterleave=enabled \
+	-Disomp4=enabled \
+	-Djack=%{__enabled_disabled jack} \
+	-Djpeg=enabled \
+	-Dlame=%{__enabled_disabled lame} \
+	-Dlaw=enabled \
+	-Dlevel=enabled \
+	-Dlibcaca=%{__enabled_disabled caca} \
+	-Dmatroska=enabled \
+	-Dmpg123=%{__enabled_disabled mpg123} \
+	-Dmultifile=enabled \
+	-Dmultipart=enabled \
+	-Dnls=enabled \
+	-Dorc=enabled \
+	-Doss=enabled \
+	-Doss4=enabled \
+	-Dosxaudio=disabled \
+	-Dosxvideo=disabled \
+	-Dpng=enabled \
+	-Dpulse=enabled \
+	-Dqt-egl=enabled \
+	-Dqt-wayland=enabled \
+	-Dqt-x11=enabled \
+	-Dqt5=%{__enabled_disabled qt5} \
+	-Dqt6=%{__enabled_disabled qt6} \
+	-Dreplaygain=enabled \
 	-Drpicamsrc=disabled \
-	%{!?with_soup:-Dsoup=disabled} \
-	%{!?with_speex:-Dspeex=disabled} \
-	%{!?with_twolame:-Dtwolame=disabled} \
-	%{!?with_wavpack:-Dwavpack=disabled}
+	-Drtp=enabled \
+	-Drtpmanager=enabled \
+	-Drtsp=enabled \
+	-Dshapewipe=enabled \
+	-Dshout2=enabled \
+	-Dsmpte=enabled \
+	-Dsoup=%{__enabled_disabled soup} \
+	-Dspectrum=enabled \
+	-Dspeex=%{__enabled_disabled speex} \
+	-Dtaglib=enabled \
+	-Dtests=disabled \
+	-Dtwolame=%{__enabled_disabled twolame} \
+	-Dudp=enabled \
+	-Dv4l2=enabled \
+	-Dv4l2-gudev=enabled \
+	-Dv4l2-libv4l2=enabled \
+	-Dvideobox=enabled \
+	-Dvideocrop=enabled \
+	-Dvideofilter=enabled \
+	-Dvideomixer=enabled \
+	-Dvpx=enabled \
+	-Dwavenc=enabled \
+	-Dwavpack=%{__enabled_disabled wavpack} \
+	-Dwavparse=enabled \
+	-Dximagesrc=enabled \
+	-Dximagesrc-navigation=enabled \
+	-Dximagesrc-xdamage=enabled \
+	-Dximagesrc-xfixes=enabled \
+	-Dximagesrc-xshm=enabled \
+	-Dxingmux=enabled \
+	-Dy4m=enabled
 
 %meson_build
 
 %if %{with apidocs}
+%meson_build build-hotdoc-configs
+
 cd build/docs
 for config in plugin-*.json ; do
 	LC_ALL=C.UTF-8 hotdoc run --conf-file "$config"
@@ -793,6 +876,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_docdir}/gstreamer-%{gstmver}/plugin-ossaudio
 %{_docdir}/gstreamer-%{gstmver}/plugin-png
 %{_docdir}/gstreamer-%{gstmver}/plugin-pulseaudio
+%{_docdir}/gstreamer-%{gstmver}/plugin-qml6
 %{_docdir}/gstreamer-%{gstmver}/plugin-qmlgl
 %{_docdir}/gstreamer-%{gstmver}/plugin-replaygain
 %{_docdir}/gstreamer-%{gstmver}/plugin-rpicamsrc
