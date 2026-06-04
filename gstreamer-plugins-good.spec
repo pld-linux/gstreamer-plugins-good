@@ -18,29 +18,29 @@
 
 %define		gstname		gst-plugins-good
 %define		gstmver		1.0
-%define		gst_ver		1.26.0
-%define		gstpb_ver	1.26.0
+%define		gst_ver		1.28.0
+%define		gstpb_ver	1.28.0
 
 Summary:	Good GStreamer Streaming-media framework plugins
 Summary(pl.UTF-8):	Dobre wtyczki do środowiska obróbki strumieni GStreamer
 Name:		gstreamer-plugins-good
-Version:	1.26.8
-Release:	2
+Version:	1.28.3
+Release:	1
 License:	LGPL v2+
 Group:		Libraries
 Source0:	https://gstreamer.freedesktop.org/src/gst-plugins-good/%{gstname}-%{version}.tar.xz
-# Source0-md5:	699b6ffeb00810c988c2725641e10b77
+# Source0-md5:	8a65245b9723adf0fe2a01e08480f4ff
 URL:		https://gstreamer.freedesktop.org/
 BuildRequires:	docbook-dtd412-xml
 BuildRequires:	gettext-tools >= 0.17
-BuildRequires:	glib2-devel >= 1:2.64.0
+BuildRequires:	glib2-devel >= 1:2.67.4
 %if %(locale -a | grep -q '^C\.utf8$'; echo $?)
 BuildRequires:	glibc-localedb-all
 %endif
 BuildRequires:	gstreamer-devel >= %{gst_ver}
 BuildRequires:	gstreamer-gl-devel >= %{gstpb_ver}
 BuildRequires:	gstreamer-plugins-base-devel >= %{gstpb_ver}
-BuildRequires:	gtk+3-devel >= 3.0.0
+BuildRequires:	gtk+3-devel >= 3.15.0
 %{?with_apidocs:BuildRequires:	hotdoc >= 0.11.0}
 BuildRequires:	meson >= 1.4
 %ifarch %{x8664}
@@ -76,7 +76,6 @@ BuildRequires:	bzip2-devel
 %{?with_cairo:BuildRequires:	cairo-gobject-devel >= 1.10.0}
 BuildRequires:	flac-devel >= 1.1.4
 BuildRequires:	gdk-pixbuf2-devel >= 2.8.0
-%{?with_gtk:BuildRequires:	gtk+3-devel >= 3.15.0}
 %{?with_jack:BuildRequires:	jack-audio-connection-kit-devel >= 1.9.7}
 %{?with_lame:BuildRequires:	lame-libs-devel >= 3.98}
 BuildRequires:	libavc1394-devel >= 0.5.4
@@ -115,7 +114,7 @@ BuildRequires:	xorg-lib-libXdamage-devel
 BuildRequires:	xorg-lib-libXext-devel
 BuildRequires:	xorg-lib-libXfixes-devel
 BuildRequires:	xorg-lib-libXtst-devel
-Requires:	glib2 >= 1:2.64.0
+Requires:	glib2 >= 1:2.67.4
 Requires:	gstreamer >= %{gst_ver}
 Requires:	gstreamer-plugins-base >= %{gstpb_ver}
 Requires:	orc >= 0.4.41
@@ -703,11 +702,13 @@ Xlib.
 	-Dlevel=enabled \
 	-Dlibcaca=%{__enabled_disabled caca} \
 	-Dmatroska=enabled \
+	-Dmonoscope=enabled \
 	-Dmpg123=%{__enabled_disabled mpg123} \
 	-Dmultifile=enabled \
 	-Dmultipart=enabled \
 	-Dnls=enabled \
 	-Dorc=enabled \
+	-Dorc-compiler=enabled \
 	-Doss=enabled \
 	-Doss4=enabled \
 	-Dosxaudio=disabled \
@@ -742,6 +743,7 @@ Xlib.
 	-Dvideofilter=enabled \
 	-Dvideomixer=enabled \
 	-Dvpx=enabled \
+	-Dwaveform=enabled \
 	-Dwavenc=enabled \
 	-Dwavpack=%{__enabled_disabled wavpack} \
 	-Dwavparse=enabled \
@@ -785,42 +787,42 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -f %{gstname}-%{gstmver}.lang
 %defattr(644,root,root,755)
-%doc AUTHORS ChangeLog NEWS README.md RELEASE
-%attr(755,root,root) %{gstlibdir}/libgstadaptivedemux2.so
-%attr(755,root,root) %{gstlibdir}/libgstalphacolor.so
-%attr(755,root,root) %{gstlibdir}/libgstalpha.so
-%attr(755,root,root) %{gstlibdir}/libgstapetag.so
-%attr(755,root,root) %{gstlibdir}/libgstaudiofx.so
-%attr(755,root,root) %{gstlibdir}/libgstautodetect.so
-%attr(755,root,root) %{gstlibdir}/libgstavi.so
-%attr(755,root,root) %{gstlibdir}/libgstdebug.so
-%attr(755,root,root) %{gstlibdir}/libgstdtmf.so
-%attr(755,root,root) %{gstlibdir}/libgstequalizer.so
-%attr(755,root,root) %{gstlibdir}/libgstdeinterlace.so
-%attr(755,root,root) %{gstlibdir}/libgstflv.so
-%attr(755,root,root) %{gstlibdir}/libgstflxdec.so
-%attr(755,root,root) %{gstlibdir}/libgsticydemux.so
-%attr(755,root,root) %{gstlibdir}/libgstid3demux.so
-%attr(755,root,root) %{gstlibdir}/libgstimagefreeze.so
-%attr(755,root,root) %{gstlibdir}/libgstinterleave.so
-%attr(755,root,root) %{gstlibdir}/libgstisomp4.so
-%attr(755,root,root) %{gstlibdir}/libgstmatroska.so
-%attr(755,root,root) %{gstlibdir}/libgstmultifile.so
-%attr(755,root,root) %{gstlibdir}/libgstmultipart.so
-%attr(755,root,root) %{gstlibdir}/libgstnavigationtest.so
-%attr(755,root,root) %{gstlibdir}/libgstoss4.so
-%attr(755,root,root) %{gstlibdir}/libgstreplaygain.so
-%attr(755,root,root) %{gstlibdir}/libgstrtp.so
-%attr(755,root,root) %{gstlibdir}/libgstrtpmanager.so
-%attr(755,root,root) %{gstlibdir}/libgstrtsp.so
-%attr(755,root,root) %{gstlibdir}/libgstshapewipe.so
-%attr(755,root,root) %{gstlibdir}/libgstudp.so
-%attr(755,root,root) %{gstlibdir}/libgstvideobox.so
-%attr(755,root,root) %{gstlibdir}/libgstvideocrop.so
-%attr(755,root,root) %{gstlibdir}/libgstvideofilter.so
-%attr(755,root,root) %{gstlibdir}/libgstvideomixer.so
-%attr(755,root,root) %{gstlibdir}/libgstxingmux.so
-%attr(755,root,root) %{gstlibdir}/libgsty4menc.so
+%doc ChangeLog MAINTAINERS README.md RELEASE
+%{gstlibdir}/libgstadaptivedemux2.so
+%{gstlibdir}/libgstalphacolor.so
+%{gstlibdir}/libgstalpha.so
+%{gstlibdir}/libgstapetag.so
+%{gstlibdir}/libgstaudiofx.so
+%{gstlibdir}/libgstautodetect.so
+%{gstlibdir}/libgstavi.so
+%{gstlibdir}/libgstdebug.so
+%{gstlibdir}/libgstdtmf.so
+%{gstlibdir}/libgstequalizer.so
+%{gstlibdir}/libgstdeinterlace.so
+%{gstlibdir}/libgstflv.so
+%{gstlibdir}/libgstflxdec.so
+%{gstlibdir}/libgsticydemux.so
+%{gstlibdir}/libgstid3demux.so
+%{gstlibdir}/libgstimagefreeze.so
+%{gstlibdir}/libgstinterleave.so
+%{gstlibdir}/libgstisomp4.so
+%{gstlibdir}/libgstmatroska.so
+%{gstlibdir}/libgstmultifile.so
+%{gstlibdir}/libgstmultipart.so
+%{gstlibdir}/libgstnavigationtest.so
+%{gstlibdir}/libgstoss4.so
+%{gstlibdir}/libgstreplaygain.so
+%{gstlibdir}/libgstrtp.so
+%{gstlibdir}/libgstrtpmanager.so
+%{gstlibdir}/libgstrtsp.so
+%{gstlibdir}/libgstshapewipe.so
+%{gstlibdir}/libgstudp.so
+%{gstlibdir}/libgstvideobox.so
+%{gstlibdir}/libgstvideocrop.so
+%{gstlibdir}/libgstvideofilter.so
+%{gstlibdir}/libgstvideomixer.so
+%{gstlibdir}/libgstxingmux.so
+%{gstlibdir}/libgsty4m.so
 %{_datadir}/gstreamer-%{gstmver}/presets
 
 %if %{with apidocs}
@@ -903,7 +905,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_docdir}/gstreamer-%{gstmver}/plugin-wavparse
 %{_docdir}/gstreamer-%{gstmver}/plugin-ximagesrc
 %{_docdir}/gstreamer-%{gstmver}/plugin-xingmux
-%{_docdir}/gstreamer-%{gstmver}/plugin-y4menc
+%{_docdir}/gstreamer-%{gstmver}/plugin-y4m
 %endif
 
 ##
@@ -913,162 +915,162 @@ rm -rf $RPM_BUILD_ROOT
 %if %{with aalib}
 %files -n gstreamer-videosink-aa
 %defattr(644,root,root,755)
-%attr(755,root,root) %{gstlibdir}/libgstaasink.so
+%{gstlibdir}/libgstaasink.so
 %endif
 
 %if %{with amr}
 %files -n gstreamer-amrnb
 %defattr(644,root,root,755)
-%attr(755,root,root) %{gstlibdir}/libgstamrnb.so
+%{gstlibdir}/libgstamrnb.so
 
 %files -n gstreamer-amrwb
 %defattr(644,root,root,755)
-%attr(755,root,root) %{gstlibdir}/libgstamrwbdec.so
+%{gstlibdir}/libgstamrwbdec.so
 %endif
 
 %files -n gstreamer-audio-effects-good
 %defattr(644,root,root,755)
-%attr(755,root,root) %{gstlibdir}/libgstalaw.so
-%attr(755,root,root) %{gstlibdir}/libgstcutter.so
-%attr(755,root,root) %{gstlibdir}/libgstlevel.so
-%attr(755,root,root) %{gstlibdir}/libgstmulaw.so
+%{gstlibdir}/libgstalaw.so
+%{gstlibdir}/libgstcutter.so
+%{gstlibdir}/libgstlevel.so
+%{gstlibdir}/libgstmulaw.so
 
 %files -n gstreamer-audio-formats
 %defattr(644,root,root,755)
-%attr(755,root,root) %{gstlibdir}/libgstauparse.so
-%attr(755,root,root) %{gstlibdir}/libgstaudioparsers.so
-%attr(755,root,root) %{gstlibdir}/libgstwavparse.so
-%attr(755,root,root) %{gstlibdir}/libgstwavenc.so
+%{gstlibdir}/libgstauparse.so
+%{gstlibdir}/libgstaudioparsers.so
+%{gstlibdir}/libgstwavparse.so
+%{gstlibdir}/libgstwavenc.so
 
 %if %{with cairo}
 %files -n gstreamer-cairo
 %defattr(644,root,root,755)
-%attr(755,root,root) %{gstlibdir}/libgstcairo.so
+%{gstlibdir}/libgstcairo.so
 %endif
 
 %files -n gstreamer-dv
 %defattr(644,root,root,755)
-%attr(755,root,root) %{gstlibdir}/libgstdv.so
+%{gstlibdir}/libgstdv.so
 
 %files -n gstreamer-flac
 %defattr(644,root,root,755)
-%attr(755,root,root) %{gstlibdir}/libgstflac.so
+%{gstlibdir}/libgstflac.so
 
 %files -n gstreamer-gdkpixbuf
 %defattr(644,root,root,755)
-%attr(755,root,root) %{gstlibdir}/libgstgdkpixbuf.so
+%{gstlibdir}/libgstgdkpixbuf.so
 
 %if %{with gtk}
 %files -n gstreamer-videosink-gtk
 %defattr(644,root,root,755)
-%attr(755,root,root) %{gstlibdir}/libgstgtk.so
+%{gstlibdir}/libgstgtk.so
 %endif
 
 %if %{with jack}
 %files -n gstreamer-jack
 %defattr(644,root,root,755)
-%attr(755,root,root) %{gstlibdir}/libgstjack.so
+%{gstlibdir}/libgstjack.so
 %endif
 
 %if %{with caca}
 %files -n gstreamer-videosink-libcaca
 %defattr(644,root,root,755)
-%attr(755,root,root) %{gstlibdir}/libgstcacasink.so
+%{gstlibdir}/libgstcacasink.so
 %endif
 
 %if %{with lame}
 %files -n gstreamer-lame
 %defattr(644,root,root,755)
-%attr(755,root,root) %{gstlibdir}/libgstlame.so
+%{gstlibdir}/libgstlame.so
 %endif
 
 %if %{with mpg123}
 %files -n gstreamer-mpg123
 %defattr(644,root,root,755)
-%attr(755,root,root) %{gstlibdir}/libgstmpg123.so
+%{gstlibdir}/libgstmpg123.so
 %endif
 
 %files -n gstreamer-libpng
 %defattr(644,root,root,755)
-%attr(755,root,root) %{gstlibdir}/libgstpng.so
+%{gstlibdir}/libgstpng.so
 
 %files -n gstreamer-audiosink-oss
 %defattr(644,root,root,755)
-%attr(755,root,root) %{gstlibdir}/libgstossaudio.so
+%{gstlibdir}/libgstossaudio.so
 
 %files -n gstreamer-pulseaudio
 %defattr(644,root,root,755)
-%attr(755,root,root) %{gstlibdir}/libgstpulseaudio.so
+%{gstlibdir}/libgstpulseaudio.so
 
 %if %{with qt5}
 %files -n gstreamer-videosink-qt
 %defattr(644,root,root,755)
-%attr(755,root,root) %{gstlibdir}/libgstqmlgl.so
+%{gstlibdir}/libgstqmlgl.so
 %endif
 
 %if %{with qt6}
 %files -n gstreamer-videosink-qt6
 %defattr(644,root,root,755)
-%attr(755,root,root) %{gstlibdir}/libgstqml6.so
+%{gstlibdir}/libgstqml6.so
 %endif
 
 %files -n gstreamer-raw1394
 %defattr(644,root,root,755)
-%attr(755,root,root) %{gstlibdir}/libgst1394.so
+%{gstlibdir}/libgst1394.so
 
 %files -n gstreamer-shout2
 %defattr(644,root,root,755)
-%attr(755,root,root) %{gstlibdir}/libgstshout2.so
+%{gstlibdir}/libgstshout2.so
 
 %if %{with soup}
 %files -n gstreamer-soup
 %defattr(644,root,root,755)
-%attr(755,root,root) %{gstlibdir}/libgstsoup.so
+%{gstlibdir}/libgstsoup.so
 %endif
 
 %if %{with speex}
 %files -n gstreamer-speex
 %defattr(644,root,root,755)
-%attr(755,root,root) %{gstlibdir}/libgstspeex.so
+%{gstlibdir}/libgstspeex.so
 %endif
 
 %files -n gstreamer-taglib
 %defattr(644,root,root,755)
-%attr(755,root,root) %{gstlibdir}/libgsttaglib.so
+%{gstlibdir}/libgsttaglib.so
 
 %if %{with twolame}
 %files -n gstreamer-twolame
 %defattr(644,root,root,755)
-%attr(755,root,root) %{gstlibdir}/libgsttwolame.so
+%{gstlibdir}/libgsttwolame.so
 %endif
 
 %files -n gstreamer-v4l2
 %defattr(644,root,root,755)
-%attr(755,root,root) %{gstlibdir}/libgstvideo4linux2.so
+%{gstlibdir}/libgstvideo4linux2.so
 
 %files -n gstreamer-video-effects
 %defattr(644,root,root,755)
-%attr(755,root,root) %{gstlibdir}/libgsteffectv.so
-%attr(755,root,root) %{gstlibdir}/libgstjpeg.so
-%attr(755,root,root) %{gstlibdir}/libgstsmpte.so
+%{gstlibdir}/libgsteffectv.so
+%{gstlibdir}/libgstjpeg.so
+%{gstlibdir}/libgstsmpte.so
 
 %files -n gstreamer-visualisation
 %defattr(644,root,root,755)
-%attr(755,root,root) %{gstlibdir}/libgstgoom.so
-%attr(755,root,root) %{gstlibdir}/libgstgoom2k1.so
-%attr(755,root,root) %{gstlibdir}/libgstmonoscope.so
-%attr(755,root,root) %{gstlibdir}/libgstspectrum.so
+%{gstlibdir}/libgstgoom.so
+%{gstlibdir}/libgstgoom2k1.so
+%{gstlibdir}/libgstmonoscope.so
+%{gstlibdir}/libgstspectrum.so
 
 %files -n gstreamer-vpx
 %defattr(644,root,root,755)
-%attr(755,root,root) %{gstlibdir}/libgstvpx.so
+%{gstlibdir}/libgstvpx.so
 
 %if %{with wavpack}
 %files -n gstreamer-wavpack
 %defattr(644,root,root,755)
-%attr(755,root,root) %{gstlibdir}/libgstwavpack.so
+%{gstlibdir}/libgstwavpack.so
 %endif
 
 %files -n gstreamer-ximagesrc
 %defattr(644,root,root,755)
-%attr(755,root,root) %{gstlibdir}/libgstximagesrc.so
+%{gstlibdir}/libgstximagesrc.so
