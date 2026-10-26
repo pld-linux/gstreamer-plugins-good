@@ -25,7 +25,7 @@ Summary:	Good GStreamer Streaming-media framework plugins
 Summary(pl.UTF-8):	Dobre wtyczki do środowiska obróbki strumieni GStreamer
 Name:		gstreamer-plugins-good
 Version:	1.28.8
-Release:	2
+Release:	3
 License:	LGPL v2+
 Group:		Libraries
 Source0:	https://gstreamer.freedesktop.org/src/gst-plugins-good/%{gstname}-%{version}.tar.xz
@@ -565,7 +565,7 @@ Group:		Libraries
 Requires:	%{name}%{?_isa} = %{version}-%{release}
 Requires:	gstreamer%{?_isa} >= %{gst_ver}
 Requires:	gstreamer-plugins-base%{?_isa} >= %{gstpb_ver}
-Requires:	libgudev%{?_isa} >= 1:147
+Requires:	libgudev%{?_isa} >= 147
 
 %description -n gstreamer-v4l2
 GStreamer plugin for accessing Video4Linux2 devices.
